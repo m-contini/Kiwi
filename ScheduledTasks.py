@@ -11,14 +11,13 @@ from source import __TEST__, LOG_FILE
 # Configurazione base del logging per monitorare l'esecuzione
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
+    format='%(asctime)s - %(levelname)s - %(filename)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
     handlers=[
         # Output to console
         logging.StreamHandler(),
         # Output to file
         logging.FileHandler(LOG_FILE)
-    
     ]
 )
 

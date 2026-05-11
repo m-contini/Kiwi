@@ -60,7 +60,7 @@ class Riassegnazioni:
         for riassegnazione in riassegnazioni:
             try:
                 _ = self.kiwi.post_request(url, riassegnazione.as_dict())
-                logging.info(f"Riassegnazione da {riassegnazione.consulente_id} a {riassegnazione.assegnatario_id} per agenda {riassegnazione.agenda} completata!")
+                logging.debug(f"Riassegnazione da {riassegnazione.consulente_id} a {riassegnazione.assegnatario_id} per agenda {riassegnazione.agenda} completata!")
             except Exception as e:
                 logging.error(f"Riassegnazione {riassegnazione.anagrafica}({riassegnazione.agenda}) fallita: {e}")
                 continue
@@ -88,12 +88,12 @@ class Riassegnazioni:
                 # Estrai Anagrafica_id e Agenda_id
                 agenda = self._parse_agenda(self.ANAGRAFICA_RICERCA_NAME)
 
-                logging.info(f"Retrocessione Anagrafica(Agenda) -> {agenda.anagrafica}({agenda.agenda})")
+                logging.debug(f"Retrocessione Anagrafica(Agenda) -> {agenda.anagrafica}({agenda.agenda})")
 
                 # Aggiorna lo stato
                 _ = self.kiwi.post_request(update_url, retrocessione.as_dict(agenda))
                 # Ottieni lo status di destinazione dall'ultimo carattere di id_esito
-                logging.info(f"Retrocessione in stato {str(id_esito)[-1]} per agenda {agenda.agenda} completata!")
+                logging.debug(f"Retrocessione in stato {str(id_esito)[-1]} per agenda {agenda.agenda} completata!")
             except Exception as e:
                 logging.error(f"Operazione per cellulare '{cellulare}' fallita: {e}")
                 continue
@@ -285,7 +285,7 @@ class Utenze:
         if not self.data:
             logging.warning("Nessun dato da salvare in CSV per Utenze.")
             return
-            
+
         with open(self.CSV_UTENZE, 'w', encoding='utf-8', newline='') as csvfile:
             fieldnames = [f.name for f in fields(self.data[0])]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
@@ -293,7 +293,7 @@ class Utenze:
             writer.writeheader()
             for item in self.data:
                 writer.writerow(asdict(item))
-        logging.info(f"Utenze salvate in CSV: {self.CSV_UTENZE}")
+        logging.debug(f"Utenze salvate in CSV: {self.CSV_UTENZE}")
 
     def to_json(self) -> None:
         """Scrivi i dati in JSON"""
@@ -305,7 +305,7 @@ class Utenze:
                 indent=4
             )
 
-        logging.info(f"Utenze salvate in JSON: '{self.CSV_UTENZE.with_suffix('.json')}'.")
+        logging.debug(f"Utenze salvate in JSON: '{self.CSV_UTENZE.with_suffix('.json')}'.")
 
 class Lavorazioni:
 
@@ -365,7 +365,7 @@ class Lavorazioni:
                 writer.writeheader()
                 writer.writerows(self.data)
 
-            logging.info(f"Dati salvati con successo in: {self.output_file}")
+            logging.debug(f"Dati salvati con successo in: {self.output_file}")
         except Exception as e:
             logging.error(f"Errore durante il salvataggio del CSV: {e}")
 
@@ -414,7 +414,7 @@ class KiwiTable:
 
         with open(file_path, "w", encoding="utf-8") as file:
             file.write(html)
-        logging.info(f"[HTML] Risposta salvata in {file_path}")
+        logging.debug(f"[HTML] Risposta salvata in {file_path}")
 
     def to_csv(self, table: Tag, headers: list[str]):
         """ Salva i dati della tabella in un file CSV """
@@ -429,7 +429,7 @@ class KiwiTable:
             writer.writerow(headers)
             for row in data:
                 writer.writerow(row)
-        logging.info(f"[CSV] Risposta salvata in {file_path}")
+        logging.debug(f"[CSV] Risposta salvata in {file_path}")
 
     def to_json(self, table: Tag, headers: list[str]):
         """ Salva i dati della tabella in un file JSON """
@@ -446,7 +446,7 @@ class KiwiTable:
 
         with open(file_path, "w", encoding="utf-8") as jsonfile:
             json.dump(json_data, jsonfile, indent=4, ensure_ascii=False)
-        logging.info(f"[JSON] Risposta salvata in {file_path}")
+        logging.debug(f"[JSON] Risposta salvata in {file_path}")
 
     @staticmethod
     def _fetch_table(table: Tag, headers: list[str], format: Literal['csv', 'json']) -> list[list[str] | dict[str, str]]:
