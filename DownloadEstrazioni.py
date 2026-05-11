@@ -21,8 +21,7 @@ from source import (
     Endpoints,
 )
 
-from Estrazioni._multiplePayloadGenerator import PayloadManager
-from Estrazioni._estrazioniDisponibiliDownload import OptionManager
+from Estrazioni import PayloadManager, OptionManager
 
 def main() -> None: 
 
