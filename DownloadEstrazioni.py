@@ -37,7 +37,7 @@ def main() -> None:
     try:
         # Imposta la sessione HTTP
         kiwi = Auth(Path(__file__) if __TEST__ else None)
-        _ = kiwi.login()
+        kiwi.login()
     except Exception as e:
         print(e)
         raise

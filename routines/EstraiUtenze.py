@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 from source import (
@@ -43,11 +44,11 @@ def run(__TEST__: bool = False) -> None:
     try:
         # Imposta la sessione HTTP
         kiwi = Auth(Path(__file__) if __TEST__ else None)
-        _ = kiwi.login()
+        kiwi.login()
 
         # Istanza custom per effettuare parsing e salvataggio
         utenze = Utenze()
-
+        
         # Richiesta GET per ottenere la lista degli utenti di Kiwi
         response = kiwi.get_request(Endpoints.USERLIST.value)
 
@@ -55,14 +56,16 @@ def run(__TEST__: bool = False) -> None:
         utenze.data = utenze.parse_response_utenze(response.text)
 
         # Stampa i dati
+        logging.info(f"Estratte {len(utenze.data)} utenze.")
         for item in utenze.data:
-            print(item)
+            logging.debug(item)
 
         # Salva in CSV
         utenze.to_csv()
-
         # Salva in JSON
         utenze.to_json()
+        logging.info("Salvataggio utenze completato con successo.")
 
     except Exception as e:
-        print(e)
+        logging.error(f"Errore durante l'estrazione utenze: {e}")
+        raise
