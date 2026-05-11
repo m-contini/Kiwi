@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 from source import (
@@ -27,24 +28,24 @@ def run(__TEST__: bool = False) -> None:
     """
 
     try:
+        # Definiamo il mock_path una volta sola
+        mock_path = Path(__file__) if __TEST__ else None
+
         # Imposta la sessione HTTP
-        kiwi = Auth(Path(__file__) if __TEST__ else None)
-        _ = kiwi.login()
+        kiwi = Auth(mock_path)
+        kiwi.login()
 
         # Istanza custom per eseguire le due subroutine
-        query = Riassegnazioni(kiwi, Path(__file__) if __TEST__ else None)
+        query = Riassegnazioni(kiwi, mock_path)
 
         # Subroutine: esegue tutte le riassegnazioni lette dal CSV delle riassegnazioni
-        print("==" * 10)
-        print("RIASSEGNAZIONI")
-        print("==" * 10)
+        logging.info("--- INIZIO FASE: RIASSEGNAZIONI ---")
         query.subroutine_riassegnazioni()
 
         # Subroutine: esegue tutte le retrocessioni lette dal CSV delle retrocessioni
-        print("==" * 10)
-        print("RETROCESSIONI")
-        print("==" * 10)
+        logging.info("--- INIZIO FASE: RETROCESSIONI ---")
         query.subroutine_retrocessioni()
 
     except Exception as e:
-        print(e)
+        logging.error(f"Errore durante la routine di riassegnazione/retrocessione: {e}", exc_info=True)
+        raise
