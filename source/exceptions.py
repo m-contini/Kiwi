@@ -7,7 +7,7 @@ class KiwiError(Exception):
     """Classe base per tutte le eccezioni del progetto Kiwi."""
     pass
 
-class NoCredentials(BaseException):
+class NoCredentials(KiwiError):
     """Eccezione sollevata se la lettura credenziali da `.env` fallisce."""
     pass
 
