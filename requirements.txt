@@ -1,0 +1,9 @@
+bs4==4.14.3
+requests==2.32.5
+dataclasses==0.6
+pandas==3.0.2
+pandas-stubs
+tqdm==4.67.3
+tabulate==0.10.0
+ipykernel==7.2.0
+dotenv==0.9.9

@@ -1,0 +1,27 @@
+__pycache__
+
+.env
+
+*.json
+!User_id.json
+
+!**/2026_05_11_10_12_58_Consulente Tirana.json
+!**/2026_05_11_10_12_58_Consulente Milano.json
+
+*.csv
+!input_cellulare_retrocessioni_di_stato.csv
+!input_cellulare.csv
+!output_anagrafica_list.csv
+
+!User_id.csv
+
+!**/2026_05_11_10_12_58_Consulente Milano.csv
+!**/2026_05_11_10_12_58_Consulente Tirana.csv
+
+*.txt
+!Elenco_Estrazioni.txt
+!requirements.txt
+
+*.html
+!html/*
+!**/HomeKiwi_2026_05_11_10_12_58.html
