@@ -48,7 +48,7 @@ def run(__TEST__: bool = False) -> None:
 
         # Istanza custom per effettuare parsing e salvataggio
         utenze = Utenze()
-        
+
         # Richiesta GET per ottenere la lista degli utenti di Kiwi
         response = kiwi.get_request(Endpoints.USERLIST.value)
 
@@ -62,9 +62,11 @@ def run(__TEST__: bool = False) -> None:
 
         # Salva in CSV
         utenze.to_csv()
+        logging.info(f"Utenze salvate in CSV: {utenze.CSV_UTENZE}.")
+
         # Salva in JSON
         utenze.to_json()
-        logging.info("Salvataggio utenze completato con successo.")
+        logging.info(f"Utenze salvate in JSON: '{utenze.CSV_UTENZE.with_suffix('.json')}'.")
 
     except Exception as e:
         logging.error(f"Errore durante l'estrazione utenze: {e}")

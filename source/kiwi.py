@@ -65,7 +65,7 @@ class Scraper:
         user = os.getenv('USERNAME', '')
         password = os.getenv('PASSWORD', '')
 
-        logging.info(f"Username: '{user}'")
+        logging.debug(f"Username: '{user}'")
         logging.debug(f"Password: '{'*'*len(password)}'\n")
 
         if not user or not password:

@@ -40,9 +40,11 @@ def run(__TEST__: bool = False) -> None:
 
         # Subroutine: esegue tutte le riassegnazioni lette dal CSV delle riassegnazioni
         query.subroutine_riassegnazioni()
+        logging.info("Riassegnazioni completate.")
 
         # Subroutine: esegue tutte le retrocessioni lette dal CSV delle retrocessioni
         query.subroutine_retrocessioni()
+        logging.info("Retrocessioni completate.")
 
     except Exception as e:
         logging.error(f"Errore durante la routine di riassegnazione/retrocessione: {e}", exc_info=True)

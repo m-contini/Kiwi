@@ -26,6 +26,7 @@ def run(__TEST__: bool = False) -> None:
     for directory in directories:
 
         path = directory.value
+        logging.info(f"Svuotamento directory {path}")
 
         if not path.exists():
             continue
@@ -36,7 +37,7 @@ def run(__TEST__: bool = False) -> None:
             if file_path.name.startswith('.'):
                 continue
 
-            logging.info(f"Rimozione {file_path.name}...")
+            logging.debug(f"Rimozione {file_path.name}")
             if __TEST__:
                 continue
 

@@ -22,15 +22,16 @@ logging.basicConfig(
 )
 
 if __name__ == '__main__':
-    routines = (
-        pulizia_quotidiana_file_obsoleti,
-        estrai_utenze_attive,
-        main_dashboard_fetch,
-        lavorazioni_consulenti,
-        riassegnazioni_retrocessioni
-    )
+    routines = [
+        ("pulizia_quotidiana_file_obsoleti", pulizia_quotidiana_file_obsoleti),
+        ("estrai_utenze_attive", estrai_utenze_attive),
+        ("main_dashboard_fetch", main_dashboard_fetch),
+        ("lavorazioni_consulenti", lavorazioni_consulenti),
+        ("riassegnazioni_retrocessioni", riassegnazioni_retrocessioni)
+    ]
 
-    for routine in routines:
+    for name, routine in routines:
+        routine.__name__ = name
         try:
             logging.info(f"Avvio routine: `{routine.__name__}`")
             routine(__TEST__)

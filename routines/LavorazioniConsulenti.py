@@ -110,12 +110,13 @@ def run(__TEST__: bool = False) -> None:
         lavorazioni = Lavorazioni(LOGIN_ID_TEST)
         lavorazioni.data = lavorazioni.parse_lavorazioni_html(response.text)
 
-        logging.info(f"Estratte {len(lavorazioni.data)} lavorazioni.")
+        logging.info(f"Estratte {len(lavorazioni.data)} lavorazioni per il conslente {LOGIN_ID_TEST}.")
         for row in lavorazioni.data:
             logging.debug(row)
 
         # Salvataggio
         lavorazioni.to_csv()
+        logging.info(f"Lavorazioni salvate in: {lavorazioni.output_file}")
 
     except Exception as e:
         print(e)

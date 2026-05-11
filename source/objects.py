@@ -55,6 +55,7 @@ class Riassegnazioni:
 
         # Fetch dei dati da file
         riassegnazioni = self._get_riassegnazioni_list(self.CAMBI_STATO_CSV)
+        logging.info(f"Trovate {len(riassegnazioni)} riassegnazioni da eseguire.")
 
         url = Endpoints.RIASSEGNAZ.value
         for riassegnazione in riassegnazioni:
@@ -69,6 +70,7 @@ class Riassegnazioni:
 
         # Fetch dei dati da file
         retrocessioni = self._get_retrocessioni_list(self.RETROCESSIONI_CSV)
+        logging.info(f"Trovate {len(retrocessioni)} retrocessioni da eseguire.")
 
         search_url = Endpoints.RICERCA.value
         update_url = Endpoints.UPDATE.value
@@ -293,7 +295,6 @@ class Utenze:
             writer.writeheader()
             for item in self.data:
                 writer.writerow(asdict(item))
-        logging.debug(f"Utenze salvate in CSV: {self.CSV_UTENZE}")
 
     def to_json(self) -> None:
         """Scrivi i dati in JSON"""
@@ -304,8 +305,6 @@ class Utenze:
                 ensure_ascii=False,
                 indent=4
             )
-
-        logging.debug(f"Utenze salvate in JSON: '{self.CSV_UTENZE.with_suffix('.json')}'.")
 
 class Lavorazioni:
 
@@ -365,7 +364,7 @@ class Lavorazioni:
                 writer.writeheader()
                 writer.writerows(self.data)
 
-            logging.debug(f"Dati salvati con successo in: {self.output_file}")
+            # logging.info(f"Dati salvati con successo in: {self.output_file}")
         except Exception as e:
             logging.error(f"Errore durante il salvataggio del CSV: {e}")
 
