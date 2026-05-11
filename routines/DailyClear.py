@@ -1,3 +1,4 @@
+import logging
 import shutil
 
 from source import HomeKiwiOutput
@@ -35,7 +36,7 @@ def run(__TEST__: bool = False) -> None:
             if file_path.name.startswith('.'):
                 continue
 
-            print(f"Rimozione {file_path.name}...")
+            logging.info(f"Rimozione {file_path.name}...")
             if __TEST__:
                 continue
 
@@ -47,4 +48,4 @@ def run(__TEST__: bool = False) -> None:
                 if file_path.is_dir():
                     shutil.rmtree(file_path)
             except Exception as e:
-                print(f'Errore: {e}')
+                logging.error(f'Errore: {e}')

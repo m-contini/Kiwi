@@ -3,6 +3,8 @@ _private*
 
 .env
 
+*.log
+
 *.json
 !User_id.json
 

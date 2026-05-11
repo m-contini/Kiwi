@@ -381,6 +381,16 @@ class KiwiTable:
 
         self.timestamp: str = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
+    def is_valid_dashboard_table(self, table: Tag) -> list[str]:
+        t_head = table.find('thead')
+        if t_head is None:
+            return []
+
+        table_headers = [th.get_text(strip=True) for th in t_head.find_all('th')]
+        if table_headers not in self.HEADERS.values():
+            return []
+        return table_headers
+
     @staticmethod
     def fetch_all_tables(response_text: str) -> ResultSet[Tag]:
         # Salva le tabelle identificate nei file CSV e JSON
