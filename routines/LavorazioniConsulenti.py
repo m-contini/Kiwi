@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -49,7 +50,7 @@ def run(__TEST__: bool = False) -> None:
     try:
         # Imposta la sessione HTTP
         kiwi = Auth(Path(__file__) if __TEST__ else None)
-        _ = kiwi.login()
+        kiwi.login()
 
         # Dati TEST da usare come payload
         data: dict[str, str] = {
@@ -73,6 +74,8 @@ def run(__TEST__: bool = False) -> None:
                 'content-type': 'application/x-www-form-urlencoded',
             }
         )
+        # Logging dettagliato per debug
+        logging.debug(f"Richiesta POST a {url} con dati: {data}")
 
         # RISPOSTA DI TES
         response_test = ResponseTest(
@@ -82,10 +85,13 @@ def run(__TEST__: bool = False) -> None:
             },
             text=response.text,
         )
+        if response_test.status_code != 200:
+            logging.error(f"Errore server: {response_test.status_code}")
+            return
 
         # Mostra i dettagli della richiesta
-        print("=" * 50)
-        print(f"""Dettagli della richiesta:
+        logging.debug("=" * 50)
+        logging.debug(f"""Dettagli della richiesta:
             URL: {request_test.url}
             Metodo: {request_test.method}
             Headers: {request_test.headers}
@@ -93,8 +99,8 @@ def run(__TEST__: bool = False) -> None:
         """)
 
         # Mostra i dettagli della risposta
-        print("=" * 50)
-        print(f"""Dettagli della risposta:
+        logging.debug("=" * 50)
+        logging.debug(f"""Dettagli della risposta:
             Status code: {response_test.status_code}
             Headers: {response_test.headers}
             Lunghezza del contenuto: {len(response_test.text)}
@@ -104,12 +110,14 @@ def run(__TEST__: bool = False) -> None:
         lavorazioni = Lavorazioni(LOGIN_ID_TEST)
         lavorazioni.data = lavorazioni.parse_lavorazioni_html(response.text)
 
-        print("Contenuto della risposta")
+        logging.info(f"Estratte {len(lavorazioni.data)} righe di lavorazione.")
         for row in lavorazioni.data:
-            print(row)
+            logging.debug(row)
 
         # Salvataggio
         lavorazioni.to_csv()
 
     except Exception as e:
         print(e)
+        logging.error(f"Errore durante l'estrazione lavorazioni consulenti: {e}", exc_info=True)
+        raise
