@@ -1,0 +1,194 @@
+{
+    "timestamp": "2026_05_11_10_12_58",
+    "headers": [
+        "Consulente Milano",
+        "Nuove Anagrafiche",
+        "Primo reminder",
+        "Ultimo reminder",
+        "Totale aperte",
+        "Stato \"Nuova Anagrafica\"",
+        "Riceve Anagrafiche"
+    ],
+    "data": [
+        {
+            "Consulente Milano": "Al*******ne",
+            "Nuove Anagrafiche": "7",
+            "Primo reminder": "31/12/2021",
+            "Ultimo reminder": "Gio 27 Giu, 13:02",
+            "Totale aperte": "667",
+            "Stato \"Nuova Anagrafica\"": "9",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "An********co",
+            "Nuove Anagrafiche": "18",
+            "Primo reminder": "Lun 10 Gen, 09:30",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte": "1105",
+            "Stato \"Nuova Anagrafica\"": "20",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Milano": "Ar************lo",
+            "Nuove Anagrafiche": "14",
+            "Primo reminder": "07 Set 2023, 15:18",
+            "Ultimo reminder": "Mer 03 Lug, 18:20",
+            "Totale aperte": "537",
+            "Stato \"Nuova Anagrafica\"": "19",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Ar************ta",
+            "Nuove Anagrafiche": "20",
+            "Primo reminder": "15/05/2022",
+            "Ultimo reminder": "Gio 04 Lug, 14:16",
+            "Totale aperte": "583",
+            "Stato \"Nuova Anagrafica\"": "27",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Au*******************ce",
+            "Nuove Anagrafiche": "20",
+            "Primo reminder": "07 Set 2023, 15:18",
+            "Ultimo reminder": "Gio 27 Giu, 13:02",
+            "Totale aperte": "487",
+            "Stato \"Nuova Anagrafica\"": "25",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Milano": "Be***********ra",
+            "Nuove Anagrafiche": "16",
+            "Primo reminder": "04/11/2020",
+            "Ultimo reminder": "Gio 04 Lug, 13:00",
+            "Totale aperte": "1330",
+            "Stato \"Nuova Anagrafica\"": "24",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Milano": "Be************ni",
+            "Nuove Anagrafiche": "14",
+            "Primo reminder": "15/05/2022",
+            "Ultimo reminder": "Mar 02 Lug, 17:45",
+            "Totale aperte": "935",
+            "Stato \"Nuova Anagrafica\"": "16",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Bo**************lo",
+            "Nuove Anagrafiche": "19",
+            "Primo reminder": "15/05/2022",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte": "964",
+            "Stato \"Nuova Anagrafica\"": "27",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Bo**********ea",
+            "Nuove Anagrafiche": "2",
+            "Primo reminder": "Mar 26 Mar, 15:00",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte": "1009",
+            "Stato \"Nuova Anagrafica\"": "7",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Br***********no",
+            "Nuove Anagrafiche": "20",
+            "Primo reminder": "Lun 10 Gen, 09:30",
+            "Ultimo reminder": "Gio 27 Giu, 13:02",
+            "Totale aperte": "356",
+            "Stato \"Nuova Anagrafica\"": "22",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Bu**************zo",
+            "Nuove Anagrafiche": "17",
+            "Primo reminder": "31/12/2021",
+            "Ultimo reminder": "Gio 27 Giu, 13:02",
+            "Totale aperte": "740",
+            "Stato \"Nuova Anagrafica\"": "22",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Ca************ro",
+            "Nuove Anagrafiche": "1",
+            "Primo reminder": "Mar 26 Mar, 15:00",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte": "1480",
+            "Stato \"Nuova Anagrafica\"": "10",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Co**********ra",
+            "Nuove Anagrafiche": "13",
+            "Primo reminder": "Lun 10 Gen, 09:30",
+            "Ultimo reminder": "Gio 27 Giu, 13:02",
+            "Totale aperte": "135",
+            "Stato \"Nuova Anagrafica\"": "16",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Co*********co",
+            "Nuove Anagrafiche": "4",
+            "Primo reminder": "15/05/2022",
+            "Ultimo reminder": "Mer 03 Lug, 18:20",
+            "Totale aperte": "659",
+            "Stato \"Nuova Anagrafica\"": "14",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Milano": "Co*************ro",
+            "Nuove Anagrafiche": "6",
+            "Primo reminder": "Lun 10 Gen, 09:30",
+            "Ultimo reminder": "Gio 04 Lug, 14:00",
+            "Totale aperte": "851",
+            "Stato \"Nuova Anagrafica\"": "16",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "D'*************ia",
+            "Nuove Anagrafiche": "4",
+            "Primo reminder": "20 Feb 2023, 20:53",
+            "Ultimo reminder": "Mer 03 Lug, 18:20",
+            "Totale aperte": "1",
+            "Stato \"Nuova Anagrafica\"": "10",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Milano": "De************ia",
+            "Nuove Anagrafiche": "19",
+            "Primo reminder": "31/12/2021",
+            "Ultimo reminder": "Mar 02 Lug, 17:45",
+            "Totale aperte": "1491",
+            "Stato \"Nuova Anagrafica\"": "20",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "De******************ta",
+            "Nuove Anagrafiche": "11",
+            "Primo reminder": "15/05/2022",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte": "707",
+            "Stato \"Nuova Anagrafica\"": "11",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Di************io",
+            "Nuove Anagrafiche": "15",
+            "Primo reminder": "07 Set 2023, 15:18",
+            "Ultimo reminder": "Mer 03 Lug, 18:20",
+            "Totale aperte": "180",
+            "Stato \"Nuova Anagrafica\"": "24",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Milano": "Fi***********lo",
+            "Nuove Anagrafiche": "11",
+            "Primo reminder": "15/05/2022",
+            "Ultimo reminder": "Gio 04 Lug, 14:16",
+            "Totale aperte": "1347",
+            "Stato \"Nuova Anagrafica\"": "20",
+            "Riceve Anagrafiche": "NO"
+        }
+    ]
+}

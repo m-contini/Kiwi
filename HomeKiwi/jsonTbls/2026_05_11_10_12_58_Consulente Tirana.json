@@ -1,0 +1,194 @@
+{
+    "timestamp": "2026_05_11_10_12_58",
+    "headers": [
+        "Consulente Tirana",
+        "Nuove Anagrafiche",
+        "Primo reminder",
+        "Ultimo reminder",
+        "Totale aperte (*)",
+        "Stato \"Nuova Anagrafica\"",
+        "Riceve Anagrafiche"
+    ],
+    "data": [
+        {
+            "Consulente Tirana": "Al*********co",
+            "Nuove Anagrafiche": "10",
+            "Primo reminder": "31/12/2021",
+            "Ultimo reminder": "Gio 04 Lug, 13:00",
+            "Totale aperte (*)": "549",
+            "Stato \"Nuova Anagrafica\"": "14",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Am***********le",
+            "Nuove Anagrafiche": "13",
+            "Primo reminder": "Lun 10 Gen, 09:30",
+            "Ultimo reminder": "Gio 04 Lug, 14:16",
+            "Totale aperte (*)": "171",
+            "Stato \"Nuova Anagrafica\"": "16",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Tirana": "An************na",
+            "Nuove Anagrafiche": "5",
+            "Primo reminder": "Lun 10 Gen, 09:30",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte (*)": "61",
+            "Stato \"Nuova Anagrafica\"": "7",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Ar**************ta",
+            "Nuove Anagrafiche": "0",
+            "Primo reminder": "04/11/2020",
+            "Ultimo reminder": "Gio 04 Lug, 14:16",
+            "Totale aperte (*)": "59",
+            "Stato \"Nuova Anagrafica\"": "2",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Tirana": "Ar*******ia",
+            "Nuove Anagrafiche": "1",
+            "Primo reminder": "Lun 10 Gen, 09:30",
+            "Ultimo reminder": "Mer 03 Lug, 18:20",
+            "Totale aperte (*)": "106",
+            "Stato \"Nuova Anagrafica\"": "10",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Tirana": "Ar**************ca",
+            "Nuove Anagrafiche": "0",
+            "Primo reminder": "04/11/2020",
+            "Ultimo reminder": "Mer 03 Lug, 18:20",
+            "Totale aperte (*)": "707",
+            "Stato \"Nuova Anagrafica\"": "3",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Ar*********ia",
+            "Nuove Anagrafiche": "4",
+            "Primo reminder": "07 Set 2023, 15:18",
+            "Ultimo reminder": "Mar 02 Lug, 17:45",
+            "Totale aperte (*)": "696",
+            "Stato \"Nuova Anagrafica\"": "7",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Au**********************te",
+            "Nuove Anagrafiche": "13",
+            "Primo reminder": "07 Set 2023, 15:18",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte (*)": "45",
+            "Stato \"Nuova Anagrafica\"": "13",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Be************no",
+            "Nuove Anagrafiche": "17",
+            "Primo reminder": "Mar 26 Mar, 15:00",
+            "Ultimo reminder": "Gio 04 Lug, 13:00",
+            "Totale aperte (*)": "591",
+            "Stato \"Nuova Anagrafica\"": "27",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Tirana": "Bo********ce",
+            "Nuove Anagrafiche": "7",
+            "Primo reminder": "15/05/2022",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte (*)": "546",
+            "Stato \"Nuova Anagrafica\"": "12",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Bu************ta",
+            "Nuove Anagrafiche": "12",
+            "Primo reminder": "Mar 26 Mar, 15:00",
+            "Ultimo reminder": "Gio 04 Lug, 13:00",
+            "Totale aperte (*)": "949",
+            "Stato \"Nuova Anagrafica\"": "17",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Ca*************co",
+            "Nuove Anagrafiche": "3",
+            "Primo reminder": "20 Feb 2023, 20:53",
+            "Ultimo reminder": "Mar 02 Lug, 17:45",
+            "Totale aperte (*)": "1019",
+            "Stato \"Nuova Anagrafica\"": "10",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Tirana": "Ca***********ne",
+            "Nuove Anagrafiche": "8",
+            "Primo reminder": "Mar 26 Mar, 15:00",
+            "Ultimo reminder": "Gio 04 Lug, 13:00",
+            "Totale aperte (*)": "462",
+            "Stato \"Nuova Anagrafica\"": "10",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Ca*********mi",
+            "Nuove Anagrafiche": "18",
+            "Primo reminder": "04/11/2020",
+            "Ultimo reminder": "Mar 02 Lug, 17:45",
+            "Totale aperte (*)": "907",
+            "Stato \"Nuova Anagrafica\"": "22",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Tirana": "Ca******ra",
+            "Nuove Anagrafiche": "1",
+            "Primo reminder": "20 Feb 2023, 20:53",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte (*)": "571",
+            "Stato \"Nuova Anagrafica\"": "5",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Ca********to",
+            "Nuove Anagrafiche": "9",
+            "Primo reminder": "15/05/2022",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte (*)": "27",
+            "Stato \"Nuova Anagrafica\"": "10",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Ce********da",
+            "Nuove Anagrafiche": "8",
+            "Primo reminder": "15/05/2022",
+            "Ultimo reminder": "Ven 05 Lug, 10:00",
+            "Totale aperte (*)": "1470",
+            "Stato \"Nuova Anagrafica\"": "10",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Tirana": "Ch*********da",
+            "Nuove Anagrafiche": "15",
+            "Primo reminder": "04/11/2020",
+            "Ultimo reminder": "Mer 03 Lug, 18:20",
+            "Totale aperte (*)": "680",
+            "Stato \"Nuova Anagrafica\"": "18",
+            "Riceve Anagrafiche": "SI"
+        },
+        {
+            "Consulente Tirana": "Co********la",
+            "Nuove Anagrafiche": "16",
+            "Primo reminder": "Mar 26 Mar, 15:00",
+            "Ultimo reminder": "Mar 02 Lug, 17:45",
+            "Totale aperte (*)": "1386",
+            "Stato \"Nuova Anagrafica\"": "26",
+            "Riceve Anagrafiche": "NO"
+        },
+        {
+            "Consulente Tirana": "Co**************ta",
+            "Nuove Anagrafiche": "20",
+            "Primo reminder": "31/12/2021",
+            "Ultimo reminder": "Mar 02 Lug, 17:45",
+            "Totale aperte (*)": "130",
+            "Stato \"Nuova Anagrafica\"": "30",
+            "Riceve Anagrafiche": "SI"
+        }
+    ]
+}
