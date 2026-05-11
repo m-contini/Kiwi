@@ -1,140 +1,320 @@
-<div id="estrazioni_filters">
-    <form action="/mutui/esporta/estrazioni" method="POST">
-        <label for="estrazione">Seleziona Tipo di Estrazione:</label>
-        <select id="estrazione" name="estrazione">
-            <option value="ISPCasa" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjI1LzAzLzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9XQ==">
-                Isp Casa (range di 1 mese a partire dalla data selezionata)
-            </option>
-            <option value="AgendeClientiRitorno" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjI1LzA1LzIwMjQifSx7Im5hbWUiOiJkYXRhX2luaXppb19wYXJ6aWFsaV9zZW56YV9yaXN1bHRhdG8iLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjIvMDYvMjAyNCJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJ1c2VybmFtZV9jb25zdWxlbnRlIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImVtYWlsX2NvbnN1bGVudGUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Clienti di ritorno
-            </option>
-            <option value="Erogazioni" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0=">
-                Erogazioni Complessive
-            </option>
-            <option value="ErogatiMesePrecedenteISP" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAzLzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMzEvMDUvMjAyNCJ9XQ==">
-                Erogati Mese Precedente ISP (range da 3 mesi fino a termine mese precedente o variabile)
-            </option>
-            <option value="ErogazioneUbi" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0=">
-                Erogazione Ubi
-            </option>
-            <option value="ErogazioneCariparma" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0=">
-                Erogazione Cariparma
-            </option>
-            <option value="InviiPreventiviConAnagraficheParziali" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzEwLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Invii Preventivi Con Riferimento Anagrafiche Parziali
-            </option>
-            <option value="InviiPreventiviConAnagraficheParzialiEUltimaEsitazione" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzEwLzIwMjAifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Invii Preventivi Con Riferimento Anagrafiche Parziali e Ultima Esitazione
-            </option>
-            <option value="InviiPreventiviScadutiRicalcolati" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzEwLzIwMjAifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn0scyJuYW1lIjoiZGF0YV9saW1pdGVfc2NhZGVuemEiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMDEvMTIvMjAyMyJ9XQ==">
-                Invii Preventivi Scaduti Ricalcolati
-            </option>
-            <option value="PreventiviInviatiBNL" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Preventivi Inviati BNL (dal 01/01/2017)
-            </option>
-            <option value="PreventiviInviatiBancoBPM" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0=">
-                Preventivi Inviati Banco BPM
-            </option>
-            <option value="AppuntamentiFissati" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjI1LzAzLzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9XQ==">
-                Appuntamenti Fissati (min. 01/12/2016, range 1 mese)
-            </option>
-            <option value="AppuntamentiDaFissare" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjI1LzA1LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9XQ==">
-                Appuntamenti da fissare (min. 01/12/2016, range 1 mese)
-            </option>
-            <option value="StipulatiSettimanaPrecedente" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9XQ==">
-                Stipulati settimana precedente
-            </option>
-            <option value="AssegnazioniConsulenti" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJjb25zdWxlbnRlIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tIFNFTEVaSU9OQVJFIC0tIn0seyJ2YWx1ZSI6IjEwMDg5IiwibmFtZSI6IkEqKiogRyoqKioqIn0seyJ2YWx1ZSI6IjgwNjI1IiwibmFtZSI6IkEqKiogTCoqKioqIn0seyJ2YWx1ZSI6IjE0MTA4IiwibmFtZSI6IkEqKioqKiogTSoqKioifSx7InZhbHVlIjoiMTAwOTYiLCJuYW1lIjoiQSoqKioqKiBEKioqKioqIn0seyJ2YWx1ZSI6IjE0MDgxIiwibmFtZSI6IkEqKioqKiBWKioqKioqKioifSx7InZhbHVlIjoiODA1NDQiLCJuYW1lIjoiQSoqIEsqKioifSx7InZhbHVlIjoiODA2ODciLCJuYW1lIjoiQSoqKioqKiBFKioqKioqKioqIn0seyJ2YWx1ZSI6IjgwNjY3IiwibmFtZSI6IkEqKioqIEwqKioqIn0seyJ2YWx1ZSI6IjE0MDkxIiwibmFtZSI6IkEqKioqKioqIEYqKioqKioqKioifSx7InZhbHVlIjoiMTAxMDciLCJuYW1lIjoiQSoqKioqIFMqKioqKiJ9LHsidmFsdWUiOiI4MDYxMSIsIm5hbWUiOiJBKioqKioqKioqIFQqKiogQyoqKioqKioqKioifSx7InZhbHVlIjoiODA2MTIiLCJuYW1lIjoiQSoqKioqKioqKiBUKioqIEIqKioqKioqKioifSx7InZhbHVlIjoiODA1NzciLCJuYW1lIjoiQioqKioqKioqKiBQKioqKioqIn0seyJ2YWx1ZSI6IjEwMDUzIiwibmFtZSI6IkIqKioqKioqIEEqKioqKioifSx7InZhbHVlIjoiMTQ1MDEiLCJuYW1lIjoiQioqKioqIEIqKioqKioifSx7InZhbHVlIjoiMTAwOTciLCJuYW1lIjoiQioqKioqIEEqKioqIn0seyJ2YWx1ZSI6IjEwMTEyIiwibmFtZSI6IkIqKioqKioqIFIqKioqKioifSx7InZhbHVlIjoiODA2ODkiLCJuYW1lIjoiQyoqKioqKiBGKioqKioqKioifSx7InZhbHVlIjoiMTQ1MDUiLCJuYW1lIjoiQyoqKiBFKioifSx7InZhbHVlIjoiODA3MTIiLCJuYW1lIjoiQyoqKiogUyoqKiJ9LHsidmFsdWUiOiI4MDY2MyIsIm5hbWUiOiJDKioqKiBSKioqKioifSx7InZhbHVlIjoiODA2MDMiLCJuYW1lIjoiQyoqKioqKioqIFMqKioqKiJ9LHsidmFsdWUiOiIxNDUwMiIsIm5hbWUiOiJDKioqKiBFKioqKioifSx7InZhbHVlIjoiODA2MDciLCJuYW1lIjoiQyoqKiogRSoqKioqIn0seyJ2YWx1ZSI6IjE0MDU1IiwibmFtZSI6IkMqKioqKiBHKioqKiJ9LHsidmFsdWUiOiIxMDA2NiIsIm5hbWUiOiJDKioqKiBQKioqKiJ9LHsidmFsdWUiOiI4MDY1MiIsIm5hbWUiOiJDKioqKiBDKioqKioifSx7InZhbHVlIjoiMTQxNjciLCJuYW1lIjoiQyoqKioqIEIqKioqKioqKioqIn0seyJ2YWx1ZSI6IjE0MDY1IiwibmFtZSI6IkMqKioqIFYqKioqKioifSx7InZhbHVlIjoiMTAwNjQiLCJuYW1lIjoiQyoqKioqKioqKiBQKioqKioqIn0seyJ2YWx1ZSI6IjgwNjE3IiwibmFtZSI6IkMqKioqIE0qKioqKioifSx7InZhbHVlIjoiODA2ODgiLCJuYW1lIjoiQyoqKioqKiBGKioqKioqKioifSx7InZhbHVlIjoiMTAwODIiLCJuYW1lIjoiQyoqKioqKiBDKioqKiJ9LHsidmFsdWUiOiI4MDc0NyIsIm5hbWUiOiJDKioqKioqKioqIFAqKioqKioqIn0seyJ2YWx1ZSI6IjgwNTM5IiwibmFtZSI6IkMqKioqKioqIFMqKioqKiJ9LHsidmFsdWUiOiI4MDU4MiIsIm5hbWUiOiJEKioqKioqKiBHKioqKioqKCJ9LHsidmFsdWUiOiIxNDUwNyIsIm5hbWUiOiJEKioqKiBFKioqKiJ9LHsidmFsdWUiOiIxNDUwNiIsIm5hbWUiOiJEKioqKioqKiogRSoqKioifSx7InZhbHVlIjoiMTQwNTYiLCJuYW1lIjoiRCoqKioqIEEqKioqKioqKioqIn0seyJ2YWx1ZSI6IjEwMTAyIiwibmFtZSI6IkQqIEYqKioqKioqIE0qKioqKioqIn0seyJ2YWx1ZSI6IjEwMDkxIiwibmFtZSI6IkQqKioqIEYqKioqKioqIn0seyJ2YWx1ZSI6IjgwNjkwIiwibmFtZSI6IkQqKioqKioqIEQqKioqKCJ9LHsidmFsdWUiOiIxNDA5MCIsIm5hbWUiOiJGKiogTSoqKiogRioqKioqKioqIn0seyJ2YWx1ZSI6IjEwMTA1IiwibmFtZSI6IkYqKioqKiBGKioqKioqKioifSx7InZhbHVlIjoiMTAxMDQiLCJuYW1lIjoiRioqKiogVioqKioqKioifSx7InZhbHVlIjoiMTQxNDQiLCJuYW1lIjoiRioqKiogUyoqKiJ9LHsidmFsdWUiOiIxNDAxNyIsIm5hbWUiOiJGKioqKiBMKioqKiJ9LHsidmFsdWUiOiI4MDY0MCIsIm5hbWUiOiJGKioqIEUqKioqKiJ9LHsidmFsdWUiOiIxMDA4NiIsIm5hbWUiOiJGKioqIEYqKioqKioqIn0seyJ2YWx1ZSI6IjgwNjE4IiwibmFtZSI6IkYqKioqKioqIEcqKioqKioqIEYqKioqKioqKioifSx7InZhbHVlIjoiODA3NDMiLCJuYW1lIjoiRioqKiogUyoqKioifSx7InZhbHVlIjoiMTAwNDQiLCJuYW1lIjoiRioqKioqKiBTKioqKioifSx7InZhbHVlIjoiODA2MzciLCJuYW1lIjoiRyoqKioqKiBHKioqKioqKioqIn0seyJ2YWx1ZSI6IjgwNjg2IiwibmFtZSI6IkcqKioqIE0qKioqKiJ9LHsidmFsdWUiOiIxNDE2NSIsIm5hbWUiOiJHKioqKioqKiBEKioqKio CalifSx7InZhbHVlIjoiMTQ1MDgiLCJuYW1lIjoiRyoqKioqIEoqKioqKCJ9LHsidmFsdWUiOiI4MDY3MiIsIm5hbWUiOiJHKioqKioqIEwqKioifSx7InZhbHVlIjoiODA2ODAiLCJuYW1lIjoiSyoqKioqKioqIFMqKioqKioifSx7InZhbHVlIjoiODA1MzMiLCJuYW1lIjoiSyoqKiogRCoqKioqKCJ9LHsidmFsdWUiOiIxMTAwMyIsIm5hbWUiOiJMKioqKioqIEUqKioqIn0seyJ2YWx1ZSI6IjEwMDkwIiwibmFtZSI6IkwqKioqKiogTCoqKioifSx7InZhbHVlIjoiMTAwOTMiLCJuYW1lIjoiTCoqKiogQSoqKioqIn0seyJ2YWx1ZSI6IjgwNzE4IiwibmFtZSI6IkwqKioqKioqKiBGKioqKioqKioifSx7InZhbHVlIjoiODA3MTEiLCJuYW1lIjoiTCoqKioqIEcqKioqKioifSx7InZhbHVlIjoiMTQxNTUiLCJuYW1lIjoiTCoqKiogQyoqKioqKCJ9LHsidmFsdWUiOiIxNDEwMiIsIm5hbWUiOiJNKioqKiogRSoqKiJ9LHsidmFsdWUiOiI4MDyYTEIsIm5hbWUiOiJNKioqKioqIFMqKioqKioifSx7InZhbHVlIjoiMTAxMTEiLCJuYW1lIjoiTSoqKioqIFYqKioqKioqIn0seyJ2YWx1ZSI6IjgwNTkyIiwibmFtZSI6Ik0qKioqKiBNKioqKioqKCJ9LHsidmFsdWUiOiIxMDA5OCIsIm5hbWUiOiJNKioqKioqKiogUioqKioqIEUqKioqKioqKioifSx7InZhbHVlIjoiMTAxMDkiLCJuYW1lIjoiTSoqKioqKioqIEYqKioqKioqKCJ9LHsidmFsdWUiOiI4MDcxMyIsIm5hbWUiOiJNKioqKiBBKioqKioifSx7InZhbHVlIjoiMTAwODUiLCJuYW1lIjoiTSoqKiogUioqKioqKioIn0seyJ2YWx1ZSI6IjE0MTU2IiwibmFtZSI6Ik0qKioqKiBBKioqKioqIn0seyJ2YWx1ZSI6IjEwMDUxIiwibmFtZSI6Ik0qKioqKioqKiBHKioqKioqKioifSx7InZhbHVlIjoiODA2NzkiLCJuYW1lIjoiTSoqKioqIE0qKioqKioifSx7InZhbHVlIjoiMTQxMDciLCJuYW1lIjoiTSoqKioqKiogVioqKioqKioqIn0seyJ2YWx1ZSI6IjEwMDg3IiwibmFtZSI6Ik0qKioqKioqKiBNKioqKioqIn0seyJ2YWx1ZSI6IjEwMTEzIiwibmFtZSI6Ik0qKioqKiogVCoqKCJ9LHsidmFsdWUiOiIxMDA1OCIsIm5hbWUiOiJOKioqKiBNKioqKioqIn0seyJ2YWx1ZSI6IjE0NTA0IiwibmFtZSI6Ik4qKioqKioqKiBFKioqKioifSx7InZhbHVlIjoiODA2OTYiLCJuYW1lIjoiTyoqKioqIEcqKioqKioifSx7InZhbHVlIjoiODA3NDYiLCJuYW1lIjoiUCoqKioqKiogRioqKioifSx7InZhbHVlIjoiMTQxMjIiLCJuYW1lIjoiUCoqKiogQyoqKioqIEIqKioqKioqKioifSx7InZhbHVlIjoiODA2MzUiLCJuYW1lIjoiUCoqKioqKiBZKioqKioifSx7InZhbHVlIjoiMTAwODgiLCJuYW1lIjoiUCoqKioqKiogWSoqKioqIn0seyJ2YWx1ZSI6IjEwMTAzIiwibmFtZSI6IlAqKioqKiBNKioqKioifSx7InZhbHVlIjoiODA2MjYiLCJuYW1lIjoiUCoqKioqKiogRyoqKioqKioifSx7InZhbHVlIjoiMTQwNjgiLCJuYW1lIjoiUCoqKioqKioqIE0qKioqKioifSx7InZhbHVlIjoiODA1NzYiLCJuYW1lIjoiUCoqKioqIEkqKioqKioifSx7InZhbHVlIjoiODA2NTkiLCJuYW1lIjoiUCoqKioqIFYqKioqIE0qKioqKioqIn0seyJ2YWx1ZSI6IjE0NTAwIiwibmFtZSI6IlAqKioqKiogTSoqKioqKioifSx7InZhbHVlIjoiMTEwMDkiLCJuYW1lIjoiUCoqKioqKiBNKioqKioqKCJ9LHsidmFsdWUiOiIxMDA3MiIsIm5hbWUiOiJQKioqKiogUCoqKioifSx7InZhbHVlIjoiMTQwMzEiLCJuYW1lIjoiUCoqKioqKioqIE0qKioqIn0seyJ2YWx1ZSI6IjgwNjE5IiwibmFtZSI6IlIqKioqKioqKiogQSoqKioqKCJ9LHsidmFsdWUiOiIxNDUwMyIsIm5hbWUiOiJSKioqIEUqKioqKioifSx7InZhbHVlIjoiODA2MjgiLCJuYW1lIjoiUyoqKiogRyoqKioqKioifSx7InZhbHVlIjoiMTAwNzAiLCJuYW1lIjoiUyoqKioqKioqIEEqKioqKioqKioqIn0seyJ2YWx1ZSI6IjgwNzQ1IiwibmFtZSI6IlMqKioqKiogRSoqKioifSx7InZhbHVlIjoiODA1NzEiLCJuYW1lIjoiUyoqKioqIEEqKioqKioifSx7InZhbHVlIjoiMTAxMTQiLCJuYW1lIjoiUyoqKioqIFYqKioqKioqKioifSx7InZhbHVlIjoiODA2NjAiLCJuYW1lIjoiUyoqKioqIE0qKioqIn0seyJ2YWx1ZSI6IjgwNjcwIiwibmFtZSI6IlMqKioqKiBTKioqIn0seyJ2YWx1ZSI6IjE0MDY0IiwibmFtZSI6IlMqKioqKiBGKioqKioqKioqIn0seyJ2YWx1ZSI6IjEwMDc3IiwibmFtZSI6IlMqKioqKiBGKioqKioqKioqIn0seyJ2YWx1ZSI6IjgwNjMyIiwibmFtZSI6IlMqKioqKiBGKioqKioqKioifSx7InZhbHVlIjoiMTQxNDgiLCJuYW1lIjoiUyoqKioqKiogRioqKioqKioqIn0seyJ2YWx1ZSI6IjgwNjE1IiwibmFtZSI6IlMqKioqKiogQSoqKioqKioqKioifSx7InZhbHVlIjoiODA2OTciLCJuYW1lIjoiUyoqKioqKiBNKioqKioifSx7InZhbHVlIjoiODA3MTAiLCJuYW1lIjoiUyoqKioqKiogQSoqKioqKioqKioifSx7InZhbHVlIjoiODA2NDMiLCJuYW1lIjoiUyoqKioqIEEqKioqKioqKioqIn0seyJ2YWx1ZSI6IjgwNjI3IiwibmFtZSI6IlQqKioqKioqKiogTioqKioqKioifSx7InZhbHVlIjoiODA3MTkiLCJuYW1lIjoiVCoqKioqKiBTKioqKioqIn0seyJ2YWx1ZSI6IjgwNjY2IiwibmFtZSI6IlQqKioqIEEqKioqKioifSx7InZhbHVlIjoiMTQwNjIiLCJuYW1lIjoiVCoqKiBFKioqKioqKCJ9LHsidmFsdWUiOiIxMDA0OCIsIm5hbWUiOiJUKioqKioqKioqIEMqKioqKioifSx7InZhbHVlIjoiODA2NzEiLCJuYW1lIjoiVCoqKioqKiBGKioqKioqKioqIn0seyJ2YWx1ZSI6IjEwMDQzIiwibmFtZSI6IlYqKioqKioqKiogSSoqKioqIn0seyJ2YWx1ZSI6IjgwNzQ0IiwibmFtZSI6IlYqKioqKiogVioqKioqKCJ9LHsidmFsdWUiOiI4MDY3NyIsIm5hbWUiOiJWKioqKioqIEcqKioqKioqIn0seyJ2YWx1ZSI6IjE0MDYzIiwibmFtZSI6IlYqKioqKiBHKioqKioifSx7InZhbHVlIjoiMTQ1MDkiLCJuYW1lIjoiWioqKiogQSoqKioqKioqIn0seyJ2YWx1ZSI6IjExMDI1IiwibmFtZSI6IloqKioqIEEqKioqKioqKCJ9XX1d">
-                Assegnazioni consulenti (Milano ed Esterni)
-            </option>
-            <option value="AssegnazioniConsulentiConFiltroSuAgenda" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJjb25zdWxlbnRlIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tIFNFTEVaSU9OQVJFIC0tIn0seyJ2YWx1ZSI6IjEwMDg5IiwibmFtZSI6IkEqKiogRyoqKioqIn0seyJ2YWx1ZSI6IjgwNjI1IiwibmFtZSI6IkEqKiogTCoqKioqIn1dfV0=">
-                Assegnazioni consulenti (Milano ed Esterni) con filtro su agenda
-            </option>
-            <option value="AssegnazioniConsulentiConAnalytics" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJjb25zdWxlbnRlIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tIFNFTEVaSU9OQVJFIC0tIn0seyJ2YWx1ZSI6IjEwMDg5IiwibmFtZSI6IkEqKiogRyoqKioqIn0seyJ2YWx1ZSI6IjEwMDk2IiwibmFtZSI6IkEqKioqKiogRCoqKioqKCJ9LHsidmFsdWUiOiIxMDEwNyIsIm5hbWUiOiJBKioqKiogUyoqKioqIn1dfV0=">
-                Assegnazioni consulenti (Milano ed Esterni) con dettaglio Analytics
-            </option>
-            <option value="AssegnazioniConsulentiTirana" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJjb25zdWxlbnRlIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tIFNFTEVaSU9OQVJFIC0tIn0seyJ2YWx1ZSI6IjgwNzQwIiwibmFtZSI6IkEqKioqKioqKiogQyoqKioqIn0seyJ2YWx1ZSI6Ijc1MTgiLCJuYW1lIjoiQSoqKioqKioqKiBUKioqIFYqKioqKioqKiBEKioqIEMqKiBSKioqKioqKioqIn0seyJ2YWx1ZSI6Ijc1MTkiLCJuYW1lIjoiQSoqKioqKioqKiBUKioqIFYqKioqKioqKiBEKioqIFMqKioqIFIqKioqKioqKioifV19XQ==">
-                Assegnazioni consulenti (Tirana e Verbal)
-            </option>
-            <option value="AssegnazioniConsulentiTiranaConFiltroSuAgenda" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJjb25zdWxlbnRlIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tIFNFTEVaSU9OQVJFIC0tIn0seyJ2YWx1ZSI6IjgwNzQwIiwibmFtZSI6IkEqKioqKioqKiogQyoqKioqIn0seyJ2YWx1ZSI6Ijc1MTgiLCJuYW1lIjoiQSoqKioqKioqKiBUKioqIFYqKioqKioqKiBEKioqIEMqKiBSKioqKioqKioqIn0seyJ2YWx1ZSI6Ijc1MTkiLCJuYW1lIjoiQSoqKioqKioqKiBUKioqIFYqKioqKioqKiBEKioqIFMqKioqIFIqKioqKioqKioifV19XQ==">
-                Assegnazioni consulenti (Tirana e Verbal) con filtro su agenda
-            </option>
-            <option value="PrioritaRicercaImmobileTornatiMilano" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0=">
-                Priorita Ricerca Immobile tornati a Milano
-            </option>
-            <option value="AgendeChiuse" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzA5LzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Agende Chiuse
-            </option>
-            <option value="AgendeConPassaggioDiStato" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9XQ==">
-                Agende Esitate con Passaggio di Stato
-            </option>
-            <option value="ErogazioniInvestor" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImhpZGRlbiIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6Im1lc2VfaW52ZXN0b3IiLCJ0eXBlIjoic2VsZWN0IiwiZGVmYXVsdCI6W3sidmFsdWUiOiIiLCJuYW1lIjoiLS0gU0VMRVpJT05BUkUgLS0ifSx7InZhbHVlIjoiMjAyNC0wMS0xNSAwMDowMDowMCIsIm5hbWUiOiIxNS8wMS8yMDI0IC0+IDE1LzAyLzIwMjQifSx7InZhbHVlIjoiMjAyNC0wMi0xNiAwMDowMDowMCIsIm5hbWUiOiIxNi8wMi8yMDI0IC0+IDEyLzAzLzIwMjQifSx7InZhbHVlIjoiMjAyNC0wMy0xMyAwMDowMDowMCIsIm5hbWUiOiIxMy8wMy8yMDI0IC0+IDEyLzA0LzIwMjQifSx7InZhbHVlIjoiMjAyNC0wNC0xMyAwMDowMDowMCIsIm5hbWUiOiIxMy8wNC8yMDI0IC0+IDEzLzA1LzIwMjQifSx7InZhbHVlIjoiMjAyNC0wNS0xNCAwMDowMDowMCIsIm5hbWUiOiIxNC8wNS8yMDI0IC0+IDEwLzA2LzIwMjQifSx7InZhbHVlIjoiMjAyNC0wNi0xMSAwMDowMDowMCIsIm5hbWUiOiIxMS8wNi8yMDI0IC0+IDE1LzA3LzIwMjQifV19XQ==">
-                Erogazioni investor
-            </option>
-            <option value="Previsionale" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImhpZGRlbiIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9XQ==">
-                Previsionale
-            </option>
-            <option value="ReportNonRiconosciuto" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImhpZGRlbiIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9XQ==">
-                Non riconosciuto
-            </option>
-            <option value="DettaglioRichiesteFrontend" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Dettaglio richieste Frontend
-            </option>
-            <option value="DettaglioParzialiFrontendConAnalytics" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Dettaglio richieste parziali da Frontend con Google Analytics
-            </option>
-            <option value="DettaglioParzialiFrontendConAnalyticsLight" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Dettaglio richieste parziali da Frontend con Google Analytics (Light)
-            </option>
-            <option value="TotaleInviiConDettaglio" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0=">
-                Totale Invii con dettaglio
-            </option>
-            <option value="MagazzinoConsulenti" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjI4LzEyLzIwMjMifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9XQ==">
-                Magazzino Consulenti
-            </option>
-            <option value="LavorazioniGDO" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9LHsibmFtZSI6ImNvbnN1bGVudGUiLCJ0eXBlIjoic2VsZWN0IiwiZGVmYXVsdCI6W3sidmFsdWUiOiIiLCJuYW1lIjoiLS0gU0VMRVpJT05BUkUgLS0ifSx7InZhbHVlIjoiODA3NDAiLCJuYW1lIjoiQyoqKioqIEEqKioqKioqKiJ9LHsidmFsdWUiOiI3NTE4IiwibmFtZSI6IlQqKiogVioqKioqKiogRCoqKiBDKiogUioqKioqKioqIEEqKioqKioqKioifSx7InZhbHVlIjoiMTQxMjciLCJuYW1lIjoiUCoqKioqIEIqKioqKioqKCJ9XX1d">
-                Lavorazioni GDO
-            </option>
-            <option value="LavorazioniPhantomTirana" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9LHsibmFtZSI6ImNvbnN1bGVudGUiLCJ0eXBlIjoic2VsZWN0IiwiZGVmYXVsdCI6W3sidmFsdWUiOiIiLCJuYW1lIjoiLS0gU0VMRVpJT05BUkUgLS0ifSx7InZhbHVlIjoiODA3NDAiLCJuYW1lIjoiQyoqKioqIEEqKioqKioqKiJ9LHsidmFsdWUiOiI3NTE4IiwibmFtZSI6IlQqKiogVioqKioqKiogRCoqKiBDKiogUioqKioqKioqIEEqKioqKioqKioifSx7InZhbHVlIjoiMTIwMDAiLCJuYW1lIjoiRSoqKioqKiBSKioqIn1dfV0=">
-                Lavorazioni Phantom Tirana
-            </option>
-            <option value="LavorazioniBackofficeReportBanche" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9XQ==">
-                Lavorazioni Backoffice Report Banche
-            </option>
-            <option value="LavorazioniCompleteMilano" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9LHsibmFtZSI6ImNvbnN1bGVudGUiLCJ0eXBlIjoic2VsZWN0IiwiZGVmYXVsdCI6W3sidmFsdWUiOiIiLCJuYW1lIjoiLS0gU0VMRVpJT05BUkUgLS0ifSx7InZhbHVlIjoiMTQxMDgiLCJuYW1lIjoiTSoqKiogQSoqKioqKioifSx7InZhbHVlIjoiMTAwOTYiLCJuYW1lIjoiRCoqKioqKiBBKioqKioqIn0seyJ2YWx1ZSI6IjEwMDg5IiwibmFtZSI6IkcqKioqKiBBKioqIn1dfV0=">
-                Lavorazioni Complete Milano
-            </option>
-            <option value="LavorazioniSegretarieTirana" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9LHsibmFtZSI6ImNvbnN1bGVudGUiLCJ0eXBlIjoic2VsZWN0IiwiZGVmYXVsdCI6W3sidmFsdWUiOiIiLCJuYW1lIjoiLS0gU0VMRVpJT05BUkUgLS0ifSx7InZhbHVlIjoiODA1NTMiLCJuYW1lIjoiQioqIEEoKioqKioqKioqKioqIFIoKioqKioqIn1dfV0=">
-                Lavorazioni Segretarie Tirana
-            </option>
-            <option value="AnalyticsDaPreventiviInviati" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzEwLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Dettaglio Analytics da Preventivi Inviati
-            </option>
-            <option value="TransazioniGoogleAnalytics" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzEwLzIwMDAifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Elenco transazioni tracciate su Google Analytics
-            </option>
-            <option value="ValidazioniAnagraficheFido" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjIifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Validazioni anagrafiche by Fido
-            </option>
-            <option value="VerificheCondizioniSalvataggioAgende" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjIifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Verifiche Condizioni Salvataggio Agende (Campaign Manager)
-            </option>
-            <option value="ElencoRiassegnazioniAutomatiche" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjMifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Elenco Riassegnazioni Automatiche da comando
-            </option>
-            <option value="ConteggioRichiesteFrontendPerGiorno" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzA3LzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d">
-                Conteggio richieste Frontend per mese
-            </option>
-            <option value="ConteggioRichiestePerProvinciaRaggruppamentoAnagrafica" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn0scyJuYW1lIjoidGlwb19hbmFncmFmaWNhIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tIFNFTEVaSU9OQVJFIC0tIn1dfV0=">
-                Conteggio richieste per provincia con raggruppamento anagrafica
-            </option>
-            <option value="ConteggioRichiestePerProvinciaRaggruppamentoAgenda" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn0scyJuYW1lIjoidGlwb19hbmFncmFmaWNhIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tIFNFTEVaSU9OQVJFIC0tIn1dfV0=">
-                Conteggio richieste per provincia con raggruppamento agenda
-            </option>
-            <option value="ConteggioRichiesteHalfSenzaRisultatoRaggruppamentoStatoPratica" data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMDEvMDIvMjAyMSJ9XQ==">
-                Conteggio richieste Half Senza Risultato
-            </option>
-        </select>
-        <button type="submit">Esporta</button>
-    </form>
+<div id="GG_central-content">
+    <style>
+        #estrazioni_filters label {
+            min-width: 150px;
+            display: inline-block;
+        }
+
+        .estrazioni-header li {
+            list-style: circle;
+            margin-left: 20px;
+        }
+
+        #estrazioni_results table {
+            width: 100% !important;
+            table-layout: fixed !important;
+        }
+
+        #dati_estratti td,
+        #dati_estratti th {
+            word-break: break-all;
+        }
+
+        #dati_estratti td {
+            padding: 2px;
+        }
+    </style>
+    <div class="estrazioni-header GG_standard_table">
+        <form action="/mutui/esporta/estrazioni" method="post">
+            <h2>
+                Gestione estrazione dati
+                <input id="" style="float: right;" type="submit" value="Indietro" />
+            </h2>
+        </form>
+        <br />
+        <p>
+            In questa sezione &egrave; possibile interrogare il sistema per estrarre report relativi alle
+            attivit&agrave; operative e/o
+            rapporti analitici.
+        </p>
+        <p>
+            Le funzionalit&agrave; disponibili sono:
+        </p>
+        <ul class="available-features">
+            <li>
+                esecuzione delle interrogazioni tramite filtri personalizzati
+            </li>
+            <li>
+                visualizzazione tabellare dei rapporti
+            </li>
+            <li>
+                esportazione in formati XLS, CSV
+            </li>
+        </ul>
+        <br />
+        <p>
+            <strong>
+                Cliccando su "Visualizza Dati" saranno mostrati al massimo 50 record come anteprima. Il download in
+                formato CSV o XLS conterr&agrave; tutti i record esistenti.
+            </strong>
+        </p>
+    </div>
+    <br />
+    <br />
+    <div id="estrazioni_filters">
+        <form action="/mutui/esporta/estrazioni" class="" method="post">
+            <label for="estrazione">
+                <strong>
+                    Estrazione da eseguire
+                </strong>
+            </label>
+            &nbsp;&nbsp;&nbsp;
+            <select id="estrazione" name="estrazione">
+                <option value="">
+                    -- SELEZIONARE --
+                </option>
+                <optgroup label="Standard">
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjI1LzAzLzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9XQ=="
+                        value="ISPCasa">
+                        Isp Casa (range di 1 mese a partire dalla data selezionata)
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjI1LzA1LzIwMjQifSx7Im5hbWUiOiJkYXRhX2luaXppb19wYXJ6aWFsaV9zZW56YV9yaXN1bHRhdG8iLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjIvMDYvMjAyNCJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJ1c2VybmFtZV9jb25zdWxlbnRlIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImVtYWlsX2NvbnN1bGVudGUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="AgendeClientiRitorno">
+                        Clienti di ritorno
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0="
+                        value="Erogazioni">
+                        Erogazioni Complessive
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAzLzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMzEvMDUvMjAyNCJ9XQ=="
+                        value="ErogatiMesePrecedenteISP">
+                        Erogati Mese Precedente ISP (range da 3 mesi fino a termine mese precedente o variabile)
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0="
+                        value="ErogazioneUbi">
+                        Erogazione Ubi
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0="
+                        value="ErogazioneCariparma">
+                        Erogazione Cariparma
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzEwLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="InviiPreventiviConAnagraficheParziali">
+                        Invii Preventivi Con Riferimento Anagrafiche Parziali
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzEwLzIwMjAifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="InviiPreventiviConAnagraficheParzialiEUltimaEsitazione">
+                        Invii Preventivi Con Riferimento Anagrafiche Parziali e Ultima Esitazione
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzEwLzIwMjAifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn0seyJuYW1lIjoiZGF0YV9saW1pdGVfc2NhZGVuemEiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMDEvMTIvMjAyMyJ9XQ=="
+                        value="InviiPreventiviScadutiRicalcolati">
+                        Invii Preventivi Scaduti Ricalcolati
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="PreventiviInviatiBNL">
+                        Preventivi Inviati BNL (dal 01/01/2017)
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0="
+                        value="PreventiviInviatiBancoBPM">
+                        Preventivi Inviati Banco BPM
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjI1LzAzLzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9XQ=="
+                        value="AppuntamentiFissati">
+                        Appuntamenti Fissati (min. 01/12/2016, range 1 mese)
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjI1LzA1LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9XQ=="
+                        value="AppuntamentiDaFissare">
+                        Appuntamenti da fissare (min. 01/12/2016, range 1 mese)
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9XQ=="
+                        value="StipulatiSettimanaPrecedente">
+                        Stipulati settimana precedente
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJjb25zdWxlbnRlIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tKioqKioqKioqKioqKi0tIn0seyJ2YWx1ZSI6IjEwMDg5IiwibmFtZSI6IkFiKioqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNjI1IiwibmFtZSI6IkFsKioqKioqKmEyIn0seyJ2YWx1ZSI6IjE0MTA4IiwibmFtZSI6IkFsKioqKioqKioqY28ifSx7InZhbHVlIjoiMTAwOTYiLCJuYW1lIjoiQW0qKioqKioqKioqKmxlIn0seyJ2YWx1ZSI6IjE0MDgxIiwibmFtZSI6IkFuKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiODA1NDQiLCJuYW1lIjoiQXAqKioqd2kifSx7InZhbHVlIjoiODA2ODciLCJuYW1lIjoiQXIqKioqKioqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjgwNjY3IiwibmFtZSI6IkFyKioqKioqKmlhIn0seyJ2YWx1ZSI6IjE0MDkxIiwibmFtZSI6IkFyKioqKioqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDEwNyIsIm5hbWUiOiJBcioqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNjExIiwibmFtZSI6IkF1KioqKioqKioqKioqKioqKioqKioqKnRlIn0seyJ2YWx1ZSI6IjgwNjEyIiwibmFtZSI6IkF1KioqKioqKioqKioqKioqKioqKioqKmNlIn0seyJ2YWx1ZSI6IjgwNTc3IiwibmFtZSI6IkJhKioqKioqKioqKioqKipsbyJ9LHsidmFsdWUiOiIxMDA1MyIsIm5hbWUiOiJCZSoqKioqKioqKioqKm5vIn0seyJ2YWx1ZSI6IjE0NTAxIiwibmFtZSI6IkJlKioqKioqKioqKmxhIn0seyJ2YWx1ZSI6IjEwMDk3IiwibmFtZSI6IkJvKioqKioqKipjZSJ9LHsidmFsdWUiOiIxMDExMiIsIm5hbWUiOiJCdSoqKioqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjgwNjg5IiwibmFtZSI6IkNhKioqKioqKioqKioqKmNvIn0seyJ2YWx1ZSI6IjE0NTA1IiwibmFtZSI6IkNhKioqKnZhIn0seyJ2YWx1ZSI6IjgwNzEyIiwibmFtZSI6IkNhKioqKioqcmEifSx7InZhbHVlIjoiODA2NjMiLCJuYW1lIjoiQ2EqKioqKioqKnRvIn0seyJ2YWx1ZSI6IjgwNjAzIiwibmFtZSI6IkNhKioqKioqKioqKioqaWEifSx7InZhbHVlIjoiMTQ1MDIiLCJuYW1lIjoiQ2UqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjgwNjA3IiwibmFtZSI6IkNlKioqKioqKipkYSJ9LHsidmFsdWUiOiIxNDA1NSIsIm5hbWUiOiJDaCoqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjEwMDY2IiwibmFtZSI6IkNpKioqKioqKipsbyJ9LHsidmFsdWUiOiI4MDY1MiIsIm5hbWUiOiJDbyoqKioqKioqbGEifSx7InZhbHVlIjoiMTQxNjciLCJuYW1lIjoiQ28qKioqKioqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjE0MDY1IiwibmFtZSI6IkNvKioqKioqKioqc2EifSx7InZhbHVlIjoiMTAwNjQiLCJuYW1lIjoiQ28qKioqKioqKioqKioqKmxvIn0seyJ2YWx1ZSI6IjgwNjE3IiwibmFtZSI6IkNvKioqKioqKioqYXMifSx7InZhbHVlIjoiODA2ODgiLCJuYW1lIjoiQ28qKioqKioqKioqKioqY2EifSx7InZhbHVlIjoiMTAwODIiLCJuYW1lIjoiQ28qKioqKioqKioqcmEifSx7InZhbHVlIjoiODA3NDciLCJuYW1lIjoiQ3UqKioqKioqKioqKioqKippYSJ9LHsidmFsdWUiOiI4MDUzOSIsIm5hbWUiOiJDdSoqKioqKioqKioqbmUifSx7InZhbHVlIjoiODA1ODIiLCJuYW1lIjoiRCcqKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiMTQ1MDciLCJuYW1lIjoiRGUqKioqKioqZGEifSx7InZhbHVlIjoiMTQ1MDYiLCJuYW1lIjoiRGUqKioqKioqKioqKnNhIn0seyJ2YWx1ZSI6IjE0MDU2IiwibmFtZSI6IkRlKioqKioqKioqKioqKnJhIn0seyJ2YWx1ZSI6IjEwMTAyIiwibmFtZSI6IkRpKioqKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiMTAwOTEiLCJuYW1lIjoiRGkqKioqKioqKioqY2EifSx7InZhbHVlIjoiODA2OTAiLCJuYW1lIjoiRG8qKioqKioqKioqcmEifSx7InZhbHVlIjoiMTQwOTAiLCJuYW1lIjoiRmEqKioqKioqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDEwNSIsIm5hbWUiOiJGYSoqKioqKioqKioqKmNvIn0seyJ2YWx1ZSI6IjEwMTA0IiwibmFtZSI6IkZhKioqKioqKioqKmNhIn0seyJ2YWx1ZSI6IjE0MTQ0IiwibmFtZSI6IkZhKioqKioqcmEifSx7InZhbHVlIjoiMTQwMTciLCJuYW1lIjoiRmEqKioqKioqcmEifSx7InZhbHVlIjoiODA2NDAiLCJuYW1lIjoiRmEqKioqKioqaWEifSx7InZhbHVlIjoiMTAwODYiLCJuYW1lIjoiRmUqKioqKioqKipjYSJ9LHsidmFsdWUiOiI4MDYxOCIsIm5hbWUiOiJGaSoqKioqKioqKioqKioqKioqKioqKioqY28ifSx7InZhbHVlIjoiODA3NDMiLCJuYW1lIjoiRmkqKioqKioqaWEifSx7InZhbHVlIjoiMTAwNDQiLCJuYW1lIjoiRnUqKioqKioqKioqaW8ifSx7InZhbHVlIjoiODA2MzciLCJuYW1lIjoiR2EqKioqKioqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjgwNjg2IiwibmFtZSI6IkdlKioqKioqKippYSJ9LHsidmFsdWUiOiIxNDE2NSIsIm5hbWUiOiJHcioqKioqKioqKioqbG8ifSx7InZhbHVlIjoiMTQ1MDgiLCJuYW1lIjoiR3IqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjgwNjcyIiwibmFtZSI6Ikd1KioqKioqKipjYSJ9LHsidmFsdWUiOiI4MDY4MCIsIm5hbWUiOiJJbioqKioqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjgwNTMzIiwibmFtZSI6IklyKioqKioqKioqdGEifSx7InZhbHVlIjoiMTEwMDMiLCJuYW1lIjoiTGEqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjEwMDkwIiwibmFtZSI6IkxlKioqKioqKipyYSJ9LHsidmFsdWUiOiIxMDA5MyIsIm5hbWUiOiJMZSoqKioqKioqbGEifSx7InZhbHVlIjoiODA3MTgiLCJuYW1lIjoiTGkqKioqKioqKioqKioqY2EifSx7InZhbHVlIjoiODA3MTEiLCJuYW1lIjoiTG8qKioqKioqKmlhIn0seyJ2YWx1ZSI6IjE0MTU1IiwibmFtZSI6IkxvKioqKioqKioqaWEifSx7InZhbHVlIjoiMTQxMDIiLCJuYW1lIjoiTWEqKioqKioqbGUifSx7InZhbHVlIjoiODA2MjEiLCJuYW1lIjoiTWEqKioqKioqKipuZSJ9LHsidmFsdWUiOiIxMDExMSIsIm5hbWUiOiJNYSoqKioqKioqKnNhIn0seyJ2YWx1ZSI6IjgwNTkyIiwibmFtZSI6Ik1hKioqKioqKioqbGEifSx7InZhbHVlIjoiMTAwOTgiLCJuYW1lIjoiTWEqKioqKioqKioqKioqKioqKioqKioqdGEifSx7InZhbHVlIjoiMTAxMDkiLCJuYW1lIjoiTWEqKioqKioqKioqKioqY2EifSx7InZhbHVlIjoiODA3MTMiLCJuYW1lIjoiTWUqKioqKioqKmVhIn0seyJ2YWx1ZSI6IjEwMDg1IiwibmFtZSI6Ik1lKioqKioqKioqdG8ifSx7InZhbHVlIjoiMTQxNTYiLCJuYW1lIjoiTWUqKioqKioqKippbyJ9LHsidmFsdWUiOiIxMDA1MSIsIm5hbWUiOiJNbyoqKioqKioqKioqKipsZSJ9LHsidmFsdWUiOiI4MDY3OSIsIm5hbWUiOiJNbyoqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjE0MTA3IiwibmFtZSI6Ik11KioqKioqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjEwMDg3IiwibmFtZSI6Ik11KioqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDExMyIsIm5hbWUiOiJNdSoqKioqKipzdCJ9LHsidmFsdWUiOiIxMDA1OCIsIm5hbWUiOiJOZSoqKioqKioqbm8ifSx7InZhbHVlIjoiMTQ1MDQiLCJuYW1lIjoiTm8qKioqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjgwNjk2IiwibmFtZSI6Ik9yKioqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNzQ2IiwibmFtZSI6IlBhKioqKioqKioqaW8ifSx7InZhbHVlIjoiMTQxMjIiLCJuYW1lIjoiUGUqKioqKioqKioqKioqKioqKip0YSJ9LHsidmFsdWUiOiI4MDYzNSIsIm5hbWUiOiJQZSoqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjEwMDg4IiwibmFtZSI6IlBlKioqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjEwMTAzIiwibmFtZSI6IlBpKioqKioqKioqZW8ifSx7InZhbHVlIjoiODA2MjYiLCJuYW1lIjoiUGkqKioqKioqKioqKipsZSJ9LHsidmFsdWUiOiIxNDA2OCIsIm5hbWUiOiJQaSoqKioqKioqKioqZWwifSx7InZhbHVlIjoiODA1NzYiLCJuYW1lIjoiUHIqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNjU5IiwibmFtZSI6IlByKioqKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiMTQ1MDAiLCJuYW1lIjoiUHIqKioqKioqKioqZGEifSx7InZhbHVlIjoiMTEwMDkiLCJuYW1lIjoiUHIqKioqKioqKioqZGEifSx7InZhbHVlIjoiMTAwNzIiLCJuYW1lIjoiUHIqKioqKioqbG8ifSx7InZhbHVlIjoiMTQwMzEiLCJuYW1lIjoiUHUqKioqKioqKioqY28ifSx7InZhbHVlIjoiODA2MTkiLCJuYW1lIjoiUm8qKioqKioqKioqKioqaW8ifSx7InZhbHVlIjoiMTQ1MDMiLCJuYW1lIjoiUnUqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjgwNjI4IiwibmFtZSI6IlNhKioqKioqKioqcGUifSx7InZhbHVlIjoiMTAwNzAiLCJuYW1lIjoiU2EqKioqKioqKioqKioqKipybyJ9LHsidmFsdWUiOiI4MDc0NSIsIm5hbWUiOiJTYSoqKioqKipuYSJ9LHsidmFsdWUiOiI4MDU3MSIsIm5hbWUiOiJTYSoqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjEwMTE0IiwibmFtZSI6IlNhKioqKioqKioqKipuYSJ9LHsidmFsdWUiOiI4MDY2MCIsIm5hbWUiOiJTYSoqKioqKipjbyJ9LHsidmFsdWUiOiI4MDY3MCIsIm5hbWUiOiJTZSoqKioqKnJhIn0seyJ2YWx1ZSI6IjE0MDY0IiwibmFtZSI6IlNlKioqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDA3NyIsIm5hbWUiOiJTZSoqKioqKioqKioqY2EifSx7InZhbHVlIjoiODA2MzIiLCJuYW1lIjoiU2kqKioqKioqKioqY2EifSx7InZhbHVlIjoiMTQxNDgiLCJuYW1lIjoiU2kqKioqKioqKioqKmNhIn0seyJ2YWx1ZSI6IjgwNjE1IiwibmFtZSI6IlNpKioqKioqKioqKioqKnJhIn0seyJ2YWx1ZSI6IjgwNjk3IiwibmFtZSI6IlNpKioqKioqKioqZWwifSx7InZhbHVlIjoiODA3MTAiLCJuYW1lIjoiU28qKioqKioqKioqKioqKnJvIn0seyJ2YWx1ZSI6IjgwNjQzIiwibmFtZSI6IlNwKioqKioqKioqKioqcm8ifSx7InZhbHVlIjoiODA2MjciLCJuYW1lIjoiVGEqKioqKioqKioqKiphMiJ9LHsidmFsdWUiOiI4MDcxOSIsIm5hbWUiOiJUaSoqKioqKioqKipuYSJ9LHsidmFsdWUiOiI4MDY2NiIsIm5hbWUiOiJUaSoqKioqKioqaW8ifSx7InZhbHVlIjoiMTQwNjIiLCJuYW1lIjoiVG8qKioqKioqKipsYSJ9LHsidmFsdWUiOiIxMDA0OCIsIm5hbWUiOiJUbyoqKioqKioqKioqKipsbyJ9LHsidmFsdWUiOiI4MDY3MSIsIm5hbWUiOiJUdSoqKioqKioqKioqKmNvIn0seyJ2YWx1ZSI6IjEwMDQzIiwibmFtZSI6IlZhKioqKioqKioqKioqaW8ifSx7InZhbHVlIjoiODA3NDQiLCJuYW1lIjoiVmEqKioqKioqKioqaWEifSx7InZhbHVlIjoiODA2NzciLCJuYW1lIjoiVmUqKioqKioqKioqKmxlIn0seyJ2YWx1ZSI6IjE0MDYzIiwibmFtZSI6IlZvKioqKioqKippYSJ9LHsidmFsdWUiOiIxNDUwOSIsIm5hbWUiOiJaYSoqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjExMDI1IiwibmFtZSI6IlphKioqKioqKioqdGEifV19XQ=="
+                        value="AssegnazioniConsulenti">
+                        Assegnazioni consulenti (Milano ed Esterni)
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJjb25zdWxlbnRlIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tKioqKioqKioqKioqKi0tIn0seyJ2YWx1ZSI6IjEwMDg5IiwibmFtZSI6IkFiKioqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNjI1IiwibmFtZSI6IkFsKioqKioqKmEyIn0seyJ2YWx1ZSI6IjE0MTA4IiwibmFtZSI6IkFsKioqKioqKioqY28ifSx7InZhbHVlIjoiMTAwOTYiLCJuYW1lIjoiQW0qKioqKioqKioqKmxlIn0seyJ2YWx1ZSI6IjE0MDgxIiwibmFtZSI6IkFuKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiODA1NDQiLCJuYW1lIjoiQXAqKioqd2kifSx7InZhbHVlIjoiODA2ODciLCJuYW1lIjoiQXIqKioqKioqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjgwNjY3IiwibmFtZSI6IkFyKioqKioqKmlhIn0seyJ2YWx1ZSI6IjE0MDkxIiwibmFtZSI6IkFyKioqKioqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDEwNyIsIm5hbWUiOiJBcioqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNjExIiwibmFtZSI6IkF1KioqKioqKioqKioqKioqKioqKioqKnRlIn0seyJ2YWx1ZSI6IjgwNjEyIiwibmFtZSI6IkF1KioqKioqKioqKioqKioqKioqKioqKmNlIn0seyJ2YWx1ZSI6IjgwNTc3IiwibmFtZSI6IkJhKioqKioqKioqKioqKipsbyJ9LHsidmFsdWUiOiIxMDA1MyIsIm5hbWUiOiJCZSoqKioqKioqKioqKm5vIn0seyJ2YWx1ZSI6IjE0NTAxIiwibmFtZSI6IkJlKioqKioqKioqKmxhIn0seyJ2YWx1ZSI6IjEwMDk3IiwibmFtZSI6IkJvKioqKioqKipjZSJ9LHsidmFsdWUiOiIxMDExMiIsIm5hbWUiOiJCdSoqKioqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjgwNjg5IiwibmFtZSI6IkNhKioqKioqKioqKioqKmNvIn0seyJ2YWx1ZSI6IjE0NTA1IiwibmFtZSI6IkNhKioqKnZhIn0seyJ2YWx1ZSI6IjgwNzEyIiwibmFtZSI6IkNhKioqKioqcmEifSx7InZhbHVlIjoiODA2NjMiLCJuYW1lIjoiQ2EqKioqKioqKnRvIn0seyJ2YWx1ZSI6IjgwNjAzIiwibmFtZSI6IkNhKioqKioqKioqKioqaWEifSx7InZhbHVlIjoiMTQ1MDIiLCJuYW1lIjoiQ2UqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjgwNjA3IiwibmFtZSI6IkNlKioqKioqKipkYSJ9LHsidmFsdWUiOiIxNDA1NSIsIm5hbWUiOiJDaCoqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjEwMDY2IiwibmFtZSI6IkNpKioqKioqKipsbyJ9LHsidmFsdWUiOiI4MDY1MiIsIm5hbWUiOiJDbyoqKioqKioqbGEifSx7InZhbHVlIjoiMTQxNjciLCJuYW1lIjoiQ28qKioqKioqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjE0MDY1IiwibmFtZSI6IkNvKioqKioqKioqc2EifSx7InZhbHVlIjoiMTAwNjQiLCJuYW1lIjoiQ28qKioqKioqKioqKioqKmxvIn0seyJ2YWx1ZSI6IjgwNjE3IiwibmFtZSI6IkNvKioqKioqKioqYXMifSx7InZhbHVlIjoiODA2ODgiLCJuYW1lIjoiQ28qKioqKioqKioqKioqY2EifSx7InZhbHVlIjoiMTAwODIiLCJuYW1lIjoiQ28qKioqKioqKioqcmEifSx7InZhbHVlIjoiODA3NDciLCJuYW1lIjoiQ3UqKioqKioqKioqKioqKippYSJ9LHsidmFsdWUiOiI4MDUzOSIsIm5hbWUiOiJDdSoqKioqKioqKioqbmUifSx7InZhbHVlIjoiODA1ODIiLCJuYW1lIjoiRCcqKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiMTQ1MDciLCJuYW1lIjoiRGUqKioqKioqZGEifSx7InZhbHVlIjoiMTQ1MDYiLCJuYW1lIjoiRGUqKioqKioqKioqKnNhIn0seyJ2YWx1ZSI6IjE0MDU2IiwibmFtZSI6IkRlKioqKioqKioqKioqKnJhIn0seyJ2YWx1ZSI6IjEwMTAyIiwibmFtZSI6IkRpKioqKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiMTAwOTEiLCJuYW1lIjoiRGkqKioqKioqKioqY2EifSx7InZhbHVlIjoiODA2OTAiLCJuYW1lIjoiRG8qKioqKioqKioqcmEifSx7InZhbHVlIjoiMTQwOTAiLCJuYW1lIjoiRmEqKioqKioqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDEwNSIsIm5hbWUiOiJGYSoqKioqKioqKioqKmNvIn0seyJ2YWx1ZSI6IjEwMTA0IiwibmFtZSI6IkZhKioqKioqKioqKmNhIn0seyJ2YWx1ZSI6IjE0MTQ0IiwibmFtZSI6IkZhKioqKioqcmEifSx7InZhbHVlIjoiMTQwMTciLCJuYW1lIjoiRmEqKioqKioqcmEifSx7InZhbHVlIjoiODA2NDAiLCJuYW1lIjoiRmEqKioqKioqaWEifSx7InZhbHVlIjoiMTAwODYiLCJuYW1lIjoiRmUqKioqKioqKipjYSJ9LHsidmFsdWUiOiI4MDYxOCIsIm5hbWUiOiJGaSoqKioqKioqKioqKioqKioqKioqKioqY28ifSx7InZhbHVlIjoiODA3NDMiLCJuYW1lIjoiRmkqKioqKioqaWEifSx7InZhbHVlIjoiMTAwNDQiLCJuYW1lIjoiRnUqKioqKioqKioqaW8ifSx7InZhbHVlIjoiODA2MzciLCJuYW1lIjoiR2EqKioqKioqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjgwNjg2IiwibmFtZSI6IkdlKioqKioqKippYSJ9LHsidmFsdWUiOiIxNDE2NSIsIm5hbWUiOiJHcioqKioqKioqKioqbG8ifSx7InZhbHVlIjoiMTQ1MDgiLCJuYW1lIjoiR3IqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjgwNjcyIiwibmFtZSI6Ikd1KioqKioqKipjYSJ9LHsidmFsdWUiOiI4MDY4MCIsIm5hbWUiOiJJbioqKioqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjgwNTMzIiwibmFtZSI6IklyKioqKioqKioqdGEifSx7InZhbHVlIjoiMTEwMDMiLCJuYW1lIjoiTGEqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjEwMDkwIiwibmFtZSI6IkxlKioqKioqKipyYSJ9LHsidmFsdWUiOiIxMDA5MyIsIm5hbWUiOiJMZSoqKioqKioqbGEifSx7InZhbHVlIjoiODA3MTgiLCJuYW1lIjoiTGkqKioqKioqKioqKioqY2EifSx7InZhbHVlIjoiODA3MTEiLCJuYW1lIjoiTG8qKioqKioqKmlhIn0seyJ2YWx1ZSI6IjE0MTU1IiwibmFtZSI6IkxvKioqKioqKioqaWEifSx7InZhbHVlIjoiMTQxMDIiLCJuYW1lIjoiTWEqKioqKioqbGUifSx7InZhbHVlIjoiODA2MjEiLCJuYW1lIjoiTWEqKioqKioqKipuZSJ9LHsidmFsdWUiOiIxMDExMSIsIm5hbWUiOiJNYSoqKioqKioqKnNhIn0seyJ2YWx1ZSI6IjgwNTkyIiwibmFtZSI6Ik1hKioqKioqKioqbGEifSx7InZhbHVlIjoiMTAwOTgiLCJuYW1lIjoiTWEqKioqKioqKioqKioqKioqKioqKioqdGEifSx7InZhbHVlIjoiMTAxMDkiLCJuYW1lIjoiTWEqKioqKioqKioqKioqY2EifSx7InZhbHVlIjoiODA3MTMiLCJuYW1lIjoiTWUqKioqKioqKmVhIn0seyJ2YWx1ZSI6IjEwMDg1IiwibmFtZSI6Ik1lKioqKioqKioqdG8ifSx7InZhbHVlIjoiMTQxNTYiLCJuYW1lIjoiTWUqKioqKioqKippbyJ9LHsidmFsdWUiOiIxMDA1MSIsIm5hbWUiOiJNbyoqKioqKioqKioqKipsZSJ9LHsidmFsdWUiOiI4MDY3OSIsIm5hbWUiOiJNbyoqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjE0MTA3IiwibmFtZSI6Ik11KioqKioqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjEwMDg3IiwibmFtZSI6Ik11KioqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDExMyIsIm5hbWUiOiJNdSoqKioqKipzdCJ9LHsidmFsdWUiOiIxMDA1OCIsIm5hbWUiOiJOZSoqKioqKioqbm8ifSx7InZhbHVlIjoiMTQ1MDQiLCJuYW1lIjoiTm8qKioqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjgwNjk2IiwibmFtZSI6Ik9yKioqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNzQ2IiwibmFtZSI6IlBhKioqKioqKioqaW8ifSx7InZhbHVlIjoiMTQxMjIiLCJuYW1lIjoiUGUqKioqKioqKioqKioqKioqKip0YSJ9LHsidmFsdWUiOiI4MDYzNSIsIm5hbWUiOiJQZSoqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjEwMDg4IiwibmFtZSI6IlBlKioqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjEwMTAzIiwibmFtZSI6IlBpKioqKioqKioqZW8ifSx7InZhbHVlIjoiODA2MjYiLCJuYW1lIjoiUGkqKioqKioqKioqKipsZSJ9LHsidmFsdWUiOiIxNDA2OCIsIm5hbWUiOiJQaSoqKioqKioqKioqZWwifSx7InZhbHVlIjoiODA1NzYiLCJuYW1lIjoiUHIqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNjU5IiwibmFtZSI6IlByKioqKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiMTQ1MDAiLCJuYW1lIjoiUHIqKioqKioqKioqZGEifSx7InZhbHVlIjoiMTEwMDkiLCJuYW1lIjoiUHIqKioqKioqKioqZGEifSx7InZhbHVlIjoiMTAwNzIiLCJuYW1lIjoiUHIqKioqKioqbG8ifSx7InZhbHVlIjoiMTQwMzEiLCJuYW1lIjoiUHUqKioqKioqKioqY28ifSx7InZhbHVlIjoiODA2MTkiLCJuYW1lIjoiUm8qKioqKioqKioqKioqaW8ifSx7InZhbHVlIjoiMTQ1MDMiLCJuYW1lIjoiUnUqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjgwNjI4IiwibmFtZSI6IlNhKioqKioqKioqcGUifSx7InZhbHVlIjoiMTAwNzAiLCJuYW1lIjoiU2EqKioqKioqKioqKioqKipybyJ9LHsidmFsdWUiOiI4MDc0NSIsIm5hbWUiOiJTYSoqKioqKipuYSJ9LHsidmFsdWUiOiI4MDU3MSIsIm5hbWUiOiJTYSoqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjEwMTE0IiwibmFtZSI6IlNhKioqKioqKioqKipuYSJ9LHsidmFsdWUiOiI4MDY2MCIsIm5hbWUiOiJTYSoqKioqKipjbyJ9LHsidmFsdWUiOiI4MDY3MCIsIm5hbWUiOiJTZSoqKioqKnJhIn0seyJ2YWx1ZSI6IjE0MDY0IiwibmFtZSI6IlNlKioqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDA3NyIsIm5hbWUiOiJTZSoqKioqKioqKioqY2EifSx7InZhbHVlIjoiODA2MzIiLCJuYW1lIjoiU2kqKioqKioqKioqY2EifSx7InZhbHVlIjoiMTQxNDgiLCJuYW1lIjoiU2kqKioqKioqKioqKmNhIn0seyJ2YWx1ZSI6IjgwNjE1IiwibmFtZSI6IlNpKioqKioqKioqKioqKnJhIn0seyJ2YWx1ZSI6IjgwNjk3IiwibmFtZSI6IlNpKioqKioqKioqZWwifSx7InZhbHVlIjoiODA3MTAiLCJuYW1lIjoiU28qKioqKioqKioqKioqKnJvIn0seyJ2YWx1ZSI6IjgwNjQzIiwibmFtZSI6IlNwKioqKioqKioqKioqcm8ifSx7InZhbHVlIjoiODA2MjciLCJuYW1lIjoiVGEqKioqKioqKioqKiphMiJ9LHsidmFsdWUiOiI4MDcxOSIsIm5hbWUiOiJUaSoqKioqKioqKipuYSJ9LHsidmFsdWUiOiI4MDY2NiIsIm5hbWUiOiJUaSoqKioqKioqaW8ifSx7InZhbHVlIjoiMTQwNjIiLCJuYW1lIjoiVG8qKioqKioqKipsYSJ9LHsidmFsdWUiOiIxMDA0OCIsIm5hbWUiOiJUbyoqKioqKioqKioqKipsbyJ9LHsidmFsdWUiOiI4MDY3MSIsIm5hbWUiOiJUdSoqKioqKioqKioqKmNvIn0seyJ2YWx1ZSI6IjEwMDQzIiwibmFtZSI6IlZhKioqKioqKioqKioqaW8ifSx7InZhbHVlIjoiODA3NDQiLCJuYW1lIjoiVmEqKioqKioqKioqaWEifSx7InZhbHVlIjoiODA2NzciLCJuYW1lIjoiVmUqKioqKioqKioqKmxlIn0seyJ2YWx1ZSI6IjE0MDYzIiwibmFtZSI6IlZvKioqKioqKippYSJ9LHsidmFsdWUiOiIxNDUwOSIsIm5hbWUiOiJaYSoqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjExMDI1IiwibmFtZSI6IlphKioqKioqKioqdGEifV19XQ=="
+                        value="AssegnazioniConsulentiConFiltroSuAgenda">
+                        Assegnazioni consulenti (Milano ed Esterni) con filtro su agenda
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJjb25zdWxlbnRlIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tKioqKioqKioqKioqKi0tIn0seyJ2YWx1ZSI6IjEwMDg5IiwibmFtZSI6IkFiKioqKioqKmlhIn0seyJ2YWx1ZSI6IjEwMDk2IiwibmFtZSI6IkFtKioqKioqKioqKipsZSJ9LHsidmFsdWUiOiIxMDEwNyIsIm5hbWUiOiJBcioqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjEwMDUzIiwibmFtZSI6IkJlKioqKioqKioqKioqbm8ifSx7InZhbHVlIjoiMTAwOTciLCJuYW1lIjoiQm8qKioqKioqKmNlIn0seyJ2YWx1ZSI6IjEwMTEyIiwibmFtZSI6IkJ1KioqKioqKioqKioqdGEifSx7InZhbHVlIjoiMTAwNjYiLCJuYW1lIjoiQ2kqKioqKioqKmxvIn0seyJ2YWx1ZSI6IjEwMDY0IiwibmFtZSI6IkNvKioqKioqKioqKioqKipsbyJ9LHsidmFsdWUiOiIxMDA4MiIsIm5hbWUiOiJDbyoqKioqKioqKipyYSJ9LHsidmFsdWUiOiIxMDEwMiIsIm5hbWUiOiJEaSoqKioqKioqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjEwMDYzIiwibmFtZSI6IkRpKioqKioqKioqKioqaW8ifSx7InZhbHVlIjoiMTAwOTEiLCJuYW1lIjoiRGkqKioqKioqKioqY2EifSx7InZhbHVlIjoiMTAxMDUiLCJuYW1lIjoiRmEqKioqKioqKioqKipjbyJ9LHsidmFsdWUiOiIxMDEwNCIsIm5hbWUiOiJGYSoqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDA4NiIsIm5hbWUiOiJGZSoqKioqKioqKmNhIn0seyJ2YWx1ZSI6IjEwMDQ0IiwibmFtZSI6IkZ1KioqKioqKioqKmlvIn0seyJ2YWx1ZSI6IjEwMDkwIiwibmFtZSI6IkxlKioqKioqKipyYSJ9LHsidmFsdWUiOiIxMDA5MyIsIm5hbWUiOiJMZSoqKioqKioqbGEifSx7InZhbHVlIjoiMTAxMTEiLCJuYW1lIjoiTWEqKioqKioqKipzYSJ9LHsidmFsdWUiOiIxMDA5OCIsIm5hbWUiOiJNYSoqKioqKioqKioqKioqKioqKioqKip0YSJ9LHsidmFsdWUiOiIxMDEwOSIsIm5hbWUiOiJNYSoqKioqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDA4NSIsIm5hbWUiOiJNZSoqKioqKioqKnRvIn0seyJ2YWx1ZSI6IjEwMDUxIiwibmFtZSI6Ik1vKioqKioqKioqKioqKmxlIn0seyJ2YWx1ZSI6IjEwMDg3IiwibmFtZSI6Ik11KioqKioqKioqKipjYSJ9LHsidmFsdWUiOiIxMDExMyIsIm5hbWUiOiJNdSoqKioqKipzdCJ9LHsidmFsdWUiOiIxMDA1OCIsIm5hbWUiOiJOZSoqKioqKioqbm8ifSx7InZhbHVlIjoiMTAwODgiLCJuYW1lIjoiUGUqKioqKioqKioqaWEifSx7InZhbHVlIjoiMTAxMDMiLCJuYW1lIjoiUGkqKioqKioqKiplbyJ9LHsidmFsdWUiOiIxMDA3MiIsIm5hbWUiOiJQcioqKioqKipsbyJ9LHsidmFsdWUiOiIxMDA3MCIsIm5hbWUiOiJTYSoqKioqKioqKioqKioqKnJvIn0seyJ2YWx1ZSI6IjEwMTE0IiwibmFtZSI6IlNhKioqKioqKioqKipuYSJ9LHsidmFsdWUiOiIxMDA3NyIsIm5hbWUiOiJTZSoqKioqKioqKioqY2EifSx7InZhbHVlIjoiMTAwMzUiLCJuYW1lIjoiU3QqKioqKioqKioqKnRvIn0seyJ2YWx1ZSI6IjEwMDQ4IiwibmFtZSI6IlRvKioqKioqKioqKioqKmxvIn0seyJ2YWx1ZSI6IjEwMDQzIiwibmFtZSI6IlZhKioqKioqKioqKioqaW8ifV19XQ=="
+                        value="AssegnazioniConsulentiConAnalytics">
+                        Assegnazioni consulenti (Milano ed Esterni) con dettaglio Analytics
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJjb25zdWxlbnRlIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tKioqKioqKioqKioqKi0tIn0seyJ2YWx1ZSI6IjgwNzQwIiwibmFtZSI6IkFsKioqKioqKioqKioqcmEifSx7InZhbHVlIjoiNzUxOCIsIm5hbWUiOiJBdSoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKnRvIn0seyJ2YWx1ZSI6Ijc1MTkiLCJuYW1lIjoiQXUqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKnRvIn0seyJ2YWx1ZSI6IjE0MTI3IiwibmFtZSI6IkJ1KioqKioqKioqKioqcm8ifSx7InZhbHVlIjoiODA3MjkiLCJuYW1lIjoiQ2EqKioqKioqKioqaWEifSx7InZhbHVlIjoiODA3MTQiLCJuYW1lIjoiQ2EqKioqKioqKioqKm5lIn0seyJ2YWx1ZSI6IjE0MjcyIiwibmFtZSI6IkNhKioqKioqKioqbWkifSx7InZhbHVlIjoiMTQyOTAiLCJuYW1lIjoiQ2EqKioqKioqKioqbmEifSx7InZhbHVlIjoiODA3MzciLCJuYW1lIjoiQ2EqKioqKioqKioqKmxlIn0seyJ2YWx1ZSI6IjgwNzM0IiwibmFtZSI6IkNhKioqKioqKioqKioqKioqKip0YSJ9LHsidmFsdWUiOiIxNDI4NyIsIm5hbWUiOiJDYSoqKioqKioqKmRvIn0seyJ2YWx1ZSI6IjE0MTI4IiwibmFtZSI6IkZpKioqKioqKioqKmlvIn0seyJ2YWx1ZSI6IjE0MTMyIiwibmFtZSI6Ikd1KioqKioqKioqKipwZSJ9LHsidmFsdWUiOiI4MDczOSIsIm5hbWUiOiJNYSoqKioqKioqKipyYSJ9LHsidmFsdWUiOiIxNDI1MyIsIm5hbWUiOiJNYSoqKioqKioqKioqKmxhIn0seyJ2YWx1ZSI6IjgwNzA1IiwibmFtZSI6Ik1hKioqKioqKioqKioqKioqKioqbmkifSx7InZhbHVlIjoiODA3NDEiLCJuYW1lIjoiTWEqKioqKioqKioqKioqbGEifSx7InZhbHVlIjoiODA3MzgiLCJuYW1lIjoiTWUqKioqKioqKipsYSJ9LHsidmFsdWUiOiI4MDcyMCIsIm5hbWUiOiJNZSoqKioqKioqKmlvIn0seyJ2YWx1ZSI6IjE0MjEwIiwibmFtZSI6Ik1lKioqKioqKioqKmVhIn0seyJ2YWx1ZSI6IjgwNzIxIiwibmFtZSI6Ik1lKioqKioqKipyYSJ9LHsidmFsdWUiOiI4MDczNSIsIm5hbWUiOiJNZSoqKioqKioqKm5lIn0seyJ2YWx1ZSI6IjgwNzMzIiwibmFtZSI6Ik1vKioqKioqKioqKippYSJ9LHsidmFsdWUiOiI4MDcxNiIsIm5hbWUiOiJPbioqKioqKioqKipsZSJ9LHsidmFsdWUiOiIxNDI2OCIsIm5hbWUiOiJPcioqKioqKioqYTIifSx7InZhbHVlIjoiODA3MzEiLCJuYW1lIjoiT3IqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjgwNzAxIiwibmFtZSI6IlBhKioqKioqKioqKippbyJ9LHsidmFsdWUiOiI4MDc0MiIsIm5hbWUiOiJQYSoqKioqKioqKioqKioqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjE0MTI2IiwibmFtZSI6IlBhKioqKioqKioqKioqZWEifSx7InZhbHVlIjoiODA3MDYiLCJuYW1lIjoiUGUqKioqKioqKioqKmxlIn0seyJ2YWx1ZSI6IjgwNzMwIiwibmFtZSI6IlBvKioqKioqKioqaWEifSx7InZhbHVlIjoiMTMwMDYiLCJuYW1lIjoiUWkqKioqKioqKioqKipkYSJ9LHsidmFsdWUiOiIxMjAwMCIsIm5hbWUiOiJSdSoqKioqKioqZGEifSx7InZhbHVlIjoiMTQyMzkiLCJuYW1lIjoiU2kqKioqKioqKioqbDIifSx7InZhbHVlIjoiODA3MzYiLCJuYW1lIjoiVHIqKioqKioqKioqKioqKipjbyJ9LHsidmFsdWUiOiIxNDI4NiIsIm5hbWUiOiJVcyoqKioqKmlhIn0seyJ2YWx1ZSI6IjE0MDQ0IiwibmFtZSI6IlZlKioqKioqKioqKioqKioqKioqKipsbyJ9LHsidmFsdWUiOiIxNDA0MyIsIm5hbWUiOiJWZSoqKioqKioqKioqKioqKioqKioqbG8ifV19XQ=="
+                        value="AssegnazioniConsulentiTirana">
+                        Assegnazioni consulenti (Tirana e Verbal)
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJjb25zdWxlbnRlIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tKioqKioqKioqKioqKi0tIn0seyJ2YWx1ZSI6IjgwNzQwIiwibmFtZSI6IkFsKioqKioqKioqKioqcmEifSx7InZhbHVlIjoiNzUxOCIsIm5hbWUiOiJBdSoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKnRvIn0seyJ2YWx1ZSI6Ijc1MTkiLCJuYW1lIjoiQXUqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKnRvIn0seyJ2YWx1ZSI6IjE0MTI3IiwibmFtZSI6IkJ1KioqKioqKioqKioqcm8ifSx7InZhbHVlIjoiODA3MjkiLCJuYW1lIjoiQ2EqKioqKioqKioqaWEifSx7InZhbHVlIjoiODA3MTQiLCJuYW1lIjoiQ2EqKioqKioqKioqKm5lIn0seyJ2YWx1ZSI6IjE0MjcyIiwibmFtZSI6IkNhKioqKioqKioqbWkifSx7InZhbHVlIjoiMTQyOTAiLCJuYW1lIjoiQ2EqKioqKioqKioqbmEifSx7InZhbHVlIjoiODA3MzciLCJuYW1lIjoiQ2EqKioqKioqKioqKmxlIn0seyJ2YWx1ZSI6IjgwNzM0IiwibmFtZSI6IkNhKioqKioqKioqKioqKioqKip0YSJ9LHsidmFsdWUiOiIxNDI4NyIsIm5hbWUiOiJDYSoqKioqKioqKmRvIn0seyJ2YWx1ZSI6IjE0MTI4IiwibmFtZSI6IkZpKioqKioqKioqKmlvIn0seyJ2YWx1ZSI6IjE0MTMyIiwibmFtZSI6Ikd1KioqKioqKioqKipwZSJ9LHsidmFsdWUiOiI4MDczOSIsIm5hbWUiOiJNYSoqKioqKioqKipyYSJ9LHsidmFsdWUiOiIxNDI1MyIsIm5hbWUiOiJNYSoqKioqKioqKioqKmxhIn0seyJ2YWx1ZSI6IjgwNzA1IiwibmFtZSI6Ik1hKioqKioqKioqKioqKioqKioqbmkifSx7InZhbHVlIjoiODA3NDEiLCJuYW1lIjoiTWEqKioqKioqKioqKioqbGEifSx7InZhbHVlIjoiODA3MzgiLCJuYW1lIjoiTWUqKioqKioqKipsYSJ9LHsidmFsdWUiOiI4MDcyMCIsIm5hbWUiOiJNZSoqKioqKioqKmlvIn0seyJ2YWx1ZSI6IjE0MjEwIiwibmFtZSI6Ik1lKioqKioqKioqKmVhIn0seyJ2YWx1ZSI6IjgwNzIxIiwibmFtZSI6Ik1lKioqKioqKipyYSJ9LHsidmFsdWUiOiI4MDczNSIsIm5hbWUiOiJNZSoqKioqKioqKm5lIn0seyJ2YWx1ZSI6IjgwNzMzIiwibmFtZSI6Ik1vKioqKioqKioqKippYSJ9LHsidmFsdWUiOiI4MDcxNiIsIm5hbWUiOiJPbioqKioqKioqKipsZSJ9LHsidmFsdWUiOiIxNDI2OCIsIm5hbWUiOiJPcioqKioqKioqYTIifSx7InZhbHVlIjoiODA3MzEiLCJuYW1lIjoiT3IqKioqKioqKm5hIn0seyJ2YWx1ZSI6IjgwNzAxIiwibmFtZSI6IlBhKioqKioqKioqKippbyJ9LHsidmFsdWUiOiI4MDc0MiIsIm5hbWUiOiJQYSoqKioqKioqKioqKioqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjE0MTI2IiwibmFtZSI6IlBhKioqKioqKioqKioqZWEifSx7InZhbHVlIjoiODA3MDYiLCJuYW1lIjoiUGUqKioqKioqKioqKmxlIn0seyJ2YWx1ZSI6IjgwNzMwIiwibmFtZSI6IlBvKioqKioqKioqaWEifSx7InZhbHVlIjoiMTMwMDYiLCJuYW1lIjoiUWkqKioqKioqKioqKipkYSJ9LHsidmFsdWUiOiIxMjAwMCIsIm5hbWUiOiJSdSoqKioqKioqZGEifSx7InZhbHVlIjoiMTQyMzkiLCJuYW1lIjoiU2kqKioqKioqKioqbDIifSx7InZhbHVlIjoiODA3MzYiLCJuYW1lIjoiVHIqKioqKioqKioqKioqKipjbyJ9LHsidmFsdWUiOiIxNDI4NiIsIm5hbWUiOiJVcyoqKioqKmlhIn0seyJ2YWx1ZSI6IjE0MDQ0IiwibmFtZSI6IlZlKioqKioqKioqKioqKioqKioqKipsbyJ9LHsidmFsdWUiOiIxNDA0MyIsIm5hbWUiOiJWZSoqKioqKioqKioqKioqKioqKioqbG8ifV19XQ=="
+                        value="AssegnazioniConsulentiTiranaConFiltroSuAgenda">
+                        Assegnazioni consulenti (Tirana e Verbal) con filtro su agenda
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0="
+                        value="PrioritaRicercaImmobileTornatiMilano">
+                        Priorita Ricerca Immobile tornati a Milano
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzA5LzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="AgendeChiuse">
+                        Agende Chiuse
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9XQ=="
+                        value="AgendeConPassaggioDiStato">
+                        Agende Esitate con Passaggio di Stato
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImhpZGRlbiIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6Im1lc2VfaW52ZXN0b3IiLCJ0eXBlIjoic2VsZWN0IiwiZGVmYXVsdCI6W3sidmFsdWUiOiIiLCJuYW1lIjoiLS0qKioqKioqKioqKioqLS0ifSx7InZhbHVlIjoiMjAqKioqKioqKioqKioqKiowMCIsIm5hbWUiOiIxNSoqKioqKioqKioqKioqKioqKioqMjQifSx7InZhbHVlIjoiMjAqKioqKioqKioqKioqKiowMCIsIm5hbWUiOiIxNioqKioqKioqKioqKioqKioqKioqMjQifSx7InZhbHVlIjoiMjAqKioqKioqKioqKioqKiowMCIsIm5hbWUiOiIxMyoqKioqKioqKioqKioqKioqKioqMjQifSx7InZhbHVlIjoiMjAqKioqKioqKioqKioqKiowMCIsIm5hbWUiOiIxMyoqKioqKioqKioqKioqKioqKioqMjQifSx7InZhbHVlIjoiMjAqKioqKioqKioqKioqKiowMCIsIm5hbWUiOiIxNCoqKioqKioqKioqKioqKioqKioqMjQifSx7InZhbHVlIjoiMjAqKioqKioqKioqKioqKiowMCIsIm5hbWUiOiIxMSoqKioqKioqKioqKioqKioqKioqMjQifV19XQ=="
+                        value="ErogazioniInvestor">
+                        Erogazioni investor
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImhpZGRlbiIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9XQ=="
+                        value="Previsionale">
+                        Previsionale
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImhpZGRlbiIsImRlZmF1bHQiOiIifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaGlkZGVuIiwiZGVmYXVsdCI6IiJ9XQ=="
+                        value="ReportNonRiconosciuto">
+                        Non riconosciuto
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="DettaglioRichiesteFrontend">
+                        Dettaglio richieste Frontend
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="DettaglioParzialiFrontendConAnalytics">
+                        Dettaglio richieste parziali da Frontend con Google Analytics
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="DettaglioParzialiFrontendConAnalyticsLight">
+                        Dettaglio richieste parziali da Frontend con Google Analytics (Light)
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IiJ9LHsibmFtZSI6ImRhdGFfZmluZSIsInR5cGUiOiJpbnB1dCIsImRlZmF1bHQiOiIifV0="
+                        value="TotaleInviiConDettaglio">
+                        Totale Invii con dettaglio
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjI4LzEyLzIwMjMifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9XQ=="
+                        value="MagazzinoConsulenti">
+                        Magazzino Consulenti
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9LHsibmFtZSI6ImNvbnN1bGVudGUiLCJ0eXBlIjoic2VsZWN0IiwiZGVmYXVsdCI6W3sidmFsdWUiOiIiLCJuYW1lIjoiLS0qKioqKioqKioqKioqLS0ifSx7InZhbHVlIjoiODA3NDAiLCJuYW1lIjoiQ2gqKioqKioqKioqKipkaSJ9LHsidmFsdWUiOiI3NTE4IiwibmFtZSI6IlRlKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqb24ifSx7InZhbHVlIjoiNzUxOSIsIm5hbWUiOiJUZSoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqb24ifSx7InZhbHVlIjoiMTQxMjciLCJuYW1lIjoiUGkqKioqKioqKioqKipubyJ9LHsidmFsdWUiOiI4MDcyOSIsIm5hbWUiOiJWYSoqKioqKioqKiphcyJ9LHsidmFsdWUiOiI4MDcxNCIsIm5hbWUiOiJTaSoqKioqKioqKioqcmkifSx7InZhbHVlIjoiMTQyNzIiLCJuYW1lIjoiU3cqKioqKioqKipuaSJ9LHsidmFsdWUiOiIxNDI5MCIsIm5hbWUiOiJBbioqKioqKioqKipsZSJ9LHsidmFsdWUiOiI4MDczNyIsIm5hbWUiOiJHYSoqKioqKioqKioqaW8ifSx7InZhbHVlIjoiODA3MzQiLCJuYW1lIjoiTWEqKioqKioqKioqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjE0Mjg3IiwibmFtZSI6IlJpKioqKioqKioqc3UifSx7InZhbHVlIjoiMTQxMjgiLCJuYW1lIjoiSWcqKioqKioqKioqbmUifSx7InZhbHVlIjoiMTQxMzIiLCJuYW1lIjoiR2kqKioqKioqKioqKm5vIn0seyJ2YWx1ZSI6IjgwNzM5IiwibmFtZSI6IkVsKioqKioqKioqKnJvIn0seyJ2YWx1ZSI6IjE0MjUzIiwibmFtZSI6Ik1hKioqKioqKioqKioqaXUifSx7InZhbHVlIjoiODA3MDUiLCJuYW1lIjoiTWEqKioqKioqKioqKioqKioqKiphcyJ9LHsidmFsdWUiOiI4MDc0MSIsIm5hbWUiOiJBbioqKioqKioqKioqKipsYSJ9LHsidmFsdWUiOiI4MDczOCIsIm5hbWUiOiJFbSoqKioqKioqKmxpIn0seyJ2YWx1ZSI6IjgwNzIwIiwibmFtZSI6IkJhKioqKioqKioqaXMifSx7InZhbHVlIjoiMTQyMTAiLCJuYW1lIjoiQW4qKioqKioqKioqIDIifSx7InZhbHVlIjoiODA3MjEiLCJuYW1lIjoiWmEqKioqKioqKm5pIn0seyJ2YWx1ZSI6IjgwNzM1IiwibmFtZSI6IklyKioqKioqKioqbmEifSx7InZhbHVlIjoiODA3MzMiLCJuYW1lIjoiU2UqKioqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNzE2IiwibmFtZSI6IkdhKioqKioqKioqKmlzIn0seyJ2YWx1ZSI6IjE0MjY4IiwibmFtZSI6IkdsKioqKioqKipyw7kifSx7InZhbHVlIjoiODA3MzEiLCJuYW1lIjoiTWEqKioqKioqKnR1In0seyJ2YWx1ZSI6IjgwNzAxIiwibmFtZSI6IkZhKioqKioqKioqKiogMiJ9LHsidmFsdWUiOiI4MDc0MiIsIm5hbWUiOiJBbioqKioqKioqKioqKioqKioqKioqKm7DqCJ9LHsidmFsdWUiOiIxNDEyNiIsIm5hbWUiOiJBbioqKioqKioqKioqKmNhIn0seyJ2YWx1ZSI6IjgwNzA2IiwibmFtZSI6Ik1pKioqKioqKioqKipsYSJ9LHsidmFsdWUiOiI4MDczMCIsIm5hbWUiOiJHaSoqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjE0MjM5IiwibmFtZSI6Ik1hKioqKioqKioqKmd1In0seyJ2YWx1ZSI6IjgwNzM2IiwibmFtZSI6IkZlKioqKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiMTQyODYiLCJuYW1lIjoiU28qKioqKiphaSJ9LHsidmFsdWUiOiIxNDA0NCIsIm5hbWUiOiJQcioqKioqKioqKioqKioqKioqKioqQ3IifSx7InZhbHVlIjoiMTQwNDMiLCJuYW1lIjoiUHIqKioqKioqKioqKioqKioqKioqKlNyIn1dfV0="
+                        value="LavorazioniGDO">
+                        Lavorazioni GDO
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9LHsibmFtZSI6ImNvbnN1bGVudGUiLCJ0eXBlIjoic2VsZWN0IiwiZGVmYXVsdCI6W3sidmFsdWUiOiIiLCJuYW1lIjoiLS0qKioqKioqKioqKioqLS0ifSx7InZhbHVlIjoiODA3NDAiLCJuYW1lIjoiQ2gqKioqKioqKioqKipkaSJ9LHsidmFsdWUiOiI3NTE4IiwibmFtZSI6IlRlKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqb24ifSx7InZhbHVlIjoiNzUxOSIsIm5hbWUiOiJUZSoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqb24ifSx7InZhbHVlIjoiMTQxMjciLCJuYW1lIjoiUGkqKioqKioqKioqKipubyJ9LHsidmFsdWUiOiI4MDcyOSIsIm5hbWUiOiJWYSoqKioqKioqKiphcyJ9LHsidmFsdWUiOiI4MDcxNCIsIm5hbWUiOiJTaSoqKioqKioqKioqcmkifSx7InZhbHVlIjoiMTQyNzIiLCJuYW1lIjoiU3cqKioqKioqKipuaSJ9LHsidmFsdWUiOiIxNDI5MCIsIm5hbWUiOiJBbioqKioqKioqKipsZSJ9LHsidmFsdWUiOiI4MDczNyIsIm5hbWUiOiJHYSoqKioqKioqKioqaW8ifSx7InZhbHVlIjoiODA3MzQiLCJuYW1lIjoiTWEqKioqKioqKioqKioqKioqKnRhIn0seyJ2YWx1ZSI6IjE0Mjg3IiwibmFtZSI6IlJpKioqKioqKioqc3UifSx7InZhbHVlIjoiMTQxMjgiLCJuYW1lIjoiSWcqKioqKioqKioqbmUifSx7InZhbHVlIjoiMTQxMzIiLCJuYW1lIjoiR2kqKioqKioqKioqKm5vIn0seyJ2YWx1ZSI6IjgwNzM5IiwibmFtZSI6IkVsKioqKioqKioqKnJvIn0seyJ2YWx1ZSI6IjE0MjUzIiwibmFtZSI6Ik1hKioqKioqKioqKioqaXUifSx7InZhbHVlIjoiODA3MDUiLCJuYW1lIjoiTWEqKioqKioqKioqKioqKioqKiphcyJ9LHsidmFsdWUiOiI4MDc0MSIsIm5hbWUiOiJBbioqKioqKioqKioqKipsYSJ9LHsidmFsdWUiOiI4MDczOCIsIm5hbWUiOiJFbSoqKioqKioqKmxpIn0seyJ2YWx1ZSI6IjgwNzIwIiwibmFtZSI6IkJhKioqKioqKioqaXMifSx7InZhbHVlIjoiMTQyMTAiLCJuYW1lIjoiQW4qKioqKioqKioqIDIifSx7InZhbHVlIjoiODA3MjEiLCJuYW1lIjoiWmEqKioqKioqKm5pIn0seyJ2YWx1ZSI6IjgwNzM1IiwibmFtZSI6IklyKioqKioqKioqbmEifSx7InZhbHVlIjoiODA3MzMiLCJuYW1lIjoiU2UqKioqKioqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNzE2IiwibmFtZSI6IkdhKioqKioqKioqKmlzIn0seyJ2YWx1ZSI6IjE0MjY4IiwibmFtZSI6IkdsKioqKioqKipyw7kifSx7InZhbHVlIjoiODA3MzEiLCJuYW1lIjoiTWEqKioqKioqKnR1In0seyJ2YWx1ZSI6IjgwNzAxIiwibmFtZSI6IkZhKioqKioqKioqKiogMiJ9LHsidmFsdWUiOiI4MDc0MiIsIm5hbWUiOiJBbioqKioqKioqKioqKioqKioqKioqKm7DqCJ9LHsidmFsdWUiOiIxNDEyNiIsIm5hbWUiOiJBbioqKioqKioqKioqKmNhIn0seyJ2YWx1ZSI6IjgwNzA2IiwibmFtZSI6Ik1pKioqKioqKioqKipsYSJ9LHsidmFsdWUiOiI4MDczMCIsIm5hbWUiOiJHaSoqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjE0MjM5IiwibmFtZSI6Ik1hKioqKioqKioqKmd1In0seyJ2YWx1ZSI6IjgwNzM2IiwibmFtZSI6IkZlKioqKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiMTQyODYiLCJuYW1lIjoiU28qKioqKiphaSJ9LHsidmFsdWUiOiIxNDA0NCIsIm5hbWUiOiJQcioqKioqKioqKioqKioqKioqKioqQ3IifSx7InZhbHVlIjoiMTQwNDMiLCJuYW1lIjoiUHIqKioqKioqKioqKioqKioqKioqKlNyIn0seyJ2YWx1ZSI6IjEyMDAwIiwibmFtZSI6IkVsKioqKioqKipwaSJ9LHsidmFsdWUiOiIxMzAwNiIsIm5hbWUiOiJFcioqKioqKioqKioqKmFzIn1dfV0="
+                        value="LavorazioniPhantomTirana">
+                        Lavorazioni Phantom Tirana
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9XQ=="
+                        value="LavorazioniBackofficeReportBanche">
+                        Lavorazioni Backoffice Report Banche
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9LHsibmFtZSI6ImNvbnN1bGVudGUiLCJ0eXBlIjoic2VsZWN0IiwiZGVmYXVsdCI6W3sidmFsdWUiOiIiLCJuYW1lIjoiLS0qKioqKioqKioqKioqLS0ifSx7InZhbHVlIjoiMTQxMDgiLCJuYW1lIjoiTWEqKioqKioqKipzaSJ9LHsidmFsdWUiOiIxMDA5NiIsIm5hbWUiOiJEYSoqKioqKioqKioqc28ifSx7InZhbHVlIjoiMTQwODEiLCJuYW1lIjoiVmEqKioqKioqKioqKipsaSJ9LHsidmFsdWUiOiI4MDY4NyIsIm5hbWUiOiJFbCoqKioqKioqKioqKioqbmEifSx7InZhbHVlIjoiODA2NjciLCJuYW1lIjoiTHUqKioqKioqbXUifSx7InZhbHVlIjoiMTQwOTEiLCJuYW1lIjoiRnIqKioqKioqKioqKioqKmFzIn0seyJ2YWx1ZSI6IjEwMTA3IiwibmFtZSI6IlNpKioqKioqKioqY2kifSx7InZhbHVlIjoiODA2MTEiLCJuYW1lIjoiVGUqKioqKioqKioqKioqKioqKioqKioqb24ifSx7InZhbHVlIjoiMTAwNTMiLCJuYW1lIjoiQWQqKioqKioqKioqKip0ZSJ9LHsidmFsdWUiOiIxMDA5NyIsIm5hbWUiOiJBbCoqKioqKioqbm8ifSx7InZhbHVlIjoiMTAxMTIiLCJuYW1lIjoiUm8qKioqKioqKioqKipyYSJ9LHsidmFsdWUiOiI4MDY4OSIsIm5hbWUiOiJGcioqKioqKioqKioqKipzbyJ9LHsidmFsdWUiOiI4MDcxMiIsIm5hbWUiOiJTYSoqKioqKmlhIn0seyJ2YWx1ZSI6IjgwNjYzIiwibmFtZSI6IlJlKioqKioqKippYSJ9LHsidmFsdWUiOiI4MDYwNyIsIm5hbWUiOiJFbioqKioqKioqcmkifSx7InZhbHVlIjoiMTQwNTUiLCJuYW1lIjoiR2kqKioqKioqKipoaSJ9LHsidmFsdWUiOiI4MDY1MiIsIm5hbWUiOiJDYSoqKioqKioqY28ifSx7InZhbHVlIjoiMTQxNjciLCJuYW1lIjoiQmUqKioqKioqKioqKioqKm5pIn0seyJ2YWx1ZSI6IjE0MDY1IiwibmFtZSI6IlZhKioqKioqKioqbHUifSx7InZhbHVlIjoiMTAwNjQiLCJuYW1lIjoiUHIqKioqKioqKioqKioqKnRlIn0seyJ2YWx1ZSI6IjgwNjE3IiwibmFtZSI6Ik1hKioqKioqKioqdHUifSx7InZhbHVlIjoiODA2ODgiLCJuYW1lIjoiRnIqKioqKioqKioqKioqcm8ifSx7InZhbHVlIjoiMTAwODIiLCJuYW1lIjoiQ2wqKioqKioqKioqZHUifSx7InZhbHVlIjoiODA3NDciLCJuYW1lIjoiUGEqKioqKioqKioqKioqKipkdSJ9LHsidmFsdWUiOiIxNDA1NiIsIm5hbWUiOiJBbCoqKioqKioqKioqKipjaSJ9LHsidmFsdWUiOiIxMDA5MSIsIm5hbWUiOiJGZSoqKioqKioqKipuYSJ9LHsidmFsdWUiOiI4MDY5MCIsIm5hbWUiOiJEZSoqKioqKioqKip6byJ9LHsidmFsdWUiOiIxNDA5MCIsIm5hbWUiOiJNYSoqKioqKioqKioqKioqKmFpIn0seyJ2YWx1ZSI6IjEwMTA1IiwibmFtZSI6IkZyKioqKioqKioqKioqdWkifSx7InZhbHVlIjoiMTAxMDQiLCJuYW1lIjoiVmUqKioqKioqKioqbmkifSx7InZhbHVlIjoiMTQxNDQiLCJuYW1lIjoiU2EqKioqKipuaSJ9LHsidmFsdWUiOiIxNDAxNyIsIm5hbWUiOiJMYSoqKioqKip0aSJ9LHsidmFsdWUiOiI4MDY0MCIsIm5hbWUiOiJFbSoqKioqKipyYSJ9LHsidmFsdWUiOiI4MDYxOCIsIm5hbWUiOiJHaSoqKioqKioqKioqKioqKioqKioqKioqbGEifSx7InZhbHVlIjoiODA3NDMiLCJuYW1lIjoiU28qKioqKioqbWUifSx7InZhbHVlIjoiODA2MzciLCJuYW1lIjoiR2kqKioqKioqKioqKioqKnRlIn0seyJ2YWx1ZSI6IjgwNjg2IiwibmFtZSI6Ik1hKioqKioqKipzYSJ9LHsidmFsdWUiOiIxNDE2NSIsIm5hbWUiOiJEYSoqKioqKioqKioqbGEifSx7InZhbHVlIjoiODA2NzIiLCJuYW1lIjoiTHUqKioqKioqKnJpIn0seyJ2YWx1ZSI6IjgwNjgwIiwibmFtZSI6IlNpKioqKioqKioqKioqaWEifSx7InZhbHVlIjoiMTAwOTAiLCJuYW1lIjoiTGEqKioqKioqKmlzIn0seyJ2YWx1ZSI6IjgwNzE4IiwibmFtZSI6IkZlKioqKioqKioqKioqKmRpIn0seyJ2YWx1ZSI6IjgwNzExIiwibmFtZSI6IkdpKioqKioqKipoZSJ9LHsidmFsdWUiOiIxNDE1NSIsIm5hbWUiOiJDbCoqKioqKioqKmRvIn0seyJ2YWx1ZSI6IjE0MTAyIiwibmFtZSI6IkVnKioqKioqKm5pIn0seyJ2YWx1ZSI6IjgwNjIxIiwibmFtZSI6IlNpKioqKioqKioqbGEifSx7InZhbHVlIjoiMTAxMTEiLCJuYW1lIjoiVmEqKioqKioqKipzYSJ9LHsidmFsdWUiOiI4MDU5MiIsIm5hbWUiOiJNaSoqKioqKioqKnNhIn0seyJ2YWx1ZSI6IjEwMDk4IiwibmFtZSI6IkVsKioqKioqKioqKioqKioqKioqKioqKm5pIn0seyJ2YWx1ZSI6IjEwMTA5IiwibmFtZSI6IkZlKioqKioqKioqKioqKmRhIn0seyJ2YWx1ZSI6IjgwNzEzIiwibmFtZSI6IkFuKioqKioqKippcyJ9LHsidmFsdWUiOiIxNDE1NiIsIm5hbWUiOiJBbioqKioqKioqKmV1In0seyJ2YWx1ZSI6IjEwMDUxIiwibmFtZSI6IkdhKioqKioqKioqKioqKnJpIn0seyJ2YWx1ZSI6IjgwNjc5IiwibmFtZSI6Ik1hKioqKioqKioqY2UifSx7InZhbHVlIjoiMTQxMDciLCJuYW1lIjoiVmEqKioqKioqKioqKioqbGkifSx7InZhbHVlIjoiMTAxMTMiLCJuYW1lIjoiVGUqKioqKioqaTIifSx7InZhbHVlIjoiODA2OTYiLCJuYW1lIjoiR2wqKioqKioqcsO5In0seyJ2YWx1ZSI6IjgwNzQ2IiwibmFtZSI6IkZhKioqKioqKioqbmkifSx7InZhbHVlIjoiMTQxMjIiLCJuYW1lIjoiQ2gqKioqKioqKioqKioqKioqKipyYSJ9LHsidmFsdWUiOiIxMDEwMyIsIm5hbWUiOiJNYSoqKioqKioqKmFpIn0seyJ2YWx1ZSI6IjgwNjI2IiwibmFtZSI6IkdhKioqKioqKioqKioqZHUifSx7InZhbHVlIjoiMTQwNjgiLCJuYW1lIjoiTWEqKioqKioqKioqKmlzIn0seyJ2YWx1ZSI6IjgwNjU5IiwibmFtZSI6IlZhKioqKioqKioqKioqKioqdGUifSx7InZhbHVlIjoiMTAwNzIiLCJuYW1lIjoiUGEqKioqKioqbmEifSx7InZhbHVlIjoiMTQwMzEiLCJuYW1lIjoiTWEqKioqKioqKioqZHUifSx7InZhbHVlIjoiODA2MTkiLCJuYW1lIjoiQWwqKioqKioqKioqKioqbmkifSx7InZhbHVlIjoiMTAwNzAiLCJuYW1lIjoiQWwqKioqKioqKioqKioqKipubyJ9LHsidmFsdWUiOiI4MDc0NSIsIm5hbWUiOiJFbCoqKioqKipjw6AifSx7InZhbHVlIjoiODA2NjAiLCJuYW1lIjoiTWEqKioqKioqbmEifSx7InZhbHVlIjoiODA2NzAiLCJuYW1lIjoiU2EqKioqKipyYSJ9LHsidmFsdWUiOiIxNDA2NCIsIm5hbWUiOiJGcioqKioqKioqKioqcmEifSx7InZhbHVlIjoiODA2MTUiLCJuYW1lIjoiQWwqKioqKioqKioqKioqZ3UifSx7InZhbHVlIjoiODA2OTciLCJuYW1lIjoiTWEqKioqKioqKipndSJ9LHsidmFsdWUiOiI4MDcxMCIsIm5hbWUiOiJBbCoqKioqKioqKioqKioqYXMifSx7InZhbHVlIjoiODA2NDMiLCJuYW1lIjoiQWwqKioqKioqKioqKipnYSJ9LHsidmFsdWUiOiI4MDcxOSIsIm5hbWUiOiJTYSoqKioqKioqKippYSJ9LHsidmFsdWUiOiI4MDY2NiIsIm5hbWUiOiJBbCoqKioqKioqZHUifSx7InZhbHVlIjoiMTQwNjIiLCJuYW1lIjoiRW0qKioqKioqKipsdSJ9LHsidmFsdWUiOiI4MDY3MSIsIm5hbWUiOiJGcioqKioqKioqKioqKnJpIn0seyJ2YWx1ZSI6IjgwNzQ0IiwibmFtZSI6IlZhKioqKioqKioqKml1In0seyJ2YWx1ZSI6IjgwNjc3IiwibmFtZSI6IkdhKioqKioqKioqKip0aSJ9LHsidmFsdWUiOiIxMDA4OSIsIm5hbWUiOiJHaSoqKioqKippcyJ9LHsidmFsdWUiOiIxMDA2NiIsIm5hbWUiOiJQYSoqKioqKioqbmkifSx7InZhbHVlIjoiMTAwODYiLCJuYW1lIjoiRmUqKioqKioqKipudSJ9LHsidmFsdWUiOiIxMDA0NCIsIm5hbWUiOiJTZSoqKioqKioqKipuaSJ9LHsidmFsdWUiOiIxMDA5MyIsIm5hbWUiOiJBbioqKioqKioqaXMifSx7InZhbHVlIjoiMTAwODUiLCJuYW1lIjoiUm8qKioqKioqKippcyJ9LHsidmFsdWUiOiIxMDA4NyIsIm5hbWUiOiJNbyoqKioqKioqKioqbnUifSx7InZhbHVlIjoiMTAwNTgiLCJuYW1lIjoiTW8qKioqKioqKnJpIn0seyJ2YWx1ZSI6IjEwMTE0IiwibmFtZSI6IlZhKioqKioqKioqKipuYSJ9LHsidmFsdWUiOiIxMDA3NyIsIm5hbWUiOiJGcioqKioqKioqKioqcmkifSx7InZhbHVlIjoiMTAwNDgiLCJuYW1lIjoiQ2EqKioqKioqKioqKioqbGkifSx7InZhbHVlIjoiMTAwNDMiLCJuYW1lIjoiSWwqKioqKioqKioqKipoaSJ9LHsidmFsdWUiOiI4MDYyNSIsIm5hbWUiOiJMYSoqKioqKipiYSJ9LHsidmFsdWUiOiI4MDU0NCIsIm5hbWUiOiJLaSoqKipwcCJ9LHsidmFsdWUiOiI4MDYxMiIsIm5hbWUiOiJUZSoqKioqKioqKioqKioqKioqKioqKipvbiJ9LHsidmFsdWUiOiI4MDU3NyIsIm5hbWUiOiJQcioqKioqKioqKioqKioqY2UifSx7InZhbHVlIjoiMTQ1MDEiLCJuYW1lIjoiQnIqKioqKioqKioqYWoifSx7InZhbHVlIjoiMTQ1MDUiLCJuYW1lIjoiRXYqKioqa2EifSx7InZhbHVlIjoiODA2MDMiLCJuYW1lIjoiU2kqKioqKioqKioqKipjbyJ9LHsidmFsdWUiOiIxNDUwMiIsIm5hbWUiOiJFbioqKioqKioqcmkifSx7InZhbHVlIjoiODA1MzkiLCJuYW1lIjoiU2kqKioqKioqKioqKm5vIn0seyJ2YWx1ZSI6IjgwNTgyIiwibmFtZSI6IkdpKioqKioqKioqKioqKm5vIn0seyJ2YWx1ZSI6IjE0NTA3IiwibmFtZSI6IkVsKioqKioqKmlhIn0seyJ2YWx1ZSI6IjE0NTA2IiwibmFtZSI6IkVyKioqKioqKioqKipyaSJ9LHsidmFsdWUiOiIxMDEwMiIsIm5hbWUiOiJNYSoqKioqKioqKioqKioqKnBvIn0seyJ2YWx1ZSI6IjE0NTA4IiwibmFtZSI6Ikp1KioqKioqKipjYSJ9LHsidmFsdWUiOiI4MDUzMyIsIm5hbWUiOiJEaSoqKioqKioqKmNlIn0seyJ2YWx1ZSI6IjExMDAzIiwibmFtZSI6IkVkKioqKioqKipmaSJ9LHsidmFsdWUiOiIxNDUwNCIsIm5hbWUiOiJFcioqKioqKioqKioqa3UifSx7InZhbHVlIjoiODA2MzUiLCJuYW1lIjoiWWwqKioqKioqKipldSJ9LHsidmFsdWUiOiIxMDA4OCIsIm5hbWUiOiJZbCoqKioqKioqKip1MiJ9LHsidmFsdWUiOiI4MDU3NiIsIm5hbWUiOiJJbCoqKioqKioqbnUifSx7InZhbHVlIjoiMTQ1MDAiLCJuYW1lIjoiTWEqKioqKioqKioqamEifSx7InZhbHVlIjoiMTEwMDkiLCJuYW1lIjoiTWEqKioqKioqKioqamEifSx7InZhbHVlIjoiMTQ1MDMiLCJuYW1lIjoiRWwqKioqKioqKnBpIn0seyJ2YWx1ZSI6IjgwNjI4IiwibmFtZSI6IkdpKioqKioqKioqYmEifSx7InZhbHVlIjoiODA1NzEiLCJuYW1lIjoiQWwqKioqKioqKipkaSJ9LHsidmFsdWUiOiI4MDYzMiIsIm5hbWUiOiJGZSoqKioqKioqKipkaSJ9LHsidmFsdWUiOiIxNDE0OCIsIm5hbWUiOiJGZSoqKioqKioqKioqaTIifSx7InZhbHVlIjoiODA2MjciLCJuYW1lIjoiTmkqKioqKioqKioqKipudSJ9LHsidmFsdWUiOiIxNDA2MyIsIm5hbWUiOiJHaSoqKioqKioqcGUifSx7InZhbHVlIjoiMTQ1MDkiLCJuYW1lIjoiQWQqKioqKioqKiprYSJ9LHsidmFsdWUiOiIxMTAyNSIsIm5hbWUiOiJBZCoqKioqKioqKmthIn1dfV0="
+                        value="LavorazioniCompleteMilano">
+                        Lavorazioni Complete Milano
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjE3LzA2LzIwMjQifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMjUvMDYvMjAyNCJ9LHsibmFtZSI6ImNvbnN1bGVudGUiLCJ0eXBlIjoic2VsZWN0IiwiZGVmYXVsdCI6W3sidmFsdWUiOiIiLCJuYW1lIjoiLS0qKioqKioqKioqKioqLS0ifSx7InZhbHVlIjoiODA1NTMiLCJuYW1lIjoiQm8qKioqKioqKioqKioqKioqKioqcnQifSx7InZhbHVlIjoiODA1NDAiLCJuYW1lIjoiRW4qKioqKioqKippMiJ9LHsidmFsdWUiOiIxOTUyOCIsIm5hbWUiOiJNYSoqKioqKioqKioqaGkifSx7InZhbHVlIjoiODA1NjQiLCJuYW1lIjoiTWEqKioqKioqKipkdSJ9LHsidmFsdWUiOiI4MDU1NyIsIm5hbWUiOiJFcioqKioqKiptYSJ9LHsidmFsdWUiOiI4MDU1MiIsIm5hbWUiOiJFbCoqKioqKioqKioqKioqKioqKippYSJ9LHsidmFsdWUiOiI4MDUyNSIsIm5hbWUiOiJMaSoqKioqKioqcGkifSx7InZhbHVlIjoiODA1MzUiLCJuYW1lIjoiQWQqKioqKioqKmxvIn1dfV0="
+                        value="LavorazioniSegretarieTirana">
+                        Lavorazioni Segretarie Tirana
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzEwLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="AnalyticsDaPreventiviInviati">
+                        Dettaglio Analytics da Preventivi Inviati
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzEwLzIwMDAifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="TransazioniGoogleAnalytics">
+                        Elenco transazioni tracciate su Google Analytics
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjIifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="ValidazioniAnagraficheFido">
+                        Validazioni anagrafiche by Fido
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjIifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="VerificheCondizioniSalvataggioAgende">
+                        Verifiche Condizioni Salvataggio Agende (Campaign Manager)
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjMifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="ElencoRiassegnazioniAutomatiche">
+                        Elenco Riassegnazioni Automatiche da comando
+                    </option>
+                </optgroup>
+                <optgroup label="Conteggi">
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzA3LzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="ConteggioRichiesteFrontendPerMese">
+                        Conteggio richieste Frontend per mese
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn1d"
+                        value="ConteggioRichiesteFrontendPerGiorno">
+                        Conteggio richieste Frontend per giorno
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn0seyJuYW1lIjoidGlwb19hbmFncmFmaWNhIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tKioqKioqKioqKioqKi0tIn0seyJ2YWx1ZSI6IjEiLCJuYW1lIjoiSGEqKioqKioqKioqKioqKioqdG8ifSx7InZhbHVlIjoiMiIsIm5hbWUiOiJDb21wbGV0ZSJ9LHsidmFsdWUiOiIzIiwibmFtZSI6IkNNQiJ9XX1d"
+                        value="ConteggioRichiestePerProvinciaRaggruppamentoAnagrafica">
+                        Conteggio richieste per provincia con raggruppamento anagrafica
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiIn0seyJuYW1lIjoidGlwb19hbmFncmFmaWNhIiwidHlwZSI6InNlbGVjdCIsImRlZmF1bHQiOlt7InZhbHVlIjoiIiwibmFtZSI6Ii0tKioqKioqKioqKioqKi0tIn0seyJ2YWx1ZSI6IjEiLCJuYW1lIjoiSGEqKioqKioqKioqKioqKioqdG8ifSx7InZhbHVlIjoiMiIsIm5hbWUiOiJDb21wbGV0ZSJ9LHsidmFsdWUiOiIzIiwibmFtZSI6IkNNQiJ9XX1d"
+                        value="ConteggioRichiestePerProvinciaRaggruppamentoAgenda">
+                        Conteggio richieste per provincia con raggruppamento agenda
+                    </option>
+                    <option
+                        data-filters="W3sibmFtZSI6ImRhdGFfaW5pemlvIiwidHlwZSI6ImlucHV0IiwiZGVmYXVsdCI6IjAxLzAxLzIwMjEifSx7Im5hbWUiOiJkYXRhX2ZpbmUiLCJ0eXBlIjoiaW5wdXQiLCJkZWZhdWx0IjoiMDEvMDIvMjAyMSJ9XQ=="
+                        value="ConteggioRichiesteHalfSenzaRisultatoRaggruppamentoStatoPratica">
+                        Conteggio richieste Half Senza Risultato raggruppamento Stato Ricerca Immobile
+                    </option>
+                </optgroup>
+            </select>
+            <br />
+            <br />
+            <div id="dynamic_filters">
+            </div>
+            <br />
+            <input type="submit" value="Visualizza dati" />
+            </form>
+    </div>
+    <br />
+    <br />
+    <div id="estrazioni_results">
+        <table class="tablesorter GG_standard_table" id="dati_estratti" name="dati_estratti">
+        </table>
+    </div>
 </div>
