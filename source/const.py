@@ -6,12 +6,21 @@ per il funzionamento di altri script/moduli.
 from enum import Enum
 from pathlib import Path
 
+# Flag globale
+# Se True: esegue gli script offline
+# facendo scraping da file HTML che simulano Kiwi
+# anziché da web
+__TEST__ = True
+
 # USERNAME verrà letto da file .env
 # USERNAME: str = 'mcontini'
 
 # Per gli script nella root
 # const.py --parent--> source --parent--> root 
 ROOT = Path(__file__).parent.parent.resolve()
+
+# File di log
+LOG_FILE = ROOT / "app.log"
 
 RIASSEGNAZIONI_DIR: Path = ROOT / "Riassegnazioni"
 UTENZE_DIR: Path = ROOT / "Utenze"

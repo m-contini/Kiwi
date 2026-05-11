@@ -1,3 +1,4 @@
+import logging
 from routines import (
     pulizia_quotidiana_file_obsoleti,
     estrai_utenze_attive,
@@ -5,20 +6,35 @@ from routines import (
     lavorazioni_consulenti,
     riassegnazioni_retrocessioni
 )
+from source import __TEST__, LOG_FILE
 
-# Flag globale
-# Se True: esegue gli script offline
-# facendo scraping da file HTML che simulano Kiwi
-# anziché da web
-__TEST__ = True
+# Configurazione base del logging per monitorare l'esecuzione
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    handlers=[
+        # Output to console
+        logging.StreamHandler(),
+        # Output to file
+        logging.FileHandler(LOG_FILE)
+    
+    ]
+)
 
 if __name__ == '__main__':
-
-    for routine in (
+    routines = (
         pulizia_quotidiana_file_obsoleti,
         estrai_utenze_attive,
         main_dashboard_fetch,
         lavorazioni_consulenti,
         riassegnazioni_retrocessioni
-    ):
-        routine(__TEST__)
+    )
+
+    for routine in routines:
+        try:
+            logging.info(f"Avvio routine: `{routine.__name__}`")
+            routine(__TEST__)
+            logging.info(f"Routine `{routine.__name__}` completata con successo.")
+        except Exception as e:
+            logging.error(f"Errore critico nella routine `{routine.__name__}`: {e}", exc_info=True)

@@ -1,4 +1,3 @@
-import os
 import shutil
 
 from source import HomeKiwiOutput
@@ -32,7 +31,8 @@ def run(__TEST__: bool = False) -> None:
 
         # Cancella contenuto delle cartelle
         for file_path in path.iterdir():
-            if file_path.stem.startswith('.'):
+
+            if file_path.name.startswith('.'):
                 continue
 
             print(f"Rimozione {file_path.name}...")
@@ -40,10 +40,10 @@ def run(__TEST__: bool = False) -> None:
                 continue
 
             try:
-                # Se file o collegamento:
+                # Se file o collegamento
                 if file_path.is_file() or file_path.is_symlink():
-                    os.unlink(file_path)
-                # Se cartella:
+                    file_path.unlink()
+                # Se cartella
                 if file_path.is_dir():
                     shutil.rmtree(file_path)
             except Exception as e:

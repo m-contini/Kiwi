@@ -16,16 +16,16 @@ import json
 import csv
 import os
 from datetime import datetime, timedelta
+from typing import Optional
 from tqdm import tqdm
 
 from source import (
+    __TEST__,
     Auth,
     Endpoints,
     ESTRAZIONI_DIR,
     Estrazione
 )
-
-from ScheduledTasks import __TEST__
 
 # Percorsi file
 OPTIONS_CSV = ESTRAZIONI_DIR / 'options.csv'
@@ -45,101 +45,19 @@ def main() -> None:
     # --------------------
     # FETCH SCELTE DISPONIBILI A SISTEMA
     # --------------------
-    if not (OPTIONS_JSON.is_file() or OPTIONS_CSV.is_file()) or __TEST__:
-        print("Recupero elenco estrazioni disponibili a sistema...")
-        from Estrazioni._estrazioniDisponibiliDownload import (extract_form_data, save_to_csv, save_to_json, Option)
-        # Dopo il login, atterra sulla pagina desiderata
-        response = kiwi.get_request(Endpoints.ESTRAZIONI.value)
-
-        # Estrai dati dal form di estrazione
-        data: list[Option] = extract_form_data(response.text)
-        if not data:
-            print("Nessun dato estratto dal form di estrazione.")
-            return
-
-        # Salva i dati in CSV e JSON
-        save_to_csv(data, OPTIONS_CSV)
-        save_to_json(data, OPTIONS_JSON)
-
+    sync_available_options(kiwi)
 
     # --------------------
     # PAYLOAD GENERATION
     # --------------------
-    if not PAYLOAD_CSV.is_file() or __TEST__:
-        print("Costruzione lista di payload per estrarre dati da database...")
-        # Se non esiste il CSV contenente lista di payload delle estrazioni da scaricare
-        # crealo ora
-        from Estrazioni._multiplePayloadGenerator import (choose_extractions, prompt_for_payload, payload_to_base64, payload_to_csv)
-
-        # Stampa a schermo le estrazioni disponibili e cattura una scelta singola dall'utente
-        # oppure cattura scelte multiple separate da virgola
-        selected_options = choose_extractions(OPTIONS_JSON)
-
-        # Lista per salvataggio payload codificati
-        payloads_base64: list[str] = []
-
-        # Genera e stampa i payload per ciascuna opzione scelta
-        for option in selected_options:
-            print(f"\nGenerazione payload per: {option.value}")
-            payload: dict[str, str] = prompt_for_payload(option)
-            payload_base64: str = payload_to_base64(payload)
-
-            # Aggiungi il payload codificato alla lista
-            payloads_base64.append(payload_base64)
-
-        # Salva tutti i payload codificati in un file CSV
-        payload_to_csv(payloads_base64, PAYLOAD_CSV)
-        print(f"Payload codificati salvati in {PAYLOAD_CSV}")
-
+    generate_payload_list(PAYLOAD_CSV)
 
     # Legge la lista di payload dal CSV
     # per ciascuno chiede di inserire numero di giorni per ciascuna estrazione.
     # Il download sarà così segmentato
     # per non appesantire il server.
-    with open(PAYLOAD_CSV, 'r', encoding='utf-8') as csvfile:
-        reader = list(csv.DictReader(csvfile, delimiter=';'))
+    payload_list = read_payload_list(PAYLOAD_CSV)
 
-    # Chiavi: 'payload_str', 'file_name'
-    payload_list: list[dict[str, str]] = []
-    for i, row in enumerate(reader):
-        payload_str: str = row['payload']
-        _dict: dict[str, str] = payload_decode(payload_str)
-
-        print(f"Riga {i+1} - payload (decoded):")
-        print(json.dumps(_dict, indent=2))
-
-        step = segment_length()
-        print(f"Il range di date verrà suddiviso in intervalli da {step} giorni.\n")
-
-        # Lista di range di date (segmenti sequenziali dell'estrazione)
-        date_ranges_list = split_date_range(
-            start_date=parse_date(_dict['data_inizio']),
-            end_date=parse_date(_dict['data_fine']),
-            interval_days=step
-        )
-
-        # ------------------------------
-        # LISTA DI PAYLOAD PER DOWNLOAD MULTIPLI
-        # ------------------------------
-        for j, (start_date, end_date) in enumerate(date_ranges_list):
-            _dict['data_inizio'] = start_date.strftime('%d/%m/%y')
-            _dict['data_fine'] = end_date.strftime('%d/%m/%Y')
-
-            payload_str = base64.b64encode(
-                json.dumps(_dict).encode('utf-8')
-            ).decode('utf-8')
-
-            estrazione = Estrazione(
-                nome_estrazione=_dict['estrazione'],
-                indice=j + 1,
-                start_date=start_date,
-                end_date=start_date,
-            )
-
-            payload_list.append({
-                'payload64': payload_str,
-                'file_name': estrazione.as_str()
-            })
 
     # ------------------------------
     # Percorso in cui salvare i DOWNLOAD
@@ -155,15 +73,113 @@ def main() -> None:
     # ------------------------------
     # Inizio sequenza di download 
     # ------------------------------
-    for _dict in tqdm(payload_list, desc="Download Progress", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]"):
+    for params in tqdm(payload_list, desc="Download Progress", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]"):
 
-        payload_str, file_name = _dict['payload64'], _dict['file_name']
+        current_payload_64, file_name = params['payload64'], params['file_name']
 
         # ------------------------------
         # DOWNLOAD 
         # ------------------------------
+        response_txt = download_estrazione(kiwi, current_payload_64)
+        if response_txt is None:
+            continue
+
+        # ---------------
+        # SALVATAGGIO
+        # --------------
+        save_estrazione(response_txt, output_dir, file_name)
+
+def sync_available_options(session: Auth):
+    """Recupera le opzioni dal server se mancanti o in modalità test."""
+    if (OPTIONS_JSON.is_file() or OPTIONS_CSV.is_file()) and not __TEST__:
+        return
+
+    from Estrazioni._estrazioniDisponibiliDownload import (extract_form_data, save_to_csv, save_to_json, Option)
+
+    print("Recupero elenco estrazioni disponibili a sistema...")
+    response = session.get_request(Endpoints.ESTRAZIONI.value)
+    data: list[Option] = extract_form_data(response.text)
+    
+    if data:
+        save_to_csv(data, OPTIONS_CSV)
+        save_to_json(data, OPTIONS_JSON)
+    else:
+        print("Nessun dato estratto dal form di estrazione.")
+
+def generate_payload_list(payload_list_file: Path) -> None:
+    """Gestisce l'interazione con l'utente per creare il file PayloadForDownload.csv."""
+
+    if payload_list_file.is_file() and not __TEST__:
+        return
+
+    # Se non esiste il CSV contenente lista di payload delle estrazioni da scaricare
+    # crealo ora
+    from Estrazioni._multiplePayloadGenerator import (choose_extractions, prompt_for_payload, payload_to_base64, payload_to_csv)
+
+    print("Costruzione lista di payload per estrarre dati da database...")
+    selected_options = choose_extractions(OPTIONS_JSON)
+    payloads_base64: list[str] = []
+
+    for option in selected_options:
+        print(f"\nGenerazione payload per: {option.value}")
+        payload = prompt_for_payload(option)
+        payloads_base64.append(payload_to_base64(payload))
+
+    payload_to_csv(payloads_base64, payload_list_file)
+    print(f"Payload codificati salvati in {payload_list_file}")
+
+def read_payload_list(payload_list_file: Path) -> list[dict[str, str]]:
+    with open(payload_list_file, 'r', encoding='utf-8') as csvfile:
+        reader = list(csv.DictReader(csvfile, delimiter=';'))
+
+    # Chiavi: 'payload_str', 'file_name'
+    payload_list: list[dict[str, str]] = []
+    for i, row in enumerate(reader):
+        payload_str: str = row['payload']
+        params: dict[str, str] = payload_decode(payload_str)
+
+        print(f"Riga {i+1} - payload (decoded):")
+        print(json.dumps(params, indent=2))
+
+        step = segment_length()
+        print(f"Il range di date verrà suddiviso in intervalli da {step} giorni.\n")
+
+        # Lista di range di date (segmenti sequenziali dell'estrazione)
+        date_ranges_list = split_date_range(
+            start_date=parse_date(params['data_inizio']),
+            end_date=parse_date(params['data_fine']),
+            interval_days=step
+        )
+
+        # ------------------------------
+        # LISTA DI PAYLOAD PER DOWNLOAD MULTIPLI
+        # ------------------------------
+        for j, (start_date, end_date) in enumerate(date_ranges_list):
+            params['data_inizio'] = start_date.strftime('%d/%m/%y')
+            params['data_fine'] = end_date.strftime('%d/%m/%Y')
+
+            current_payload_64 = base64.b64encode(
+                json.dumps(params).encode('utf-8')
+            ).decode('utf-8')
+
+            estrazione = Estrazione(
+                nome_estrazione=params['estrazione'],
+                indice=j + 1,
+                start_date=start_date,
+                end_date=start_date,
+            )
+
+            payload_list.append({
+                'payload64': current_payload_64,
+                'file_name': estrazione.as_str()
+            })
+
+    return payload_list
+
+def download_estrazione(kiwi: Auth, current_payload_64: str) -> Optional[str]:
+
         payload = {
-            'payload': payload_str,
+            'payload': current_payload_64,
             'format': 'csv'
         }
         response = kiwi.post_request(Endpoints.DOWNLOAD.value, data=payload)
@@ -171,19 +187,19 @@ def main() -> None:
         set_cookie = response.headers.get('Set-Cookie', '')
         if 'fileDownload=true' not in set_cookie:
             print(f"\nErrore: Non è stato possibile scaricare il file CSV.")
-            continue
+            return
 
-        # ---------------
-        # SALVATAGGIO
-        # ---------------
-        with open(output_dir / f"{file_name}.csv", 'wb') as f:
-            f.write(response.content)
+        return response.text
+
+def save_estrazione(content: str, output_dir: Path, file_name: str) -> None:
+
+        with open(output_dir / f"{file_name}.csv", 'w') as f:
+            f.write(content)
 
         print(f"\nFile CSV salvato: {output_dir / f"{file_name}.csv"}")
 
         if (output_dir / f"{file_name}.csv").is_file():
             tqdm.write(f"File salvato: '{file_name}.csv'")
-
 
 def split_date_range(start_date: datetime, end_date: datetime, interval_days: int) -> list[tuple[datetime, datetime]]:
 
