@@ -39,11 +39,9 @@ def run(__TEST__: bool = False) -> None:
         query = Riassegnazioni(kiwi, mock_path)
 
         # Subroutine: esegue tutte le riassegnazioni lette dal CSV delle riassegnazioni
-        logging.info("--- INIZIO FASE: RIASSEGNAZIONI ---")
         query.subroutine_riassegnazioni()
 
         # Subroutine: esegue tutte le retrocessioni lette dal CSV delle retrocessioni
-        logging.info("--- INIZIO FASE: RETROCESSIONI ---")
         query.subroutine_retrocessioni()
 
     except Exception as e:

@@ -305,7 +305,7 @@ class Utenze:
                 indent=4
             )
 
-        logging.info(f"Dati scritti nel file '{self.CSV_UTENZE.with_suffix('.json')}'.")
+        logging.info(f"Utenze salvate in JSON: '{self.CSV_UTENZE.with_suffix('.json')}'.")
 
 class Lavorazioni:
 

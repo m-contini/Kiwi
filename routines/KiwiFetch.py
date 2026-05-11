@@ -78,7 +78,7 @@ def run(__TEST__: bool = False) -> None:
             logging.info(f"Tabella con header {headers[0]} elaborata e salvata.")
 
         logging.info(f"Operazione completata. Elaborate {tables_processed} tabelle.")
-        logging.info(f"Tabelle salvate nelle sottocartelle di {HomeKiwiOutput.CSV_DIR.name} e {HomeKiwiOutput.JSON_DIR.name}")
+        logging.info(f"Tabelle salvate nelle sottocartelle {HomeKiwiOutput.CSV_DIR.value} e {HomeKiwiOutput.JSON_DIR.value}")
 
     except Exception as e:
         logging.error(f"Errore critico durante il KiwiFetch: {e}", exc_info=True)
