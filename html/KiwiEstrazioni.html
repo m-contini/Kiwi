@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Mock Admin Panel</title>
+</head>
+<body>
+    <div id="GG_admin_panel">
+        <h3>Menu di Amministrazione</h3>
+        <ul>
+            <li class="">
+                <a href="/mutui/esporta/estrazioni/1">Estrazione 1</a>
+            </li>
+            <li>
+                <a href="/mutui/esporta/estrazioni/2">Estrazione 2</a>
+            </li>
+            <li class="">
+                <a href="/mutui/esporta/estrazioni/3">Estrazione 3</a>
+            </li>
+            <li class="">
+                <span>(Nessun link)</span>
+            </li>
+            <li class="">
+                <a>Estrazione disabilitata</a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/legacy">(Ignorato)</a>
+            </li>
+        </ul>
+    </div>
+    <div id="GG_filters_section">
+        <h3>Filtri Preimpostati</h3>
+        <select id="dropdown_filtri_dinamici">
+            <option value="default">-- Seleziona un filtro rapido --</option>
+            <option value="vuoto" data-filters="">Filtro Vuoto</option>
+            <option value="estrazione" data-filters="W3sibmFtZSI6ICJzdGF0dXMiLCAidHlwZSI6ICJzZWxlY3QiLCAidmFsb3JlIjogImF0dGl2byJ9LCB7Im5hbWUiOiAiZGF0ZSIsICJ0eXBlIjogImRhdGVfcGlja2VyIiwgInZhbG9yZSI6ICIyMDI0LTA2LTI4In1d">
+                Estrazione Dati (Test Valido)
+            </option>
+            <option value="corrotto" data-filters="dGVzdF9ub25famVzb24=">
+                Filtro Corrotto (Test Eccezione)
+            </option>
+        </select>
+    </div>
+    </body>
+</html>
