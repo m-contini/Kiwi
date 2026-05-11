@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Literal, Optional
 from bs4 import BeautifulSoup, ResultSet, Tag
@@ -16,6 +17,7 @@ from .const import (
     HomeKiwiOutput,
     Endpoints,
 )
+from .exceptions import FetchError
 
 # Tipi di dato
 from .types import (
@@ -56,14 +58,12 @@ class Riassegnazioni:
 
         url = Endpoints.RIASSEGNAZ.value
         for riassegnazione in riassegnazioni:
-
             try:
                 _ = self.kiwi.post_request(url, riassegnazione.as_dict())
+                logging.info(f"Riassegnazione da {riassegnazione.consulente_id} a {riassegnazione.assegnatario_id} per agenda {riassegnazione.agenda} completata!")
             except Exception as e:
-                print(f"Riassegnazione {riassegnazione.anagrafica}({riassegnazione.agenda}) fallita: {e}")
+                logging.error(f"Riassegnazione {riassegnazione.anagrafica}({riassegnazione.agenda}) fallita: {e}")
                 continue
-
-            print(f"Riassegnazione da {riassegnazione.consulente_id} a {riassegnazione.assegnatario_id} per agenda {riassegnazione.agenda} completata!\n")
 
     def subroutine_retrocessioni(self) -> None:
 
@@ -75,7 +75,7 @@ class Riassegnazioni:
 
         for retrocessione in retrocessioni:
             cellulare = retrocessione.cellulare
-            id_esito = retrocessione.idEsito
+            id_esito = retrocessione.id_esito
 
             # Effettua la ricerca per cellulare
             payload = SearchForm(
@@ -88,25 +88,22 @@ class Riassegnazioni:
                 # Estrai Anagrafica_id e Agenda_id
                 agenda = self._parse_agenda(self.ANAGRAFICA_RICERCA_NAME)
 
-                print(f"Retrocessione Anagrafica(Agenda) -> {agenda.anagrafica}({agenda.agenda})")
+                logging.info(f"Retrocessione Anagrafica(Agenda) -> {agenda.anagrafica}({agenda.agenda})")
 
                 # Aggiorna lo stato
-                _ = self.kiwi.post_request(update_url, retrocessione.as_dict(agenda, id_esito))
+                _ = self.kiwi.post_request(update_url, retrocessione.as_dict(agenda))
+                # Ottieni lo status di destinazione dall'ultimo carattere di id_esito
+                logging.info(f"Retrocessione in stato {str(id_esito)[-1]} per agenda {agenda.agenda} completata!")
             except Exception as e:
-                print(e)
-                print(f"Lookup per cellulare '{cellulare}' fallita: {e}")
+                logging.error(f"Operazione per cellulare '{cellulare}' fallita: {e}")
                 continue
-
-            # Ottieni lo status di destinazione dall'ultimo carattere di id_esito
-            print(f"Retrocessione in stato {str(id_esito)[-1]} per agenda {agenda.agenda} completata!\n")
 
     def _get_riassegnazioni_list(self, input_csv_file: Path) -> list[Riassegnazione]:
 
         # Carica il CSV e costruisce la query
         query_list = self._get_query_params_list(input_csv_file)
         if query_list is None:
-            print("Nessuna query costruita.")
-            raise SystemExit
+            raise FetchError("Nessuna query costruita dal CSV riassegnazioni.")
 
         # Itera sui payloads
         all_results: list[Riassegnazione] = []
@@ -127,7 +124,7 @@ class Riassegnazioni:
                 self.response = self.kiwi.post_request(self.RICERCA_URL, asdict(payload))
                 agenda: Agenda = self._parse_agenda(self.ANAGRAFICA_RICERCA_NAME)
             except Exception as e:
-                print(e)
+                logging.error(f"Lookup per cellulare '{params.cellulare}' fallita: {e}")
                 continue
 
             all_results.append(
@@ -160,20 +157,19 @@ class Riassegnazioni:
             data: list[Params] = []
             with open(input_csv_path, 'r', encoding='utf-8') as f:
                 for row in csv.DictReader(f, delimiter=';'):
-                    print(row)
                     data.append(Params(**row))
                 return data
         except KeyError:
-            print(f"Colonna 'cellulare' non trovata nel CSV.")
+            logging.error(f"Colonna 'cellulare' non trovata nel CSV {input_csv_path}")
         except FileNotFoundError:
-            print(f"File CSV non trovato: {input_csv_path}")
+            logging.error(f"File CSV non trovato: {input_csv_path}")
+        return None
 
     def _parse_agenda(self, table_id: str) -> Agenda:
         """Converte il corpo della risposta HTTP in una lista di dizionari"""
 
         if self.response is None:
-            print(f"Ricerca tramite telefono fallita.")
-            raise SystemExit
+            raise FetchError("Impossibile parsare l'agenda: nessuna risposta precedente disponibile.")
 
         # Parsing del contenuto HTML con BeautifulSoup
         soup = BeautifulSoup(self.response.content, 'html.parser')
@@ -185,8 +181,7 @@ class Riassegnazioni:
 
         agenda = self._extract_anagrafica_agenda(table)
         if agenda is None:
-            print("Nessun id trovato, controlla i parametri di input.")
-            raise SystemExit
+            raise ValueError(f"Nessuna agenda valida trovata nella tabella {table_id}.")
 
         return agenda
 
@@ -196,6 +191,7 @@ class Riassegnazioni:
 
         tbody = table.find('tbody')
         if not tbody:
+            logging.error("Nessuna tabella trovata.")
             return
 
         rows: list[list[str]] = []
@@ -205,9 +201,10 @@ class Riassegnazioni:
             rows.append(row_data)
 
         if not rows:
+            logging.error("Nessuna riga trovata.")
             return
 
-        pattern = r"(\d+)\n\((\d+)\s.*\)" 
+        pattern = r"(\d+)\r*\n\((\d+)\s.*\)" 
         for row in rows:
             # {id_anagrafica}\n({id_agenda} Dom 2026 May 09 19:45)
             if len(row) <= 1:
@@ -219,6 +216,8 @@ class Riassegnazioni:
             if match_:
                 id_anagrafica, id_gig_agenda = match_.groups()
                 return Agenda(id_anagrafica.strip(), id_gig_agenda.strip())
+
+        logging.error("Nessuna riga trovata.")
 
 class Utenze:
 
@@ -283,6 +282,10 @@ class Utenze:
 
     def to_csv(self) -> None:
         """Scrivi i dati in CSV"""
+        if not self.data:
+            logging.warning("Nessun dato da salvare in CSV per Utenze.")
+            return
+            
         with open(self.CSV_UTENZE, 'w', encoding='utf-8', newline='') as csvfile:
             fieldnames = [f.name for f in fields(self.data[0])]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
@@ -290,8 +293,7 @@ class Utenze:
             writer.writeheader()
             for item in self.data:
                 writer.writerow(asdict(item))
-
-        print(f"Dati scritti nel file '{self.CSV_UTENZE}'.")
+        logging.info(f"Utenze salvate in CSV: {self.CSV_UTENZE}")
 
     def to_json(self) -> None:
         """Scrivi i dati in JSON"""
@@ -303,7 +305,7 @@ class Utenze:
                 indent=4
             )
 
-        print(f"Dati scritti nel file '{self.CSV_UTENZE.with_suffix('.json')}'.")
+        logging.info(f"Dati scritti nel file '{self.CSV_UTENZE.with_suffix('.json')}'.")
 
 class Lavorazioni:
 
@@ -350,7 +352,7 @@ class Lavorazioni:
 
     def to_csv(self) -> None:
         if not self.data:
-            print("Nessun dato fornito per il salvataggio in CSV.")
+            logging.warning("Nessun dato fornito per il salvataggio in CSV.")
             return
 
         # Prende le intestazioni dalle chiavi del primo dizionario
@@ -363,9 +365,9 @@ class Lavorazioni:
                 writer.writeheader()
                 writer.writerows(self.data)
 
-            print(f"Dati salvati con successo in: {self.output_file}")
+            logging.info(f"Dati salvati con successo in: {self.output_file}")
         except Exception as e:
-            print(f"Errore durante il salvataggio del CSV: {e}")
+            logging.error(f"Errore durante il salvataggio del CSV: {e}")
 
 class KiwiTable:
 
@@ -412,7 +414,7 @@ class KiwiTable:
 
         with open(file_path, "w", encoding="utf-8") as file:
             file.write(html)
-        print(f"[HTML] Risposta salvata in {file_path}")
+        logging.info(f"[HTML] Risposta salvata in {file_path}")
 
     def to_csv(self, table: Tag, headers: list[str]):
         """ Salva i dati della tabella in un file CSV """
@@ -427,7 +429,7 @@ class KiwiTable:
             writer.writerow(headers)
             for row in data:
                 writer.writerow(row)
-        print(f"[CSV] Risposta salvata in {file_path}")
+        logging.info(f"[CSV] Risposta salvata in {file_path}")
 
     def to_json(self, table: Tag, headers: list[str]):
         """ Salva i dati della tabella in un file JSON """
@@ -444,7 +446,7 @@ class KiwiTable:
 
         with open(file_path, "w", encoding="utf-8") as jsonfile:
             json.dump(json_data, jsonfile, indent=4, ensure_ascii=False)
-        print(f"[JSON] Risposta salvata in {file_path}")
+        logging.info(f"[JSON] Risposta salvata in {file_path}")
 
     @staticmethod
     def _fetch_table(table: Tag, headers: list[str], format: Literal['csv', 'json']) -> list[list[str] | dict[str, str]]:

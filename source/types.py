@@ -6,7 +6,6 @@ Riassegnazioni e Retrocessioni.
 
 from dataclasses import asdict, dataclass
 from datetime import datetime
-from typing import NamedTuple
 
 @dataclass
 class Estrazione:
@@ -18,7 +17,7 @@ class Estrazione:
     def as_str(self) -> str:
         return '_'.join((
             self.nome_estrazione,
-            str(self.indice + 1),
+            str(self.indice),
             self.start_date.strftime('%Y-%m-%d'),
             self.end_date.strftime('%Y-%m-%d')
         ))
@@ -42,21 +41,22 @@ class SearchForm:
     def as_dict(self) -> dict[str, str]:
         return asdict(self)
 
-class Agenda(NamedTuple):
+@dataclass
+class Agenda:
     anagrafica: str
     agenda: str
 
 @dataclass
 class Retrocessione:
     cellulare: str
-    idEsito: str
+    id_esito: str
 
-    def as_dict(self, agenda: Agenda, idesito: str) -> dict[str, str]:
+    def as_dict(self, agenda: Agenda) -> dict[str, str]:
         return {
             'operation':    'modifica_stato',
             'idAnagrafica': agenda.anagrafica,
             'idGigAgenda':  agenda.agenda,
-            'idEsito':      idesito,
+            'idEsito':      self.id_esito,
             'pulsStato':    'Modifica'
         }
 
