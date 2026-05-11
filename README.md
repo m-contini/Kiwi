@@ -1,8 +1,7 @@
 # Kiwi
 
 - [Kiwi](#kiwi)
-  - [Setup](#setup)
-  - [Introduzione](#introduzione)
+  - [Utilizzi](#utilizzi)
   - [Routines](#routines)
     - [1. Pulizia](#1-pulizia)
     - [2. Estrazione Utenze](#2-estrazione-utenze)
@@ -15,15 +14,18 @@
       - [Output](#output)
     - [EstrazioniDownload \[WIP\]](#estrazionidownload-wip)
   - [Emulazione per test](#emulazione-per-test)
+  - [Setup](#setup)
   - [Proprietà e Termini d'Uso](#proprietà-e-termini-duso)
 
-## Setup
+Questo sistema automatizza le operazioni ripetitive su Kiwi che prima richiedevano ore di lavoro manuale:
 
-```bash
-python -m pip install -r requirements.txt
-```
+- **Monitoraggio Consulenti**: Legge automaticamente la Dashboard di Kiwi per vedere chi ha troppe pratiche aperte e prevenire sovraccarichi.  
+- **Gestione Turni (Riassegnazioni)**: Sposta le pratiche da un consulente all'altro leggendo un semplice file Excel di istruzioni, oppure le retrocede a uno stato precedente.  
+- **Controllo Anomalie**: Verifica che solo le persone autorizzate ricevano agende, segnalando eventuali errori di sistema.
+- **Report Performance**: Scarica i dati storici delle lavorazioni dei consulenti per le analisi quotidiane, settimanali o mensili.  
+- **Download Massivi**: Permette di scaricare grandi quantità di dati dividendo il lavoro in "pezzi" più piccoli per non abbattere il server.
 
-## Introduzione
+## Utilizzi
 
 Questa collezione di scripts interagisce col gestionale **Kiwi** tramite *routine* automatiche:
 
@@ -37,16 +39,16 @@ o tramite estrazione interattiva di dati dal DB (solo manuale):
 python DownloadEstrazioni.py
 ```
 
-Alcune *routine* sono riproducibili anche offline leggendo dai dati di prova di questo repository.
+Alcune *automazioni* sono riproducibili anche offline leggendo dai dati di prova di questo repository.
 
-Il codice sorgente di ciascuna *routine* è contenuto nella cartella [routines](./routines/)
+Il codice sorgente di ciascuna *automazione* è contenuto nella cartella [routines](./routines/)
 
 Utilizzi:
 
 - **temporizzato** con Task Scheduler su Windows;
 - **manuale** da riga di comando.
 
-Funzioni (routines):
+Funzioni di *automazione* (**routines**):
 
 - Estrazione delle utenze attive (*Operations* + *Business*) nel gestionale per monitorare un occasionale bug di sistema per cui le utenze non *Operations* ricevevano agende da lavorare;
 - Scraping in tempo reale della dashboard della home page, contenente tutte le agende (aperte e chiuse) di ogni consulente censito a sistema;
@@ -56,7 +58,7 @@ Funzioni (routines):
 
 ## Routines
 
-Le *routine* sono moduli specializzati definiti nella cartella [routines](/routines/).  
+Le *routine* sono moduli specializzati in automazione, definiti nella cartella [routines](/routines/).  
 Di seguito il dettaglio tecnico delle operazioni che esse eseguono.
 
 ### 1. Pulizia
@@ -100,9 +102,7 @@ La lista di agende da riassegnare/retrocedere viene letta da 2 distinti CSV, com
 
 ### 6. Estrazioni (WIP)
 
-\[**ancora in fase di test**\]
-
-Download automatico di una o più estrazioni programmate, le cui opzioni e filtri vengono lette da CSV creato interattivamente in [multiplePayloadGenerator.py](./Estrazioni/_multiplePayloadGenerator.py).
+Download automatico di una o più estrazioni programmate, i cui parametri di estrazione vengono letti da CSV creato interattivamente in [multiplePayloadGenerator.py](./Estrazioni/_multiplePayloadGenerator.py).
 
 - **Codice**: [DownloadEstrazioni.py](./DownloadEstrazioni.py)
 - **Alias**: `download_estrazioni`
@@ -242,7 +242,7 @@ Retrocessione in stato 2 per agenda 999456 completata!
 
 ### EstrazioniDownload [WIP]
 
-\[**ancora in fase di test**\]
+Nota: in modalità Offline questo script può solo mostrare output, fallendo per ovvi motivi nella generazione dati (indisponibilità del server).  
 
 ```bash
 python EstrazioniDownload.py
@@ -266,10 +266,10 @@ Scegli una o più opzioni (separate da virgola):
 2. AgendeClientiRitorno
 3. AgendeConPassaggioDiStato
 [...]
-37. TotaleInviiConDettaglio
-38. TransazioniGoogleAnalytics
-39. ValidazioniAnagraficheFido
-40. VerificheCondizioniSalvataggioAgende
+1.  TotaleInviiConDettaglio
+2.  TransazioniGoogleAnalytics
+3.  ValidazioniAnagraficheFido
+4.  VerificheCondizioniSalvataggioAgende
 
 Inserisci i numeri delle opzioni scelte (separati da virgola): 10, 20, 27
 
@@ -347,6 +347,12 @@ Di default è attivo un flag globale `__TEST__`:
     - **`__TEST__ = False`**: Modalità online. Le *routine* interagiscono con Kiwi.
 
 *Assicurarsi di aver configurato il flag `__TEST__ = False` all'interno di `ScheduledTasks.py` se si è realmente connessi a Kiwi.*
+
+## Setup
+
+```bash
+python -m pip install -r requirements.txt
+```
 
 ## Proprietà e Termini d'Uso
 
