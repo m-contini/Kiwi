@@ -1,7 +1,7 @@
 """
 Questo script contiene solo funzioni per produrre payload ai fini del download di un'estrazione (anche più di una alla volta).
 
-Non è stand-alone, ma viene evocato in `./routines/EstrazioniDownload.py` se non esiste file di output.
+Non è stand-alone, ma viene evocato in `./routines/DownloadEstrazioni.py` se non esiste file di output.
 
 Si chiede all'utente la scelta di una o più opzioni estrazioni
 tra quelle contenute in `./Estrazioni/options.csv`, che ha questa struttura:
@@ -12,7 +12,7 @@ Da queste estrazioni viene costruito lo scheletro del payload per ogni richiesta
 Nel payload caricato bisogna inserire, tramite input da utente, i valori necessari (es. intervallo date).
 Si ricodifica in base64 per avere il payload come stringa da allegare alla richiesta.
 
-In un altro script `./routines/EstrazioniDownload.py` si eseguono le richieste POST all'endpoint `/download`
+In un altro script `./routines/DownloadEstrazioni.py` si eseguono le richieste POST all'endpoint `/download`
 """
 from dataclasses import dataclass
 from datetime import datetime, timedelta

@@ -1,21 +1,15 @@
-# Kiwi
+# Kiwi Automation Suite
 
-- [Kiwi](#kiwi)
-  - [Utilizzi](#utilizzi)
-  - [Routines](#routines)
-    - [1. Pulizia](#1-pulizia)
-    - [2. Estrazione Utenze](#2-estrazione-utenze)
-    - [3. Dashboard (Scraping)](#3-dashboard-scraping)
-    - [4. Lavorazioni Consulente](#4-lavorazioni-consulente)
-    - [5. Riassegnazioni](#5-riassegnazioni)
-    - [6. Estrazioni (WIP)](#6-estrazioni-wip)
-  - [Esempio di Output da terminale](#esempio-di-output-da-terminale)
-    - [Scheduled Tasks](#scheduled-tasks)
-      - [Output](#output)
-    - [EstrazioniDownload \[WIP\]](#estrazionidownload-wip)
-  - [Emulazione per test](#emulazione-per-test)
-  - [Setup](#setup)
-  - [Proprietà e Termini d'Uso](#proprietà-e-termini-duso)
+[![Python Version](https://img.shields.io/badge/python-3.13%2B-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+> **Automazione per l'ottimizzazione dei flussi di Business Intelligence e Workflow Management.**
+
+🇮🇹 Per una panoramica funzionale in lingua italiana, dedicata a stakeholder non tecnici, consulta **[Overview Business](./OVERVIEW_BUSINESS.md)**.
+
+---
+
+## 🎯 Business Value & Impact
 
 Questo sistema automatizza le operazioni ripetitive su Kiwi che prima richiedevano ore di lavoro manuale:
 
@@ -24,6 +18,24 @@ Questo sistema automatizza le operazioni ripetitive su Kiwi che prima richiedeva
 - **Controllo Anomalie**: Verifica che solo le persone autorizzate ricevano agende, segnalando eventuali errori di sistema.
 - **Report Performance**: Scarica i dati storici delle lavorazioni dei consulenti per le analisi quotidiane, settimanali o mensili.  
 - **Download Massivi**: Permette di scaricare grandi quantità di dati dividendo il lavoro in "pezzi" più piccoli per non abbattere il server.
+
+- [Kiwi Automation Suite](#kiwi-automation-suite)
+  - [🎯 Business Value \& Impact](#-business-value--impact)
+  - [Utilizzi](#utilizzi)
+  - [Routines](#routines)
+    - [1. Pulizia](#1-pulizia)
+    - [2. Estrazione Utenze](#2-estrazione-utenze)
+    - [3. Dashboard (Scraping)](#3-dashboard-scraping)
+    - [4. Lavorazioni Consulente](#4-lavorazioni-consulente)
+    - [5. Riassegnazioni](#5-riassegnazioni)
+    - [6. Estrazioni](#6-estrazioni)
+  - [Esempio di Output da terminale](#esempio-di-output-da-terminale)
+    - [ScheduledTasks](#scheduledtasks)
+      - [Output](#output)
+    - [DownloadEstrazioni](#downloadestrazioni)
+  - [Emulazione per test](#emulazione-per-test)
+  - [Setup](#setup)
+  - [Proprietà e Termini d'Uso](#proprietà-e-termini-duso)
 
 ## Utilizzi
 
@@ -43,12 +55,12 @@ Alcune *automazioni* sono riproducibili anche offline leggendo dai dati di prova
 
 Il codice sorgente di ciascuna *automazione* è contenuto nella cartella [routines](./routines/)
 
-Utilizzi:
+### Utilizzi
 
 - **temporizzato** con Task Scheduler su Windows;
 - **manuale** da riga di comando.
 
-Funzioni di *automazione* (**routines**):
+### Funzioni di *automazione* (**routines**)
 
 - Estrazione delle utenze attive (*Operations* + *Business*) nel gestionale per monitorare un occasionale bug di sistema per cui le utenze non *Operations* ricevevano agende da lavorare;
 - Scraping in tempo reale della dashboard della home page, contenente tutte le agende (aperte e chiuse) di ogni consulente censito a sistema;
@@ -100,7 +112,7 @@ La lista di agende da riassegnare/retrocedere viene letta da 2 distinti CSV, com
 - **Codice**: [Riassegnazioni.py](./routines/Riassegnazioni.py)
 - **Alias**: `riassegnazioni_retrocessioni`
 
-### 6. Estrazioni (WIP)
+### 6. Estrazioni
 
 Download automatico di una o più estrazioni programmate, i cui parametri di estrazione vengono letti da CSV creato interattivamente in [multiplePayloadGenerator.py](./Estrazioni/_multiplePayloadGenerator.py).
 
@@ -111,7 +123,7 @@ Download automatico di una o più estrazioni programmate, i cui parametri di est
 
 Ecco come appare l'output da terminale (nel caso in cui gli script siano lanciati manualmente anziché come routine schedulate)
 
-### Scheduled Tasks
+### [ScheduledTasks](./ScheduledTasks.py)
 
 ```bash
 python ScheduledTasks.py
@@ -240,12 +252,12 @@ Retrocessione Anagrafica(Agenda) -> 555123(999456)
 Retrocessione in stato 2 per agenda 999456 completata!
 ```
 
-### EstrazioniDownload [WIP]
+### [DownloadEstrazioni](./DownloadEstrazioni.py)
 
 Nota: in modalità Offline questo script può solo mostrare output, fallendo per ovvi motivi nella generazione dati (indisponibilità del server).  
 
 ```bash
-python EstrazioniDownload.py
+python DownloadEstrazioni.py
 ```
 
 ```plain
