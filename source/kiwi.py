@@ -41,10 +41,9 @@ class Scraper:
 
         self._mock_file = MOCK_DIR / (_mock_file.stem + '.html') if _mock_file is not None else None
 
-        self.username: str = self.read_secrets('.env')
         self.session: Session = Session()
-        self.php_session_id = None
-        
+        self.read_secrets('.env')
+
     def _handle_mock(self) -> Optional[Response]:
         """Helper per restituire una risposta fittizia se in modalità test."""
         if self._mock_file and self._mock_file.is_file():
@@ -54,7 +53,7 @@ class Scraper:
             return resp
         return None
 
-    def read_secrets(self, env_name: str = '.env') -> str:
+    def read_secrets(self, env_name: str = '.env') -> None:
         """Legge le credenziali (username e password) dal file .env.
         Se in modalità test, cerca il file `.env.example`.
         """
@@ -62,16 +61,14 @@ class Scraper:
             env_name += '.example'
 
         load_dotenv(env_name)
-        user = os.getenv('USERNAME', '')
-        password = os.getenv('PASSWORD', '')
+        self.user = os.getenv('USERNAME', '')
+        self.password = os.getenv('PASSWORD', '')
 
-        logging.debug(f"Username: '{user}'")
-        logging.debug(f"Password: '{'*'*len(password)}'\n")
+        logging.debug(f"Username: '{self.user}'")
+        logging.debug(f"Password: '{'*'*len(self.password)}'\n")
 
-        if not user or not password:
+        if not self.user or not self.password:
             raise NoCredentials('Impossibile leggere credenziali. Controllare `.env`')
-
-        return user
 
     def get_dashboard_snapshot(self) -> Response:
         """Esegue l'intera procedura di login tramite scraping per ottenere l'HTML della Home."""
@@ -136,9 +133,9 @@ class Scraper:
         """ Invia una richiesta POST al form di login """
 
         # Prendi la password dall'ambiente invece che da input() per permettere automazione
-        data = {
-            'username': self.username,
-            'password': os.getenv('PASSWORD'),
+        data: dict[str, str] = {
+            'username': self.user,
+            'password': self.password,
             'credentialId': ''
         }
         # Il Content-Type viene gestito automaticamente da requests se passi un dict a data

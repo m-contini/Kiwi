@@ -119,6 +119,5 @@ def run(__TEST__: bool = False) -> None:
         logging.info(f"Lavorazioni salvate in: {lavorazioni.output_file}")
 
     except Exception as e:
-        print(e)
         logging.error(f"Errore durante l'estrazione lavorazioni consulenti: {e}", exc_info=True)
         raise

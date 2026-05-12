@@ -107,7 +107,7 @@ def download_estrazione(kiwi: Auth, current_payload_64: str) -> Optional[str]:
 
 def save_estrazione(content: str, output_dir: Path, file_name: str) -> None:
 
-        with open(output_dir / f"{file_name}.csv", 'w') as f:
+        with open(output_dir / f"{file_name}.csv", 'w', encoding='utf-8') as f:
             f.write(content)
 
         print(f"\nFile CSV salvato: {output_dir / f"{file_name}.csv"}")

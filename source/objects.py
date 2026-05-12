@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Any, Literal, Optional
 from bs4 import BeautifulSoup, ResultSet, Tag
 import re
 import csv
@@ -85,7 +85,7 @@ class Riassegnazioni:
             )
 
             try:
-                _ = self.kiwi.post_request(search_url, payload.as_dict())
+                self.response = self.kiwi.post_request(search_url, payload.as_dict())
 
                 # Estrai Anagrafica_id e Agenda_id
                 agenda = self._parse_agenda(self.ANAGRAFICA_RICERCA_NAME)
@@ -109,9 +109,7 @@ class Riassegnazioni:
 
         # Itera sui payloads
         all_results: list[Riassegnazione] = []
-        for idx in range(len(query_list)):
-            params: Params = query_list[idx]
-
+        for params in query_list:
             # Crea il payload per la richiesta POST
             payload = SearchForm(
                 ricerca_id_anagrafica='',
@@ -193,7 +191,7 @@ class Riassegnazioni:
 
         tbody = table.find('tbody')
         if not tbody:
-            logging.error("Nessuna tabella trovata.")
+            logging.error("Tbody non trovato nella tabella.")
             return
 
         rows: list[list[str]] = []
@@ -203,7 +201,7 @@ class Riassegnazioni:
             rows.append(row_data)
 
         if not rows:
-            logging.error("Nessuna riga trovata.")
+            logging.warning("Tabella vuota: nessuna riga trovata.")
             return
 
         pattern = r"(\d+)\r*\n\((\d+)\s.*\)" 
@@ -219,7 +217,8 @@ class Riassegnazioni:
                 id_anagrafica, id_gig_agenda = match_.groups()
                 return Agenda(id_anagrafica.strip(), id_gig_agenda.strip())
 
-        logging.error("Nessuna riga trovata.")
+        logging.error("Nessuna agenda aperta valida trovata tra le righe elaborate.")
+        return
 
 class Utenze:
 
@@ -264,8 +263,9 @@ class Utenze:
                 continue
 
             # Estrai e pulisci i dati
-            img_src: str = img.get('src', '')
-            user_id: int = int(link.get('href', '').split('/')[-1])  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType, reportOptionalMemberAccess]
+            img_src: str = str(img.get('src', ''))
+            href = link.get('href', '')
+            user_id: int = int(str(href).split('/')[-1])
             username: str = link.text.strip()
 
             # Le utenze attive devono avere icona verde
@@ -421,7 +421,7 @@ class KiwiTable:
         self.csv_directory.mkdir(parents=True, exist_ok=True)
         file_path = self.csv_directory / f"{self.timestamp}_{headers[0]}.csv"
 
-        data: list[list[str]] = self._fetch_table(table, headers, 'csv')
+        data = self._fetch_table(table, headers, 'csv')
 
         with open(file_path, "w", newline='', encoding="utf-8") as csvfile:
             writer = csv.writer(csvfile)
@@ -435,9 +435,9 @@ class KiwiTable:
         self.json_directory.mkdir(parents=True, exist_ok=True)
         file_path = self.json_directory / f"{self.timestamp}_{headers[0]}.json"
 
-        data: list[dict[str, str]] = self._fetch_table(table, headers, 'json')
+        data = self._fetch_table(table, headers, 'json')
 
-        json_data: dict[str, str | list[str] | list[dict[str, str]]] = {
+        json_data: dict[str, Any] = {
             'timestamp': self.timestamp,
             'headers': headers,
             'data': data
