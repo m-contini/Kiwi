@@ -37,9 +37,7 @@ Questo sistema automatizza le operazioni ripetitive su Kiwi che prima richiedeva
   - [Setup](#setup)
   - [Proprietà e Termini d'Uso](#proprietà-e-termini-duso)
 
-## Utilizzi
-
-Questa collezione di scripts interagisce col gestionale **Kiwi** tramite *routine* automatiche:
+Questa **collezione** di scripts interagisce col gestionale **Kiwi** tramite *routine* automatiche:
 
 ```bash
 python ScheduledTasks.py
