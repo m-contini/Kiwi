@@ -11,7 +11,6 @@ from dataclasses import asdict, fields
 # Costanti
 from .const import (
     LAVORAZIONI_DIR,
-    MOCK_DIR,
     RIASSEGNAZIONI_DIR,
     UTENZE_DIR,
     HomeKiwiOutput,
@@ -45,62 +44,11 @@ class Riassegnazioni:
     # cellulare;idEsito
     RETROCESSIONI_CSV: Path = RIASSEGNAZIONI_DIR / 'input_cellulare_retrocessioni_di_stato.csv'
 
-    def __init__(self, kiwi: Auth, _mock_file: Optional[Path]) -> None:
+    def __init__(self, kiwi: Auth) -> None:
         self.kiwi = kiwi
         self.response = None
 
-        self._mock_file = MOCK_DIR / (_mock_file.stem + '.html') if _mock_file is not None else None
-
-    def subroutine_riassegnazioni(self) -> None:
-
-        # Fetch dei dati da file
-        riassegnazioni = self._get_riassegnazioni_list(self.CAMBI_STATO_CSV)
-        logging.info(f"Trovate {len(riassegnazioni)} riassegnazioni da eseguire.")
-
-        url = Endpoints.RIASSEGNAZ.value
-        for riassegnazione in riassegnazioni:
-            try:
-                _ = self.kiwi.post_request(url, riassegnazione.as_dict())
-                logging.debug(f"Riassegnazione da {riassegnazione.consulente_id} a {riassegnazione.assegnatario_id} per agenda {riassegnazione.agenda} completata!")
-            except Exception as e:
-                logging.error(f"Riassegnazione {riassegnazione.anagrafica}({riassegnazione.agenda}) fallita: {e}")
-                continue
-
-    def subroutine_retrocessioni(self) -> None:
-
-        # Fetch dei dati da file
-        retrocessioni = self._get_retrocessioni_list(self.RETROCESSIONI_CSV)
-        logging.info(f"Trovate {len(retrocessioni)} retrocessioni da eseguire.")
-
-        search_url = Endpoints.RICERCA.value
-        update_url = Endpoints.UPDATE.value
-
-        for retrocessione in retrocessioni:
-            cellulare = retrocessione.cellulare
-            id_esito = retrocessione.id_esito
-
-            # Effettua la ricerca per cellulare
-            payload = SearchForm(
-                ricerca_telefono=cellulare,
-            )
-
-            try:
-                self.response = self.kiwi.post_request(search_url, payload.as_dict())
-
-                # Estrai Anagrafica_id e Agenda_id
-                agenda = self._parse_agenda(self.ANAGRAFICA_RICERCA_NAME)
-
-                logging.debug(f"Retrocessione Anagrafica(Agenda) -> {agenda.anagrafica}({agenda.agenda})")
-
-                # Aggiorna lo stato
-                _ = self.kiwi.post_request(update_url, retrocessione.as_dict(agenda))
-                # Ottieni lo status di destinazione dall'ultimo carattere di id_esito
-                logging.debug(f"Retrocessione in stato {str(id_esito)[-1]} per agenda {agenda.agenda} completata!")
-            except Exception as e:
-                logging.error(f"Operazione per cellulare '{cellulare}' fallita: {e}")
-                continue
-
-    def _get_riassegnazioni_list(self, input_csv_file: Path) -> list[Riassegnazione]:
+    def get_riassegnazioni_list(self, input_csv_file: Path) -> list[Riassegnazione]:
 
         # Carica il CSV e costruisce la query
         query_list = self._get_query_params_list(input_csv_file)
@@ -121,8 +69,8 @@ class Riassegnazioni:
 
             try:
                 # Esegui la richiesta POST
-                self.response = self.kiwi.post_request(self.RICERCA_URL, asdict(payload))
-                agenda: Agenda = self._parse_agenda(self.ANAGRAFICA_RICERCA_NAME)
+                self.response = self.kiwi.request('POST', self.RICERCA_URL, payload.as_dict())
+                agenda: Agenda = self.parse_agenda(self.ANAGRAFICA_RICERCA_NAME)
             except Exception as e:
                 logging.error(f"Lookup per cellulare '{params.cellulare}' fallita: {e}")
                 continue
@@ -141,7 +89,7 @@ class Riassegnazioni:
 
         return all_results
 
-    def _get_retrocessioni_list(self, input_csv_file: Path) -> list[Retrocessione]:
+    def get_retrocessioni_list(self, input_csv_file: Path) -> list[Retrocessione]:
         # Leggi il CSV e ottieni i numeri di cellulare e gli idEsito
         with open(input_csv_file, 'r', encoding='utf-8') as f:
             return [
@@ -165,7 +113,7 @@ class Riassegnazioni:
             logging.error(f"File CSV non trovato: {input_csv_path}")
         return None
 
-    def _parse_agenda(self, table_id: str) -> Agenda:
+    def parse_agenda(self, table_id: str) -> Agenda:
         """Converte il corpo della risposta HTTP in una lista di dizionari"""
 
         if self.response is None:
@@ -225,16 +173,17 @@ class Utenze:
     USER_TABLE_NAME: str = 'tabella_ricerca_utenti'
 
     # user_id;username;ruolo
-    CSV_UTENZE: Path = UTENZE_DIR / 'user_id.csv'
+    CSV_UTENZE: Path = UTENZE_DIR / f'{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}_user_id.csv'
 
-    def __init__(self) -> None:
+    def __init__(self, html: str) -> None:
+        self.html: str = html
         self.data: list[User] = []
 
-    def parse_response_utenze(self, html: str) -> list[User]:
+    def parse_response_utenze(self) -> list[User]:
         """Converte il corpo della risposta HTTP in una lista di dizionari"""
 
         # Parsing del contenuto HTML con BeautifulSoup
-        soup = BeautifulSoup(html, 'html.parser')
+        soup = BeautifulSoup(self.html, 'html.parser')
 
         # Trova la tabella con l'id specificato
         table = soup.find('table', {'id': self.USER_TABLE_NAME})
@@ -375,7 +324,8 @@ class KiwiTable:
         'Tirana': ['Consulente Tirana', 'Nuove Anagrafiche', 'Primo reminder', 'Ultimo reminder', 'Totale aperte (*)', 'Stato "Nuova Anagrafica"', 'Riceve Anagrafiche'],
     }
 
-    def __init__(self,) -> None:
+    def __init__(self, html: str) -> None:
+        self.html: str = html
         self.html_directory: Path = HomeKiwiOutput.HTML_DIR.value
         self.csv_directory: Path = HomeKiwiOutput.CSV_DIR.value
         self.json_directory: Path = HomeKiwiOutput.JSON_DIR.value
@@ -392,10 +342,9 @@ class KiwiTable:
             return []
         return table_headers
 
-    @staticmethod
-    def fetch_all_tables(response_text: str) -> ResultSet[Tag]:
+    def fetch_all_tables(self) -> ResultSet[Tag]:
         # Salva le tabelle identificate nei file CSV e JSON
-        soup = BeautifulSoup(response_text, 'html.parser')
+        soup = BeautifulSoup(self.html, 'html.parser')
 
         central_content_div: Optional[Tag] = soup.find('div', id='GG_central-content')
         if central_content_div is None:
@@ -405,14 +354,14 @@ class KiwiTable:
 
         return tables
 
-    def to_html(self, html: str) -> None:
+    def to_html(self) -> None:
         """ Salva risposta HTML in un file con timestamp """
 
         self.html_directory.mkdir(parents=True, exist_ok=True)
         file_path = self.html_directory / f"HomeKiwi_{self.timestamp}.html"
 
         with open(file_path, "w", encoding="utf-8") as file:
-            file.write(html)
+            file.write(self.html)
         logging.debug(f"[HTML] Risposta salvata in {file_path}")
 
     def to_csv(self, table: Tag, headers: list[str]):
