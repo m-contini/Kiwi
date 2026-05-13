@@ -1,5 +1,4 @@
 from .const import (
-    __TEST__,
     LOG_FILE,
     ROOT,
     ESTRAZIONI_DIR,
@@ -23,7 +22,6 @@ from .exceptions import (
 )
 
 __all__ = [
-    "__TEST__",
     "LOG_FILE",
     "ROOT",
 

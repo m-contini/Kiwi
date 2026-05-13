@@ -10,7 +10,7 @@ from pathlib import Path
 # Se True: esegue gli script offline
 # facendo scraping da file HTML che simulano Kiwi
 # anziché da web
-__TEST__ = True
+# __TEST__ = False
 
 # USERNAME verrà letto da file .env
 # USERNAME: str = 'mcontini'
