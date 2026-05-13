@@ -41,83 +41,85 @@ def run(__TEST__: bool = False) -> None:
 
     Questo script è pensato per essere eseguito tramite uno scheduler (es. crontab).
 
+    I dati vengono salvati in CSV al percorso:
+    `./Lavorazioni/YYYY_MM_DD_HH_MM_SS_{login_operatore}.csv`
+
     NOTA:  
     Essendo rimasto in fase di test, lo script si limita a
     stampare a schermo il contenuto della risposta,
     senza salvataggio né analisi.
     """
 
-    try:
-        # Imposta la sessione HTTP
-        kiwi = Auth(Path(__file__) if __TEST__ else None)
-        kiwi.login()
+    if not __TEST__:
+        logging.warning("Lo script LavorazioniConsulenti è in fase di test.")
+        return
 
-        # Dati TEST da usare come payload
-        data: dict[str, str] = {
-            'login_operatore': LOGIN_ID_TEST,
-            'data_from': DATA_FROM_TEST,
-            'data_to': DATA_TO_TEST,
-            'esporta': 'Esporta in Excel'
+    # Imposta la sessione HTTP
+    client = Auth(Path(__file__) if __TEST__ else None)
+    client.login()
+
+    # Dati TEST da usare come payload
+    data: dict[str, str] = {
+        'login_operatore': LOGIN_ID_TEST,
+        'data_from': DATA_FROM_TEST,
+        'data_to': DATA_TO_TEST,
+        'esporta': 'Esporta in Excel'
+    }
+
+    url = Endpoints.LAVORAZ_CONS.value
+
+    # Richiesta POST per ottenere le lavorazioni di un dato consulente
+    response = client.request('POST', url, data)
+
+    # RICHIESTA FITTIZIA DI TEST
+    request_test = RequestTest(
+        url=url,
+        data=data,
+        method='POST',
+        headers={
+            'content-type': 'application/x-www-form-urlencoded',
         }
+    )
+    # Logging dettagliato per debug
+    logging.debug(f"Richiesta POST a {url} con dati: {data}")
 
-        url = Endpoints.LAVORAZ_CONS.value
+    # RISPOSTA DI TES
+    response_test = ResponseTest(
+        status_code=200,
+        headers={
+            'content-type': 'application/vnd.ms-excel',
+        },
+        text=response.text,
+    )
+    if response_test.status_code != 200:
+        logging.error(f"Errore server: {response_test.status_code}")
+        return
 
-        # Richiesta POST per ottenere le lavorazioni di un dato consulente
-        response = kiwi.post_request(url, data)
+    # Mostra i dettagli della richiesta
+    logging.debug("=" * 50)
+    logging.debug(f"""Dettagli della richiesta:
+        URL: {request_test.url}
+        Metodo: {request_test.method}
+        Headers: {request_test.headers}
+        Dati inviati: {request_test.data}
+    """)
 
-        # RICHIESTA FITTIZIA DI TEST
-        request_test = RequestTest(
-            url=url,
-            data=data,
-            method='POST',
-            headers={
-                'content-type': 'application/x-www-form-urlencoded',
-            }
-        )
-        # Logging dettagliato per debug
-        logging.debug(f"Richiesta POST a {url} con dati: {data}")
+    # Mostra i dettagli della risposta
+    logging.debug("=" * 50)
+    logging.debug(f"""Dettagli della risposta:
+        Status code: {response_test.status_code}
+        Headers: {response_test.headers}
+        Lunghezza del contenuto: {len(response_test.text)}
+    """)
 
-        # RISPOSTA DI TES
-        response_test = ResponseTest(
-            status_code=200,
-            headers={
-                'content-type': 'application/vnd.ms-excel',
-            },
-            text=response.text,
-        )
-        if response_test.status_code != 200:
-            logging.error(f"Errore server: {response_test.status_code}")
-            return
+    # Recupero e parsing delle lavorazioni
+    lavorazioni = Lavorazioni(LOGIN_ID_TEST)
+    lavorazioni.data = lavorazioni.parse_lavorazioni_html(response.text)
 
-        # Mostra i dettagli della richiesta
-        logging.debug("=" * 50)
-        logging.debug(f"""Dettagli della richiesta:
-            URL: {request_test.url}
-            Metodo: {request_test.method}
-            Headers: {request_test.headers}
-            Dati inviati: {request_test.data}
-        """)
+    logging.info(f"Estratte {len(lavorazioni.data)} lavorazioni per il consulente {LOGIN_ID_TEST}.")
+    for row in lavorazioni.data:
+        logging.debug(row)
 
-        # Mostra i dettagli della risposta
-        logging.debug("=" * 50)
-        logging.debug(f"""Dettagli della risposta:
-            Status code: {response_test.status_code}
-            Headers: {response_test.headers}
-            Lunghezza del contenuto: {len(response_test.text)}
-        """)
-
-        # Recupero e parsing delle lavorazioni
-        lavorazioni = Lavorazioni(LOGIN_ID_TEST)
-        lavorazioni.data = lavorazioni.parse_lavorazioni_html(response.text)
-
-        logging.info(f"Estratte {len(lavorazioni.data)} lavorazioni per il conslente {LOGIN_ID_TEST}.")
-        for row in lavorazioni.data:
-            logging.debug(row)
-
-        # Salvataggio
-        lavorazioni.to_csv()
-        logging.info(f"Lavorazioni salvate in: {lavorazioni.output_file}")
-
-    except Exception as e:
-        logging.error(f"Errore durante l'estrazione lavorazioni consulenti: {e}", exc_info=True)
-        raise
+    # Salvataggio
+    lavorazioni.to_csv()
+    logging.info(f"Lavorazioni salvate in: '{lavorazioni.output_file.relative_to(Path.cwd())}'")

@@ -9,21 +9,18 @@ from source import (
 
 def run(__TEST__: bool = False) -> None:
     """
-    Questo script si autentica a **Kiwi** per automatizzare:
-    - `Riassegnazione` di agende da un consulente all'altro
-    - `Retrocessione` di agende
-    basandosi su un file CSV di input.
+    Questo script si autentica a **Kiwi** per automatizzare la `riassegnazione` di agende
+    da un consulente ad un altro (assegnatario) leggendo da un file CSV di input il cellulare,
+    che permette di identificare l'agenda da riassegnare.
 
+    Steps
     Il processo segue questi step:
-    1.  a. Legge `./RiassegnazioniChat/input_cellulare.csv` contenente
+    1.  Legge `./Riassegnazioni/input_cellulare.csv` contenente
         `consulente_id`, `assegnatario_id` e `cellulare`.
-        b. Legge `./RiassegnazioniChat/input_cellulare_retrocessioni_di_stato.csv`
-        contenente `cellulare` e `idEsito`.
     2. Per ogni `cellulare`, interroga **Kiwi** per recuperare 
         `id_anagrafica` e `id_agenda`.
-
-    Per ciascuna riga di entrambi i file, si invia una richiesta POST all'endpoint di riassegnazione/retrocessione,
-    con `id_anagrafica` e `id_agenda` nel payload, per pushare la modifica.
+    3. Per ciascuna riga si invia una richiesta POST all'endpoint di riassegnazione,
+        con `id_anagrafica` e `id_agenda` nel payload, per pushare la modifica.
 
     Questo script è progettato per essere eseguito tramite uno scheduler (es. crontab).
     """
@@ -44,7 +41,7 @@ def run(__TEST__: bool = False) -> None:
 
     for riassegnazione in riassegnazioni:
         try:
-            _ = client.post_request(Endpoints.RIASSEGNAZ.value, riassegnazione.as_dict())
+            _ = client.request('POST', Endpoints.RIASSEGNAZ.value, riassegnazione.as_dict())
             logging.debug(f"Riassegnazione da {riassegnazione.consulente_id} a {riassegnazione.assegnatario_id} per agenda {riassegnazione.agenda} completata!")
         except Exception as e:
             logging.error(f"Riassegnazione {riassegnazione.anagrafica}({riassegnazione.agenda}) fallita: {e}")

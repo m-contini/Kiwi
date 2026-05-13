@@ -14,9 +14,9 @@ from pathlib import Path
 import os
 from typing import Optional
 from tqdm import tqdm
+import sys
 
 from source import (
-    __TEST__,
     Auth,
     Endpoints,
 )
@@ -24,6 +24,8 @@ from source import (
 from Estrazioni import PayloadManager, OptionManager
 
 def main() -> None: 
+
+    __TEST__ = '--test' in sys.argv or '-t' in sys.argv
 
     try:
         # Imposta la sessione HTTP
@@ -38,7 +40,7 @@ def main() -> None:
     # --------------------
 
     print("Recupero elenco estrazioni disponibili a sistema...")
-    response = kiwi.get_request(Endpoints.ESTRAZIONI.value)
+    response = kiwi.request('GET', Endpoints.ESTRAZIONI.value)
     options = OptionManager()
 
     options.sync_available_options(response.text)
@@ -96,7 +98,7 @@ def download_estrazione(kiwi: Auth, current_payload_64: str) -> Optional[str]:
             'payload': current_payload_64,
             'format': 'csv'
         }
-        response = kiwi.post_request(Endpoints.DOWNLOAD.value, data=payload)
+        response = kiwi.request('POST', Endpoints.DOWNLOAD.value, data=payload)
 
         set_cookie = response.headers.get('Set-Cookie', '')
         if 'fileDownload=true' not in set_cookie:

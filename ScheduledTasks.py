@@ -1,3 +1,9 @@
+# Flag globale
+# Se True: esegue gli script offline
+# facendo scraping da file HTML che simulano Kiwi
+# anziché da web
+__test__: bool = False
+
 import logging
 import sys
 from routines import (
@@ -10,7 +16,6 @@ from routines import (
 )
 from source import LOG_FILE
 
-__test__: bool = False
 
 # Configurazione base del logging per monitorare l'esecuzione
 logging.basicConfig(

@@ -17,10 +17,10 @@ def run(__TEST__: bool = False) -> None:
 
     Questo script è pensato per essere eseguito tramite uno scheduler (es. crontab).
 
-    I dati vengono salvati in CSV e JSON, sovrascrivendo quelli esistenti, ai seguenti percorsi:  
+    I dati vengono salvati in CSV e JSON con timestamp per mantenere uno storico, ai seguenti percorsi:  
 
-    `./Utenze/user_id.csv`
-    `./Utenze/user_id.json`
+    `./Utenze/YYYY_MM_DD_HH_MM_SS_user_id.csv`
+    `./Utenze/YYYY_MM_DD_HH_MM_SS_user_id.json`
 
     In ambiente di test simula la pagina di atterraggio dopo login contenuta in 
     `./html/EstraiUtenze.html`
@@ -41,33 +41,28 @@ def run(__TEST__: bool = False) -> None:
     ```
     """
 
-    try:
-        # Imposta la sessione HTTP
-        kiwi = Auth(Path(__file__) if __TEST__ else None)
-        kiwi.login()
+    # Imposta la sessione HTTP
+    client = Auth(Path(__file__) if __TEST__ else None)
+    client.login()
 
-        # Istanza custom per effettuare parsing e salvataggio
-        utenze = Utenze()
+    # Richiesta GET per ottenere la lista degli utenti di Kiwi
+    response = client.request('GET', Endpoints.USERLIST.value)
 
-        # Richiesta GET per ottenere la lista degli utenti di Kiwi
-        response = kiwi.get_request(Endpoints.USERLIST.value)
+    # Istanza custom per effettuare parsing e salvataggio
+    utenze = Utenze(response.text)
 
-        # Recupera utenze dal corpo della risposta HTML
-        utenze.data = utenze.parse_response_utenze(response.text)
+    # Recupera utenze dal corpo della risposta HTML
+    utenze.data = utenze.parse_response_utenze()
 
-        # Stampa i dati
-        logging.info(f"Estratte {len(utenze.data)} utenze.")
-        for item in utenze.data:
-            logging.debug(item)
+    # Stampa i dati
+    logging.info(f"Estratte {len(utenze.data)} utenze.")
+    for item in utenze.data:
+        logging.debug(item)
 
-        # Salva in CSV
-        utenze.to_csv()
-        logging.info(f"Utenze salvate in CSV: {utenze.CSV_UTENZE}.")
+    # Salva in CSV
+    utenze.to_csv()
+    logging.info(f"Utenze salvate in CSV: '{utenze.CSV_UTENZE.relative_to(Path.cwd())}'.")
 
-        # Salva in JSON
-        utenze.to_json()
-        logging.info(f"Utenze salvate in JSON: '{utenze.CSV_UTENZE.with_suffix('.json')}'.")
-
-    except Exception as e:
-        logging.error(f"Errore durante l'estrazione utenze: {e}")
-        raise
+    # Salva in JSON
+    utenze.to_json()
+    logging.info(f"Utenze salvate in JSON: '{utenze.CSV_UTENZE.with_suffix('.json').relative_to(Path.cwd())}'.")

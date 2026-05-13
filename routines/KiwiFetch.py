@@ -45,41 +45,32 @@ def run(__TEST__: bool = False) -> None:
     ```
     """
 
-    try:
-        # Imposta la sessione HTTP
-        kiwi = Auth(Path(__file__) if __TEST__ else None)
-        kiwi.login()
+    # Imposta la sessione HTTP
+    client = Auth(Path(__file__) if __TEST__ else None)
+    client.login()
 
-        # Richiesta GET per ottenere KPI dalla dashboard Home Kiwi
-        home_kiwi = kiwi.get_dashboard_snapshot()
-        logging.info("Snapshot della dashboard recuperato correttamente.")
+    # Richiesta GET per ottenere KPI dalla dashboard Home Kiwi
+    home_kiwi = client.fetch_kiwi_home(client.user, client.password)
+    logging.info("Snapshot della dashboard recuperato correttamente.")
 
-        # Istanza custom per effettuare parsing e salvataggio
-        kiwi_table = KiwiTable()
+    # Istanza custom per effettuare parsing e salvataggio
+    kiwi_table = KiwiTable(home_kiwi.text)
 
-        # Salva risposta HTML
-        kiwi_table.to_html(home_kiwi.text)
+    # Salva risposta HTML
+    kiwi_table.to_html()
 
-        # Parsing delle due tabelle nella Home Kiwi
-        # 1) `Consulente Milano` (Consulenti)
-        # 2) `Consulente Tirana` (GDO)
-        tables = kiwi_table.fetch_all_tables(home_kiwi.text)
-        tables_processed = 0
+    # Parsing delle due tabelle nella Home Kiwi
+    # 1) `Consulente Milano` (Consulenti)
+    # 2) `Consulente Tirana` (GDO)
+    tables = kiwi_table.fetch_all_tables()
+    for table in tables:
 
-        for table in tables:
+        if not (headers := kiwi_table.is_valid_dashboard_table(table)):
+            continue
 
-            if not (headers := kiwi_table.is_valid_dashboard_table(table)):
-                continue
+        # Salva in CSV e JSON le tabelle identificate
+        kiwi_table.to_csv(table, headers)
+        kiwi_table.to_json(table, headers)
+        logging.info(f"Dashboard '{headers[0]}' elaborata e salvata.")
 
-            # Salva in CSV e JSON le tabelle identificate
-            kiwi_table.to_csv(table, headers)
-            kiwi_table.to_json(table, headers)
-            tables_processed += 1
-            logging.info(f"Tabella con header {headers[0]} elaborata e salvata.")
-
-        logging.info(f"Operazione completata. Elaborate {tables_processed} tabelle.")
-        logging.info(f"Tabelle salvate nelle sottocartelle {HomeKiwiOutput.CSV_DIR.value} e {HomeKiwiOutput.JSON_DIR.value}")
-
-    except Exception as e:
-        logging.error(f"Errore critico durante il KiwiFetch: {e}", exc_info=True)
-        raise
+    logging.info(f"Tabelle salvate in CSV ('{HomeKiwiOutput.CSV_DIR.value.relative_to(Path.cwd())}') e JSON ('{HomeKiwiOutput.JSON_DIR.value.relative_to(Path.cwd())}').")
