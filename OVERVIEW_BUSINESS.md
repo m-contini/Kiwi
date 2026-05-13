@@ -45,7 +45,7 @@ Esegue una scansione della home page di Kiwi per contare le pratiche in gestione
 
 ### 🔄 Riassegnazioni Massive
 
-Permette di spostare pratiche da un operatore all'altro o riportarle a uno stato precedente (retrocessione). L'input è un semplice file Excel: il sistema utilizza il **numero di cellulare** come chiave univoca per individuare le pratiche e aggiornarle automaticamente.
+Permette di spostare pratiche da un operatore all'altro o riportarle a uno stato precedente (retrocessione). L'input è fornito tramite file CSV: il sistema utilizza il **numero di cellulare** come chiave univoca per individuare le pratiche e aggiornarle automaticamente nel gestionale.
 
 #### 👥 Controllo Accessi e Utenze
 
@@ -62,8 +62,8 @@ Scarica lo storico delle attività svolte in un determinato periodo, fornendo la
 
 Il progetto include una solida modalità **Test/Simulazione**:
 
-- **In modalità TEST (Default)**: Il sistema non si collega al gestionale reale ma utilizza "copie HTML" locali. Questo permette di mostrare il funzionamento del software in totale sicurezza, senza rischiare di modificare dati reali o interferire con la produzione.
-- **In modalità ONLINE**: Il sistema opera direttamente sul gestionale Kiwi per eseguire le attività programmate.
+- **In modalità TEST**: (Attivabile con `--test`) Il sistema non si collega al gestionale reale ma utilizza "copie HTML" locali. Questo permette di mostrare il funzionamento del software in totale sicurezza, senza rischiare di modificare dati reali o interferire con la produzione.
+- **In modalità NORMALE**: (Default) Il sistema opera direttamente sul gestionale Kiwi per eseguire le attività programmate.
 
 ---
 

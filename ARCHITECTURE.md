@@ -24,7 +24,8 @@ graph LR
     subgraph ROUTINES["⚙️ Automated Routines"]
         direction TB
 
-        RI[Riassegnazioni.py<br/><i>Gestione turni</i>]:::routine
+        RI[Riassegnazioni.py<br/><i>Riassegnazione agende</i>]:::routine
+        RE[Retrocessioni.py<br/><i>Retrocessione stati</i>]:::routine
         EU[EstraiUtenze.py<br/><i>Monitoraggio utenze</i>]:::routine
         KF[KiwiFetch.py<br/><i>Dashboard scraping</i>]:::routine
         LC[LavorazioniConsulenti.py<br/><i>Report performance</i>]:::routine
@@ -61,6 +62,7 @@ graph LR
     ST --> LC
     ST --> KF
     ST --> RI
+    ST --> RE
 
     %% =========================
     %% CORE USAGE
@@ -69,10 +71,12 @@ graph LR
     LC -. usa .-> KW
     KF -. usa .-> KW
     RI -. usa .-> KW
+    RE -. usa .-> KW
 
     EU -. usa .-> TY
     LC -. usa .-> TY
     RI -. usa .-> TY
+    RE -. usa .-> TY
 
     KW -. solleva .-> EX
 
@@ -167,7 +171,7 @@ graph TB
 
 ## 🧪 Modalità TEST
 
-> Quando `__TEST__ = True`:
+> Quando attivata tramite flag `--test`:
 >
 > * `kiwi.py` non effettua connessioni reali
 > * vengono utilizzati snapshot HTML locali

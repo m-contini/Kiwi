@@ -17,6 +17,7 @@ Questo sistema automatizza le operazioni ripetitive su Kiwi che prima richiedeva
 
 - **Monitoraggio Consulenti**: Legge automaticamente la Dashboard di Kiwi per vedere chi ha troppe pratiche aperte e prevenire sovraccarichi.  
 - **Gestione Turni (Riassegnazioni)**: Sposta le pratiche da un consulente all'altro leggendo un semplice file Excel di istruzioni, oppure le retrocede a uno stato precedente.  
+- **Retrocessioni di Stato**: Riporta le pratiche a stati precedenti in modo massivo basandosi su un elenco di richieste di retrocessione.
 - **Controllo Anomalie**: Verifica che solo le persone autorizzate ricevano agende, segnalando eventuali errori di sistema.
 - **Report Performance**: Scarica i dati storici delle lavorazioni dei consulenti per le analisi quotidiane, settimanali o mensili.  
 - **Download Massivi**: Permette di scaricare grandi quantità di dati dividendo il lavoro in "pezzi" più piccoli per non abbattere il server.
@@ -34,7 +35,8 @@ Questo sistema automatizza le operazioni ripetitive su Kiwi che prima richiedeva
     - [3. Dashboard (Scraping)](#3-dashboard-scraping)
     - [4. Lavorazioni Consulente](#4-lavorazioni-consulente)
     - [5. Riassegnazioni](#5-riassegnazioni)
-    - [6. Estrazioni](#6-estrazioni)
+    - [6. Retrocessioni](#6-retrocessioni)
+    - [7. Estrazioni](#7-estrazioni)
   - [Esempio di utilizzo](#esempio-di-utilizzo)
     - [ScheduledTasks](#scheduledtasks)
     - [DownloadEstrazioni](#downloadestrazioni)
@@ -109,13 +111,20 @@ Work in Progress: prendere in input una lista di consulenti
 
 ### 5. Riassegnazioni
 
-Automazioni nel riassegnare pratiche da un consulente all'altro (es. per cambio turno) e/o nel retrocederle, usando per entrambi i casi il cellulare come chiave di ricerca.
-La lista di agende da riassegnare/retrocedere viene letta da 2 distinti CSV, compilati a mano su Excel dal team.
+Automazioni nel riassegnare pratiche da un consulente all'altro (es. per cambio turno) usando il cellulare come chiave di ricerca.
+La lista viene letta dal file `input_cellulare.csv` nella cartella `Riassegnazioni`.
 
 - **Codice**: [Riassegnazioni.py](./routines/Riassegnazioni.py)
-- **Alias**: `riassegnazioni_retrocessioni`
+- **Alias**: `run_riassegnazioni`
 
-### 6. Estrazioni
+### 6. Retrocessioni
+
+Automazioni nel riportare le pratiche a uno stato precedente (retrocessione) basandosi su un elenco di cellulari e ID esito.
+
+- **Codice**: [Retrocessioni.py](./routines/Retrocessioni.py)
+- **Alias**: `run_retrocessioni`
+
+### 7. Estrazioni
 
 Download automatico di una o più estrazioni programmate, i cui parametri di estrazione vengono letti da CSV creato interattivamente in [multiplePayloadGenerator.py](./Estrazioni/_multiplePayloadGenerator.py).
 
@@ -150,11 +159,11 @@ python DownloadEstrazioni.py
 
 ## Emulazione per test
 
-Di default è attivo un flag globale `__TEST__`:  
-    - **`__TEST__ = True`**: Modalità dimostrativa. Le *routine* operano offline leggendo dati da file HTML locali.  
-    - **`__TEST__ = False`**: Modalità online. Le *routine* interagiscono con Kiwi.  
+È possibile attivare la modalità emulazione tramite flag da riga di comando:
+    - **`--test` / `-t`**: Modalità dimostrativa. Le *routine* operano offline leggendo dati da file HTML locali contenuti in `/html`.
+    - **Default**: Modalità online. Le *routine* interagiscono con Kiwi.
 
-*Assicurarsi di aver configurato il flag `__TEST__ = False` all'interno di `ScheduledTasks.py` se si è realmente connessi a Kiwi.*
+*Assicurarsi di non passare il flag di test se è possibile connettersi a Kiwi.*
 
 ## Setup
 
