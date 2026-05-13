@@ -31,6 +31,12 @@ from .types import (
 from .kiwi import Auth
 
 class Riassegnazioni:
+    """
+    Gestore delle operazioni di modifica sulle agende.
+    
+    Si occupa di mappare i file di input CSV (con i cellulari) verso gli Id Anagrafica e Agenda
+    per poi riassegnarle o retrocederle di stato.
+    """
 
     ANAGRAFICA_RICERCA_NAME: str = 'risultati_ricerca_anagrafica'
     RICERCA_URL: str = Endpoints.RICERCA.value

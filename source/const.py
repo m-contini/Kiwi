@@ -1,6 +1,8 @@
 """
-Questo file contiene solo costanti da esportare
-per il funzionamento di altri script/moduli.
+Costanti di configurazione globale.
+
+Definisce i percorsi del filesystem, gli endpoint URL del gestionale Kiwi e i parametri
+per l'autenticazione, necessari per il funzionamento dell'intera suite.
 """
 
 from enum import Enum

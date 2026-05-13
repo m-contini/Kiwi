@@ -12,6 +12,13 @@ from .exceptions import NoActionUrl, NoCookies, NoCredentials, NoSession
 from .const import AUTH_URL, KIWI, MOCK_DIR, Endpoints
 
 class Scraper:
+    """
+    Classe base per l'interazione HTTP.
+    
+    Fornisce metodi per eseguire richieste GET/POST/HEAD gestendo
+    automaticamente i cookie di sessione e la redirezione
+    verso file locali se il mocking è attivo.
+    """
     def __init__(self, _mock_file: Optional[Path]) -> None:
         self._mock_file = MOCK_DIR / (_mock_file.stem + '.html') if _mock_file is not None else None
         self.session: Session = Session()
@@ -72,6 +79,12 @@ class Scraper:
             raise
 
 class Auth(Scraper):
+    """
+    Gestore dell'autenticazione Kiwi.
+    
+    Gestisce il flusso di login specifico al gestionale,
+    recuperando le credenziali e mantenendo la sessione attiva.
+    """
 
     def __init__(self, _mock_file: Optional[Path]) -> None:
         super().__init__(_mock_file)
