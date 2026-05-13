@@ -3,8 +3,9 @@ from pathlib import Path
 
 from source import (
     Auth,
+    Endpoints,
     Riassegnazioni,
-    Endpoints
+    SearchForm
 )
 
 def run(__TEST__: bool = False) -> None:
@@ -39,15 +40,32 @@ def run(__TEST__: bool = False) -> None:
     query = Riassegnazioni(client)
 
     # Fetch dei dati da file
-    riassegnazioni = query.get_riassegnazioni_list(query.CAMBI_STATO_CSV)
-    logging.info(f"Trovate {len(riassegnazioni)} riassegnazioni da eseguire.")
+    retrocessioni = query.get_retrocessioni_list(query.RETROCESSIONI_CSV)
+    logging.info(f"Trovate {len(retrocessioni)} retrocessioni da eseguire.")
 
-    for riassegnazione in riassegnazioni:
+    for retrocessione in retrocessioni:
+        cellulare = retrocessione.cellulare
+        id_esito = retrocessione.id_esito
+
+        # Effettua la ricerca per cellulare
+        payload = SearchForm(
+            ricerca_telefono=cellulare,
+        )
+
         try:
-            _ = client.post_request(Endpoints.RIASSEGNAZ.value, riassegnazione.as_dict())
-            logging.debug(f"Riassegnazione da {riassegnazione.consulente_id} a {riassegnazione.assegnatario_id} per agenda {riassegnazione.agenda} completata!")
+            query.response = client.post_request(Endpoints.RICERCA.value, payload.as_dict())
+
+            # Estrai Anagrafica_id e Agenda_id
+            agenda = query.parse_agenda(query.ANAGRAFICA_RICERCA_NAME)
+
+            logging.debug(f"Retrocessione Anagrafica(Agenda) -> {agenda.anagrafica}({agenda.agenda})")
+
+            # Aggiorna lo stato
+            _ = client.post_request(Endpoints.UPDATE.value, retrocessione.as_dict(agenda))
+            # Ottieni lo status di destinazione dall'ultimo carattere di id_esito
+            logging.debug(f"Retrocessione in stato {str(id_esito)[-1]} per agenda {agenda.agenda} completata!")
         except Exception as e:
-            logging.error(f"Riassegnazione {riassegnazione.anagrafica}({riassegnazione.agenda}) fallita: {e}")
+            logging.error(f"Operazione per cellulare '{cellulare}' fallita: {e}")
             continue
 
-    logging.info("Riassegnazioni completate.")
+    logging.info("Retrocessioni completate.")
