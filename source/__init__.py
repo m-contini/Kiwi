@@ -1,3 +1,4 @@
+import logging
 from .const import (
     LOG_FILE,
     ROOT,
@@ -24,6 +25,18 @@ from .exceptions import (
     NoSession
 )
 
+def setup_logging(level: int = logging.INFO) -> None:
+    """Configurazione centralizzata del logging per l'intera suite."""
+    logging.basicConfig(
+        level=level,
+        format='%(asctime)s - %(levelname)s - %(filename)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        handlers=[
+            logging.StreamHandler(),
+            logging.FileHandler(LOG_FILE, mode='a', encoding='utf-8')
+        ]
+    )
+
 __all__ = [
     "LOG_FILE",
     "ROOT",
@@ -48,4 +61,5 @@ __all__ = [
     "SearchForm",
 
     "NoSession",
+    "setup_logging",
 ]

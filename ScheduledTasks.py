@@ -9,21 +9,10 @@ from routines import (
     run_retrocessioni,
     run_riassegnazioni,
 )
-from source import LOG_FILE
+from source import setup_logging
 
-
-# Configurazione base del logging per monitorare l'esecuzione
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(filename)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-    handlers=[
-        # Output to console
-        logging.StreamHandler(),
-        # Output to file (append)
-        logging.FileHandler(LOG_FILE, mode='a', encoding='utf-8')
-    ]
-)
+# Inizializza il logging usando la configurazione condivisa
+setup_logging()
 
 # Routines da eseguire, con nome descrittivo e funzione associata
 RoutineEntry: TypeAlias = tuple[str, Callable[[bool], None]]

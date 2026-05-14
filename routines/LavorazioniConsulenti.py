@@ -21,12 +21,9 @@ def run(__TEST__: bool = False) -> None:
     - `data_from`
     - `data_to`
 
-    La tabella recuperata dall'HTML contiene le seguenti colonne:
-    - `Id consulente`
-    - `Nome consulente`
-    - `Id agenda`
-    - `Orario lavorazione`
-
+    NOTA: Attualmente la routine utilizza parametri di test hardcodati. 
+    In produzione, questi dovrebbero essere passati dinamicamente o letti da config.
+    
     Questo script è pensato per essere eseguito tramite uno scheduler (es. crontab).
 
     I dati vengono salvati in CSV al percorso:
