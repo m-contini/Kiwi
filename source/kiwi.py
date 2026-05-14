@@ -38,12 +38,9 @@ class Scraper:
         self,
         method: Literal['GET', 'POST', 'HEAD'],
         url: str,
-        data: Mapping[str, Any] = {}
+        data: Optional[Mapping[str, Any]] = None
     ) -> Response:
         """Esegue richiesta HTTP ad un endpoint di Kiwi e restituisce la risposta"""
-
-        if method not in ('GET', 'POST', 'HEAD'):
-            raise ValueError(f"Metodo non supportato: {method}")
 
         if self.mocked_response is not None:
             return self.mocked_response
@@ -55,7 +52,7 @@ class Scraper:
         payload: Optional[PayloadDict] = None
         if method == 'POST':
             allow_redirects = False
-            payload = {k: str(v) for k, v in data.items()}
+            payload = {k: str(v) for k, v in data.items()} if data else {}
         else:
             payload = None
 

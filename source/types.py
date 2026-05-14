@@ -21,17 +21,17 @@ class RetrocessionePayload(TypedDict):
     idEsito: str
     pulsStato: str
 
-class RiassegnazionePayload(TypedDict):
-    """Definizione del payload per l'operazione di riassegnazione."""
-    operation: str
-    tipo_pratica: str
-    stato_agenda: str
-    lavorata: str
-    quantita: str
-    consulente: str
-    assegnatario: str
-    pulsAssegna: str
-    anagrafica_list: str  # Questo rimane per stuttura generale, ma useremo un altro valore per la chiave sottostante
+RiassegnazionePayload = TypedDict('RiassegnazionePayload', {
+    'operation': str,
+    'tipo_pratica': str,
+    'stato_agenda': str,
+    'lavorata': str,
+    'quantita': str,
+    'consulente': str,
+    'assegnatario': str,
+    'pulsAssegna': str,
+    'anagrafica[]': str
+})
 
 @dataclass
 class Estrazione:
@@ -103,8 +103,8 @@ class Riassegnazione:
             'consulente': self.consulente_id,
             'assegnatario': self.assegnatario_id,
             'pulsAssegna': 'Assegna',
-            'anagrafica_list': f'{self.anagrafica}_{self.agenda}'
-        }  # type: ignore
+            'anagrafica[]': f'{self.anagrafica}_{self.agenda}'
+        }
 
 @dataclass
 class User:

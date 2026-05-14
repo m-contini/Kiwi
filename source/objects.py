@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Any, Literal, Optional, Protocol, runtime_checkable, Final
+from typing import Any, Literal, Optional, Final
 from bs4 import BeautifulSoup, ResultSet, Tag
 import re
 import csv
@@ -31,11 +31,6 @@ from .types import (
 
 from .kiwi import Auth
 
-@runtime_checkable
-class DataExporter(Protocol):
-    """Interfaccia per oggetti che possono esportare dati in formato CSV."""
-    def to_csv(self) -> None:
-        ...
 
 class Riassegnazioni:
     """

@@ -22,10 +22,19 @@ Questo sistema automatizza le operazioni ripetitive su Kiwi che prima richiedeva
 - **Report Performance**: Scarica i dati storici delle lavorazioni dei consulenti per le analisi quotidiane, settimanali o mensili.  
 - **Download Massivi**: Permette di scaricare grandi quantità di dati dividendo il lavoro in "pezzi" più piccoli per non abbattere il server.
 
+### Technical Excellence
+
+Il codice è sviluppato seguendo i più moderni standard di Python (3.13+):
+
+- **Type Safety**: Utilizzo estensivo di `typing` (`Final`, `Literal`, `Annotated`) per minimizzare errori a runtime.
+- **Validazione Dati**: Uso di `TypedDict` per garantire che i payload inviati a Kiwi siano sempre strutturalmente corretti.
+- **Mocking System**: Architettura predisposta per il testing offline tramite emulazione di risposte HTML.
+
 ## Indice
 
 - [Kiwi Automation Suite](#kiwi-automation-suite)
   - [Business Value \& Impact](#business-value--impact)
+    - [Technical Excellence](#technical-excellence)
   - [Indice](#indice)
     - [Utilizzi](#utilizzi)
     - [Funzioni di *automazione* (**routines**)](#funzioni-di-automazione-routines)

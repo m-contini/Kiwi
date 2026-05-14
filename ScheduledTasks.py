@@ -53,13 +53,12 @@ def main() -> None:
 
     for name, routine in routines:
         print("="*80)
-        routine.__name__ = name
         try:
-            logging.info(f"Avvio routine: `{routine.__name__}`")
+            logging.info(f"Avvio routine: `{name}`")
             routine(__test__)
-            logging.info(f"Routine `{routine.__name__}` completata con successo.")
+            logging.info(f"Routine `{name}` completata con successo.")
         except Exception as e:
-            logging.error(f"Errore critico nella routine `{routine.__name__}`: {e}")
+            logging.error(f"Errore critico nella routine `{name}`: {e}")
 
 if __name__ == '__main__':
     main()
