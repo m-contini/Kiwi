@@ -33,9 +33,8 @@ def run(__TEST__: bool = False) -> None:
     `./Lavorazioni/YYYY_MM_DD_HH_MM_SS_{login_operatore}.csv`
     """
 
-    # Imposta la sessione HTTP
-    client: Auth = Auth(Path(__file__) if __TEST__ else None)
-    client.login()
+    # Inizializzazione client e login
+    client = Auth(Path(__file__) if __TEST__ else None).login()
 
     # Dati TEST da usare come payload
     data: Final[dict[str, str]] = {

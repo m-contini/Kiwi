@@ -30,9 +30,8 @@ def run(__TEST__: bool = False) -> None:
     # Definiamo il mock_path una volta sola
     mock_path: Final[Optional[Path]] = Path(__file__) if __TEST__ else None
 
-    # Imposta la sessione HTTP
-    client: Auth = Auth(mock_path)
-    client.login()
+    # Inizializzazione client e login
+    client = Auth(mock_path).login()
 
     # Istanza custom per eseguire le due subroutine
     query: Riassegnazioni = Riassegnazioni(client)

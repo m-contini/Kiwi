@@ -1,9 +1,3 @@
-# Flag globale
-# Se True: esegue gli script offline
-# facendo scraping da file HTML che simulano Kiwi
-# anziché da web
-__test__: bool = False
-
 import logging
 from typing import Final, Callable, TypeAlias
 import sys
@@ -26,32 +20,34 @@ logging.basicConfig(
     handlers=[
         # Output to console
         logging.StreamHandler(),
-        # Output to file
-        logging.FileHandler(LOG_FILE)
+        # Output to file (append)
+        logging.FileHandler(LOG_FILE, mode='a', encoding='utf-8')
     ]
 )
 
+# Routines da eseguire, con nome descrittivo e funzione associata
 RoutineEntry: TypeAlias = tuple[str, Callable[[bool], None]]
-routines: Final[list[RoutineEntry]] = [
+ROUTINES: Final[list[RoutineEntry]] = [
     ("pulizia_quotidiana_file_obsoleti", pulizia_quotidiana_file_obsoleti),
     ("estrai_utenze_attive", estrai_utenze_attive),
     ("main_dashboard_fetch", main_dashboard_fetch),
     ("lavorazioni_consulenti", lavorazioni_consulenti),
     ("run_retrocessioni", run_retrocessioni),
-    ("run_riassegnazioni", run_riassegnazioni)
+    ("run_riassegnazioni", run_riassegnazioni),
 ]
 
 def main() -> None:
 
-    global __test__, routines
+    # Flag globale
+    # Se True: esegue gli script offline
+    # facendo scraping da file HTML che simulano Kiwi
+    # anziché da web
+    __test__: bool = any(arg in sys.argv for arg in ('--test', '-t'))
+    mode_desc: str = "TEST (Mock)" if __test__ else "PROD (Reale)"
 
-    if sys.argv[-1] in ['--test', '-t']:
-        __test__ = True
-        logging.info("Modalità TEST: verranno utilizzati file di mock e non saranno effettuate richieste reali.")
-    else:
-        logging.info("Modalità NORMALE: verranno effettuate richieste reali a Kiwi e salvati file di output.")
+    logging.info(f"Avvio in modalità {mode_desc}.")
 
-    for name, routine in routines:
+    for name, routine in ROUTINES:
         print("="*80)
         try:
             logging.info(f"Avvio routine: `{name}`")

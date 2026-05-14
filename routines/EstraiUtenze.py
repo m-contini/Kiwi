@@ -43,9 +43,8 @@ def run(__TEST__: bool = False) -> None:
     ```
     """
 
-    # Imposta la sessione HTTP
-    client: Auth = Auth(Path(__file__) if __TEST__ else None)
-    client.login()
+    # Inizializzazione client e login
+    client = Auth(Path(__file__) if __TEST__ else None).login()
 
     # Richiesta GET per ottenere la lista degli utenti di Kiwi
     response: Response = client.request('GET', Endpoints.USERLIST.value)

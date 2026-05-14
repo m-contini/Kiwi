@@ -199,19 +199,13 @@ class Utenze:
             raise ValueError(f"Nessuna tabella con id '{self.USER_TABLE_NAME}' trovata.")
 
         # Trova tutte le righe della tabella (escludendo l'header)
-        rows = table.find_all('tr')
-
-        data: list[User] = []
-        for row in rows:
-
+        for row in table.find_all('tr'):
             # Trova tutte le celle della riga
             cells = row.find_all('td')
             if len(cells) < 3:
                 continue
 
             # Trova l'immagine nella prima cella
-            # link (per user edit) nella seconda
-            # e il ruolo nella quarta
             img = cells[0].find('img')
             link = cells[1].find('a')
             ruolo = cells[3].text.strip()
@@ -220,24 +214,20 @@ class Utenze:
                 continue
 
             # Estrai e pulisci i dati
-            img_src: str = str(img.get('src', ''))
-            href = link.get('href', '')
-            user_id: int = int(str(href).split('/')[-1])
-            username: str = link.text.strip()
-
             # Le utenze attive devono avere icona verde
-            if 'bull_green' not in str(img_src):
+            if 'bull_green' not in str(img.get('src', '')):
                 continue
 
-            data.append(
+            user_id = int(str(link.get('href', '')).split('/')[-1])
+            self.data.append(
                 User(
                     user_id=user_id,
-                    username=username,
+                    username=link.text.strip(),
                     ruolo=ruolo
                 )
             )
 
-        return data
+        return self.data
 
     def to_csv(self) -> None:
         """Scrivi i dati in CSV"""

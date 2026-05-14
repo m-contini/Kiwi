@@ -1,7 +1,7 @@
 import logging
 import os
 from pathlib import Path
-from typing import Optional, Any, Mapping, Literal, Final, TypedDict
+from typing import Optional, Any, Mapping, Literal, Final, TypedDict, Self
 
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
@@ -9,7 +9,6 @@ from requests import RequestException, Response, Session
 
 from .const import AUTH_URL, KIWI, MOCK_DIR, Endpoints
 from .exceptions import NoActionUrl, NoCookies, NoCredentials, NoSession
-from .types import PayloadDict
 
 class Scraper:
     """
@@ -41,26 +40,17 @@ class Scraper:
         data: Optional[Mapping[str, Any]] = None
     ) -> Response:
         """Esegue richiesta HTTP ad un endpoint di Kiwi e restituisce la risposta"""
-
         if self.mocked_response is not None:
             return self.mocked_response
 
-        # Default
-        headers: Final[dict[str, str]] = {k: str(v) for k, v in self.session.headers.items()}
-        allow_redirects: bool = True
-
-        payload: Optional[PayloadDict] = None
-        if method == 'POST':
-            allow_redirects = False
-            payload = {k: str(v) for k, v in data.items()} if data else {}
-        else:
-            payload = None
+        allow_redirects = method != 'POST'
+        payload = {k: str(v) for k, v in data.items()} if data and (method == 'POST') else None
 
         try:
             response = self.session.request(
                 method=method,
                 url=url,
-                headers=headers,
+                headers=self.session.headers,
                 data=payload,
                 allow_redirects=allow_redirects
             )
@@ -91,8 +81,8 @@ class Auth(Scraper):
         self.user: Final[str] = credentials[0]
         self.password: Final[str] = credentials[1]
 
-    def login(self) -> None:
-        """Restituisce sessione autenticata a Kiwi, oltre che settarla nell'attributo di classe"""
+    def login(self) -> Self:
+        """Esegue il login e restituisce l'istanza autenticata per il concatenamento dei metodi."""
 
         try:
             home_kiwi: Response = self.fetch_kiwi_home(self.user, self.password)
@@ -103,6 +93,7 @@ class Auth(Scraper):
             _ = self.request('GET', Endpoints.ADMIN.value)
 
         logging.info("Autenticazione avvenuta con successo.")
+        return self
 
     def fetch_kiwi_home(self, user: str, password: str) -> Response:
 
