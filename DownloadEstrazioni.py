@@ -10,36 +10,53 @@ Il segmento non può comunque superare i 20 giorni.
 I file di output sono costruiti in modo da avere come nome {nome_estrazione}_{data_inizio}_{data_fine}.csv con date in formato yyyy-mm-dd
 """
 
+import logging
 from pathlib import Path
-import os
-from typing import Optional
+from typing import Optional, Final
 from tqdm import tqdm
 import sys
 
 from source import (
     Auth,
     Endpoints,
+    LOG_FILE,
 )
 
 from Estrazioni import PayloadManager, OptionManager
 
+# Configurazione del logging per l'esecuzione standalone
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(filename)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(LOG_FILE, mode='a', encoding='utf-8')
+    ]
+)
+
 def main() -> None: 
 
-    __TEST__ = '--test' in sys.argv or '-t' in sys.argv
+    # Flag globale
+    # Se True: esegue gli script offline caricando mock HTML
+    __test__: bool = any(arg in sys.argv for arg in ('--test', '-t'))
+    mode_desc: str = "TEST (Mock)" if __test__ else "PROD (Reale)"
+    mock_path: Optional[Path] = Path(__file__) if __test__ else None
+
+    logging.info(f"Avvio in modalità {mode_desc}.")
 
     try:
         # Imposta la sessione HTTP
-        kiwi = Auth(Path(__file__) if __TEST__ else None)
-        kiwi.login()
+        kiwi = Auth(mock_path).login()
     except Exception as e:
-        print(e)
+        logging.error(f"Errore durante l'autenticazione: {e}")
         raise
 
     # --------------------
     # FETCH SCELTE DISPONIBILI A SISTEMA
     # --------------------
 
-    print("Recupero elenco estrazioni disponibili a sistema...")
+    logging.info("Recupero elenco estrazioni disponibili a sistema...")
     response = kiwi.request('GET', Endpoints.ESTRAZIONI.value)
     options = OptionManager()
 
@@ -65,8 +82,9 @@ def main() -> None:
     # ------------------------------
     # Percorso in cui salvare i DOWNLOAD
     # ------------------------------
-    output_dir = Path(input('\nInserire percorso per download (Default: \'./Estrazioni\'): ').strip() or PayloadManager.PAYLOAD_CSV.parent)
-    os.makedirs(output_dir, exist_ok=True)
+    default_dir: Final[Path] = PayloadManager.PAYLOAD_CSV.parent
+    output_dir = Path(input(f'\nInserire percorso per download (Default: \'{default_dir}\'): ').strip() or default_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     conferma = input("\nProcedere con il download dei file CSV? (y/n): ").strip().lower()
     if conferma != 'y':
@@ -76,7 +94,11 @@ def main() -> None:
     # ------------------------------
     # Inizio sequenza di download 
     # ------------------------------
-    for params in tqdm(payload_list, desc="Download Progress", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]"):
+    for params in tqdm(
+        payload_list, 
+        desc="Download Progress", 
+        bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]"
+    ):
 
         current_payload_64, file_name = params['payload64'], params['file_name']
 
@@ -94,28 +116,30 @@ def main() -> None:
 
 def download_estrazione(kiwi: Auth, current_payload_64: str) -> Optional[str]:
 
-        payload = {
-            'payload': current_payload_64,
-            'format': 'csv'
-        }
-        response = kiwi.request('POST', Endpoints.DOWNLOAD.value, data=payload)
+    payload = {
+        'payload': current_payload_64,
+        'format': 'csv'
+    }
+    response = kiwi.request('POST', Endpoints.DOWNLOAD.value, data=payload)
 
-        set_cookie = response.headers.get('Set-Cookie', '')
-        if 'fileDownload=true' not in set_cookie:
-            print(f"\nErrore: Non è stato possibile scaricare il file CSV.")
-            return
+    set_cookie = response.headers.get('Set-Cookie', '')
+    if 'fileDownload=true' not in set_cookie:
+        logging.error(f"Errore durante il download del payload {current_payload_64[:15]}...")
+        return None
 
-        return response.text
+    return response.text
 
 def save_estrazione(content: str, output_dir: Path, file_name: str) -> None:
-
+    try:
         with open(output_dir / f"{file_name}.csv", 'w', encoding='utf-8') as f:
             f.write(content)
 
-        print(f"\nFile CSV salvato: {output_dir / f"{file_name}.csv"}")
+        logging.info(f"File CSV salvato: {output_dir / f'{file_name}.csv'}")
 
         if (output_dir / f"{file_name}.csv").is_file():
             tqdm.write(f"File salvato: '{file_name}.csv'")
+    except Exception as e:
+        logging.error(f"Impossibile salvare il file {file_name}: {e}")
 
 if __name__ == "__main__":
     main()
