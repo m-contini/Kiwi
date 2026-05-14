@@ -1,11 +1,14 @@
 import logging
 from pathlib import Path
+from typing import Final, Optional
 
 from source import (
     Auth,
     Endpoints,
     Riassegnazioni,
-    SearchForm
+    SearchForm,
+    Retrocessione,
+    Agenda
 )
 
 def run(__TEST__: bool = False) -> None:
@@ -25,25 +28,25 @@ def run(__TEST__: bool = False) -> None:
     """
 
     # Definiamo il mock_path una volta sola
-    mock_path = Path(__file__) if __TEST__ else None
+    mock_path: Final[Optional[Path]] = Path(__file__) if __TEST__ else None
 
     # Imposta la sessione HTTP
-    client = Auth(mock_path)
+    client: Auth = Auth(mock_path)
     client.login()
 
     # Istanza custom per eseguire le due subroutine
-    query = Riassegnazioni(client)
+    query: Riassegnazioni = Riassegnazioni(client)
 
     # Fetch dei dati da file
-    retrocessioni = query.get_retrocessioni_list(query.RETROCESSIONI_CSV)
+    retrocessioni: list[Retrocessione] = query.get_retrocessioni_list(query.RETROCESSIONI_CSV)
     logging.info(f"Trovate {len(retrocessioni)} retrocessioni da eseguire.")
 
     for retrocessione in retrocessioni:
-        cellulare = retrocessione.cellulare
-        id_esito = retrocessione.id_esito
+        cellulare: str = retrocessione.cellulare
+        id_esito: str = retrocessione.id_esito
 
         # Effettua la ricerca per cellulare
-        payload = SearchForm(
+        payload: SearchForm = SearchForm(
             ricerca_telefono=cellulare,
         )
 
@@ -51,7 +54,7 @@ def run(__TEST__: bool = False) -> None:
             query.response = client.request('POST', Endpoints.RICERCA.value, payload.as_dict())
 
             # Estrai Anagrafica_id e Agenda_id
-            agenda = query.parse_agenda(query.ANAGRAFICA_RICERCA_NAME)
+            agenda: Agenda = query.parse_agenda(query.ANAGRAFICA_RICERCA_NAME)
 
             logging.debug(f"Retrocessione Anagrafica(Agenda) -> {agenda.anagrafica}({agenda.agenda})")
 

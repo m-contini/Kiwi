@@ -1,12 +1,13 @@
 import logging
 from pathlib import Path
-from typing import Any, Literal, Optional
+from typing import Any, Literal, Optional, Protocol, runtime_checkable, Final
 from bs4 import BeautifulSoup, ResultSet, Tag
 import re
 import csv
 import json
 from datetime import datetime
 from dataclasses import asdict, fields
+from requests import Response
 
 # Costanti
 from .const import (
@@ -30,6 +31,12 @@ from .types import (
 
 from .kiwi import Auth
 
+@runtime_checkable
+class DataExporter(Protocol):
+    """Interfaccia per oggetti che possono esportare dati in formato CSV."""
+    def to_csv(self) -> None:
+        ...
+
 class Riassegnazioni:
     """
     Gestore delle operazioni di modifica sulle agende.
@@ -38,21 +45,21 @@ class Riassegnazioni:
     per poi riassegnarle o retrocederle di stato.
     """
 
-    ANAGRAFICA_RICERCA_NAME: str = 'risultati_ricerca_anagrafica'
-    RICERCA_URL: str = Endpoints.RICERCA.value
+    ANAGRAFICA_RICERCA_NAME: Final[str] = 'risultati_ricerca_anagrafica'
+    RICERCA_URL: Final[str] = Endpoints.RICERCA.value
 
     # consulente_id;assegnatario_id;anagrafica_list
-    CSV_AGENDE: Path = RIASSEGNAZIONI_DIR / "output_anagrafica_list.csv"
+    CSV_AGENDE: Final[Path] = RIASSEGNAZIONI_DIR / "output_anagrafica_list.csv"
 
     # consulente_id;assegnatario_id;cellulare
-    CAMBI_STATO_CSV : Path = RIASSEGNAZIONI_DIR / "input_cellulare.csv"
+    CAMBI_STATO_CSV: Final[Path] = RIASSEGNAZIONI_DIR / "input_cellulare.csv"
 
     # cellulare;idEsito
-    RETROCESSIONI_CSV: Path = RIASSEGNAZIONI_DIR / 'input_cellulare_retrocessioni_di_stato.csv'
+    RETROCESSIONI_CSV: Final[Path] = RIASSEGNAZIONI_DIR / 'input_cellulare_retrocessioni_di_stato.csv'
 
     def __init__(self, kiwi: Auth) -> None:
         self.kiwi = kiwi
-        self.response = None
+        self.response: Optional[Response] = None
 
     def get_riassegnazioni_list(self, input_csv_file: Path) -> list[Riassegnazione]:
 
@@ -176,10 +183,10 @@ class Riassegnazioni:
 
 class Utenze:
 
-    USER_TABLE_NAME: str = 'tabella_ricerca_utenti'
+    USER_TABLE_NAME: Final[str] = 'tabella_ricerca_utenti'
 
     # user_id;username;ruolo
-    CSV_UTENZE: Path = UTENZE_DIR / f'{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}_user_id.csv'
+    CSV_UTENZE: Final[Path] = UTENZE_DIR / f'{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}_user_id.csv'
 
     def __init__(self, html: str) -> None:
         self.html: str = html
@@ -263,13 +270,13 @@ class Utenze:
 
 class Lavorazioni:
 
-    TBL_NAME: str = 'tabella_lavorazione_consulenti'
+    TBL_NAME: Final[str] = 'tabella_lavorazione_consulenti'
 
     def __init__(self, login_id: str) -> None:
         self.data: list[dict[str, str]] = []
 
         timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-        self.output_file: Path = LAVORAZIONI_DIR / f"{timestamp}_{login_id}.csv"
+        self.output_file: Final[Path] = LAVORAZIONI_DIR / f"{timestamp}_{login_id}.csv"
 
     @staticmethod
     def parse_lavorazioni_html(html_content: str) -> list[dict[str, str]]:
@@ -325,18 +332,18 @@ class Lavorazioni:
 
 class KiwiTable:
 
-    HEADERS: dict[str, list[str]] = {
+    HEADERS: Final[dict[str, list[str]]] = {
         'Milano': ['Consulente Milano', 'Nuove Anagrafiche', 'Primo reminder', 'Ultimo reminder', 'Totale aperte', 'Stato "Nuova Anagrafica"', 'Riceve Anagrafiche'],
         'Tirana': ['Consulente Tirana', 'Nuove Anagrafiche', 'Primo reminder', 'Ultimo reminder', 'Totale aperte (*)', 'Stato "Nuova Anagrafica"', 'Riceve Anagrafiche'],
     }
 
     def __init__(self, html: str) -> None:
-        self.html: str = html
-        self.html_directory: Path = HomeKiwiOutput.HTML_DIR.value
-        self.csv_directory: Path = HomeKiwiOutput.CSV_DIR.value
-        self.json_directory: Path = HomeKiwiOutput.JSON_DIR.value
+        self.html: Final[str] = html
+        self.html_directory: Final[Path] = HomeKiwiOutput.HTML_DIR.value
+        self.csv_directory: Final[Path] = HomeKiwiOutput.CSV_DIR.value
+        self.json_directory: Final[Path] = HomeKiwiOutput.JSON_DIR.value
 
-        self.timestamp: str = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        self.timestamp: Final[str] = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
     def is_valid_dashboard_table(self, table: Tag) -> list[str]:
         t_head = table.find('thead')
@@ -370,7 +377,7 @@ class KiwiTable:
             file.write(self.html)
         logging.debug(f"[HTML] Risposta salvata in {file_path}")
 
-    def to_csv(self, table: Tag, headers: list[str]):
+    def to_csv(self, table: Tag, headers: list[str]) -> None:
         """ Salva i dati della tabella in un file CSV """
 
         self.csv_directory.mkdir(parents=True, exist_ok=True)
@@ -385,7 +392,7 @@ class KiwiTable:
                 writer.writerow(row)
         logging.debug(f"[CSV] Risposta salvata in {file_path}")
 
-    def to_json(self, table: Tag, headers: list[str]):
+    def to_json(self, table: Tag, headers: list[str]) -> None:
         """ Salva i dati della tabella in un file JSON """
         self.json_directory.mkdir(parents=True, exist_ok=True)
         file_path = self.json_directory / f"{self.timestamp}_{headers[0]}.json"

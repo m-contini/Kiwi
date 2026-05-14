@@ -1,6 +1,7 @@
-
 import logging
 from pathlib import Path
+from requests import Response
+from bs4 import Tag, ResultSet
 
 from source import (
     Auth,
@@ -46,15 +47,14 @@ def run(__TEST__: bool = False) -> None:
     """
 
     # Imposta la sessione HTTP
-    client = Auth(Path(__file__) if __TEST__ else None)
-    client.login()
+    client: Auth = Auth(Path(__file__) if __TEST__ else None)
 
     # Richiesta GET per ottenere KPI dalla dashboard Home Kiwi
-    home_kiwi = client.fetch_kiwi_home(client.user, client.password)
+    home_kiwi: Response = client.fetch_kiwi_home(client.user, client.password)
     logging.info("Snapshot della dashboard recuperato correttamente.")
 
     # Istanza custom per effettuare parsing e salvataggio
-    kiwi_table = KiwiTable(home_kiwi.text)
+    kiwi_table: KiwiTable = KiwiTable(home_kiwi.text)
 
     # Salva risposta HTML
     kiwi_table.to_html()
@@ -62,10 +62,10 @@ def run(__TEST__: bool = False) -> None:
     # Parsing delle due tabelle nella Home Kiwi
     # 1) `Consulente Milano` (Consulenti)
     # 2) `Consulente Tirana` (GDO)
-    tables = kiwi_table.fetch_all_tables()
+    tables: ResultSet[Tag] = kiwi_table.fetch_all_tables()
     for table in tables:
 
-        if not (headers := kiwi_table.is_valid_dashboard_table(table)):
+        if not (headers := kiwi_table.is_valid_dashboard_table(table)): # type: list[str]
             continue
 
         # Salva in CSV e JSON le tabelle identificate

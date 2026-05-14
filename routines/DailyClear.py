@@ -1,5 +1,6 @@
 import logging
 import shutil
+from typing import Final
 
 from source import HomeKiwiOutput
 
@@ -17,7 +18,7 @@ def run(__TEST__: bool = False) -> None:
     """
 
     # Elenco cartelle da rimuovere
-    directories: list[HomeKiwiOutput] = [
+    directories: Final[list[HomeKiwiOutput]] = [
         HomeKiwiOutput.CSV_DIR,
         HomeKiwiOutput.HTML_DIR,
         HomeKiwiOutput.JSON_DIR

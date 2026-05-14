@@ -3,30 +3,38 @@ Questo file contiene le classi di eccezioni personalizzate
 utilizzate all'interno dei moduli in `source`.
 """
 
-class KiwiError(Exception):
+from typing import final
+
+class KiwiException(Exception):
     """Classe base per tutte le eccezioni del progetto Kiwi."""
     pass
 
-class NoCredentials(KiwiError):
+@final
+class NoCredentials(KiwiException):
     """Eccezione sollevata se la lettura credenziali da `.env` fallisce."""
     pass
 
-class NoCookies(KiwiError):
+@final
+class NoCookies(KiwiException):
     """Eccezione sollevata se non esiste cookie di sessione `PHPSESSID`."""
     pass
 
-class NoLoginPage(KiwiError):
+@final
+class NoLoginPage(KiwiException):
     """Eccezione sollevata quando è impossibile connettersi all'endpoint di autenticazione."""
     pass
 
-class NoActionUrl(KiwiError):
+@final
+class NoActionUrl(KiwiException):
     """Eccezione sollevata quando è impossibile recuperare l'URL di `action` dal form di login."""
     pass
 
-class FetchError(KiwiError):
+@final
+class FetchError(KiwiException):
     """Eccezione sollevata quando si verifica un errore nel recupero della Home di Kiwi."""
     pass
 
-class NoSession(KiwiError):
+@final
+class NoSession(KiwiException):
     """Eccezione sollevata quando una routine non riesce a stabilire una connessione autenticata."""
     pass

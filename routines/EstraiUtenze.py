@@ -1,9 +1,11 @@
 import logging
 from pathlib import Path
+from requests import Response
 
 from source import (
     Endpoints,
     Auth,
+    User,
     Utenze,
 )
 
@@ -42,21 +44,22 @@ def run(__TEST__: bool = False) -> None:
     """
 
     # Imposta la sessione HTTP
-    client = Auth(Path(__file__) if __TEST__ else None)
+    client: Auth = Auth(Path(__file__) if __TEST__ else None)
     client.login()
 
     # Richiesta GET per ottenere la lista degli utenti di Kiwi
-    response = client.request('GET', Endpoints.USERLIST.value)
+    response: Response = client.request('GET', Endpoints.USERLIST.value)
 
     # Istanza custom per effettuare parsing e salvataggio
-    utenze = Utenze(response.text)
+    utenze: Utenze = Utenze(response.text)
 
     # Recupera utenze dal corpo della risposta HTML
     utenze.data = utenze.parse_response_utenze()
+    utenze_data: list[User] = utenze.data
 
     # Stampa i dati
-    logging.info(f"Estratte {len(utenze.data)} utenze.")
-    for item in utenze.data:
+    logging.info(f"Estratte {len(utenze_data)} utenze.")
+    for item in utenze_data:
         logging.debug(item)
 
     # Salva in CSV

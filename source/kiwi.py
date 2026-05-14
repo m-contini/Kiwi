@@ -1,15 +1,15 @@
 import logging
 import os
 from pathlib import Path
-from typing import Optional, Any, Mapping
+from typing import Optional, Any, Mapping, Literal, Final, TypedDict
 
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from requests import RequestException, Response, Session
 
-from .exceptions import NoActionUrl, NoCookies, NoCredentials, NoSession
-
 from .const import AUTH_URL, KIWI, MOCK_DIR, Endpoints
+from .exceptions import NoActionUrl, NoCookies, NoCredentials, NoSession
+from .types import PayloadDict
 
 class Scraper:
     """
@@ -20,7 +20,7 @@ class Scraper:
     verso file locali se il mocking è attivo.
     """
     def __init__(self, _mock_file: Optional[Path]) -> None:
-        self._mock_file = MOCK_DIR / (_mock_file.stem + '.html') if _mock_file is not None else None
+        self._mock_file: Final[Optional[Path]] = MOCK_DIR / (_mock_file.stem + '.html') if _mock_file is not None else None
         self.session: Session = Session()
         self.mocked_response = self._handle_mock()
 
@@ -36,7 +36,7 @@ class Scraper:
 
     def request(
         self,
-        method: str,
+        method: Literal['GET', 'POST', 'HEAD'],
         url: str,
         data: Mapping[str, Any] = {}
     ) -> Response:
@@ -48,27 +48,23 @@ class Scraper:
         if self.mocked_response is not None:
             return self.mocked_response
 
-        if method == 'GET':
-            headers = {
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-            }
-            data = {}
-            allow_redirects = True
-        elif method == 'HEAD':
-            headers = {k: str(v) for k, v in self.session.headers.items()}
-            data = {}
-            allow_redirects = True
-        elif method == 'POST':
-            headers = {k: str(v) for k, v in self.session.headers.items()}
-            data = {k: str(v) for k, v in data.items()}
+        # Default
+        headers: Final[dict[str, str]] = {k: str(v) for k, v in self.session.headers.items()}
+        allow_redirects: bool = True
+
+        payload: Optional[PayloadDict] = None
+        if method == 'POST':
             allow_redirects = False
+            payload = {k: str(v) for k, v in data.items()}
+        else:
+            payload = None
 
         try:
             response = self.session.request(
                 method=method,
                 url=url,
                 headers=headers,
-                data=data,
+                data=payload,
                 allow_redirects=allow_redirects
             )
             response.raise_for_status()
@@ -86,9 +82,17 @@ class Auth(Scraper):
     recuperando le credenziali e mantenendo la sessione attiva.
     """
 
+    class LoginPayload(TypedDict):
+        """Definisce la struttura del payload richiesto dal form di login di Kiwi."""
+        username: str
+        password: str
+        credentialId: str
+
     def __init__(self, _mock_file: Optional[Path]) -> None:
         super().__init__(_mock_file)
-        self.user, self.password = self._read_secrets(Path(__file__).parent.parent / '.env')
+        credentials = self._read_secrets(Path(__file__).parent.parent / '.env')
+        self.user: Final[str] = credentials[0]
+        self.password: Final[str] = credentials[1]
 
     def login(self) -> None:
         """Restituisce sessione autenticata a Kiwi, oltre che settarla nell'attributo di classe"""
@@ -111,7 +115,7 @@ class Auth(Scraper):
         if response is self.mocked_response:
             return response
 
-        cookies: dict[str, str]= self.session.cookies.get_dict()
+        cookies: Final[dict[str, str]] = self.session.cookies.get_dict()
         if not cookies.get('PHPSESSID', ''):
             raise NoCookies("Impossibile ottenere il PHPSESSID.")
 
@@ -126,12 +130,12 @@ class Auth(Scraper):
         if not isinstance(action_url, str):
             raise NoActionUrl("Impossibile estrarre l'URL di action dal form di login.")
 
-        data: dict[str, str] = {
+        data: Auth.LoginPayload = {
             'username': user,
             'password': password,
             'credentialId': ''
         }
-        home_kiwi = self.request('POST', action_url, data=data)
+        home_kiwi: Response = self.request('POST', action_url, data=data)
 
         return home_kiwi
 

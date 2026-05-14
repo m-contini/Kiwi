@@ -1,6 +1,7 @@
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Final
+from requests import Response
 
 from source import (
     Endpoints,
@@ -8,22 +9,9 @@ from source import (
     Lavorazioni
 )
 
-LOGIN_ID_TEST: str = '14091'
-DATA_FROM_TEST: str = '2024-06-28'
-DATA_TO_TEST: str = ''
-
-class RequestTest:
-    def __init__(self, url: str, data: dict[str, Any], method: str, headers: dict[str, str]) -> None:
-        self.url: str = url
-        self.data: dict[str, Any] = data
-        self.method: str = method
-        self.headers: dict[str, str] = headers
-
-class ResponseTest:
-    def __init__(self, status_code: int, headers: dict[str, str], text: str) -> None:
-        self.status_code: int = status_code
-        self.headers: dict[str, str] = headers
-        self.text: str = text
+LOGIN_ID_TEST: Final[str] = '14091'
+DATA_FROM_TEST: Final[str] = '2024-06-28'
+DATA_TO_TEST: Final[str] = ''
 
 def run(__TEST__: bool = False) -> None:
     """
@@ -43,77 +31,29 @@ def run(__TEST__: bool = False) -> None:
 
     I dati vengono salvati in CSV al percorso:
     `./Lavorazioni/YYYY_MM_DD_HH_MM_SS_{login_operatore}.csv`
-
-    NOTA:  
-    Essendo rimasto in fase di test, lo script si limita a
-    stampare a schermo il contenuto della risposta,
-    senza salvataggio né analisi.
     """
 
-    if not __TEST__:
-        logging.warning("Lo script LavorazioniConsulenti è in fase di test.")
-        return
-
     # Imposta la sessione HTTP
-    client = Auth(Path(__file__) if __TEST__ else None)
+    client: Auth = Auth(Path(__file__) if __TEST__ else None)
     client.login()
 
     # Dati TEST da usare come payload
-    data: dict[str, str] = {
+    data: Final[dict[str, str]] = {
         'login_operatore': LOGIN_ID_TEST,
         'data_from': DATA_FROM_TEST,
         'data_to': DATA_TO_TEST,
         'esporta': 'Esporta in Excel'
     }
 
-    url = Endpoints.LAVORAZ_CONS.value
-
     # Richiesta POST per ottenere le lavorazioni di un dato consulente
-    response = client.request('POST', url, data)
+    response: Response = client.request('POST', Endpoints.LAVORAZ_CONS.value, data)
 
-    # RICHIESTA FITTIZIA DI TEST
-    request_test = RequestTest(
-        url=url,
-        data=data,
-        method='POST',
-        headers={
-            'content-type': 'application/x-www-form-urlencoded',
-        }
-    )
-    # Logging dettagliato per debug
-    logging.debug(f"Richiesta POST a {url} con dati: {data}")
-
-    # RISPOSTA DI TES
-    response_test = ResponseTest(
-        status_code=200,
-        headers={
-            'content-type': 'application/vnd.ms-excel',
-        },
-        text=response.text,
-    )
-    if response_test.status_code != 200:
-        logging.error(f"Errore server: {response_test.status_code}")
+    if response.status_code != 200:
+        logging.error(f"Errore server: {response.status_code}")
         return
 
-    # Mostra i dettagli della richiesta
-    logging.debug("=" * 50)
-    logging.debug(f"""Dettagli della richiesta:
-        URL: {request_test.url}
-        Metodo: {request_test.method}
-        Headers: {request_test.headers}
-        Dati inviati: {request_test.data}
-    """)
-
-    # Mostra i dettagli della risposta
-    logging.debug("=" * 50)
-    logging.debug(f"""Dettagli della risposta:
-        Status code: {response_test.status_code}
-        Headers: {response_test.headers}
-        Lunghezza del contenuto: {len(response_test.text)}
-    """)
-
     # Recupero e parsing delle lavorazioni
-    lavorazioni = Lavorazioni(LOGIN_ID_TEST)
+    lavorazioni: Lavorazioni = Lavorazioni(LOGIN_ID_TEST)
     lavorazioni.data = lavorazioni.parse_lavorazioni_html(response.text)
 
     logging.info(f"Estratte {len(lavorazioni.data)} lavorazioni per il consulente {LOGIN_ID_TEST}.")

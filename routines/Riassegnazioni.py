@@ -1,8 +1,10 @@
 import logging
 from pathlib import Path
+from typing import Final, Optional
 
 from source import (
     Auth,
+    Riassegnazione,
     Riassegnazioni,
     Endpoints
 )
@@ -26,17 +28,17 @@ def run(__TEST__: bool = False) -> None:
     """
 
     # Definiamo il mock_path una volta sola
-    mock_path = Path(__file__) if __TEST__ else None
+    mock_path: Final[Optional[Path]] = Path(__file__) if __TEST__ else None
 
     # Imposta la sessione HTTP
-    client = Auth(mock_path)
+    client: Auth = Auth(mock_path)
     client.login()
 
     # Istanza custom per eseguire le due subroutine
-    query = Riassegnazioni(client)
+    query: Riassegnazioni = Riassegnazioni(client)
 
     # Fetch dei dati da file
-    riassegnazioni = query.get_riassegnazioni_list(query.CAMBI_STATO_CSV)
+    riassegnazioni: list[Riassegnazione] = query.get_riassegnazioni_list(query.CAMBI_STATO_CSV)
     logging.info(f"Trovate {len(riassegnazioni)} riassegnazioni da eseguire.")
 
     for riassegnazione in riassegnazioni:

@@ -7,13 +7,16 @@ from .const import (
 )
 from .kiwi import Auth
 from .objects import (
+    User,
     Utenze,
     Lavorazioni,
     KiwiTable,
+    Riassegnazione,
     Riassegnazioni,
     SearchForm
 )
 from .types import (
+    Agenda,
     Retrocessione,
     Estrazione,
 )
@@ -32,11 +35,14 @@ __all__ = [
 
     "Auth",
 
+    "User",
     "Utenze",
     "Lavorazioni",
     "KiwiTable",
 
+    "Riassegnazione",
     "Riassegnazioni",
+    "Agenda",
     "Retrocessione",
     "Estrazione",
     "SearchForm",

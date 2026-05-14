@@ -5,6 +5,7 @@
 __test__: bool = False
 
 import logging
+from typing import Final, Callable, TypeAlias
 import sys
 from routines import (
     pulizia_quotidiana_file_obsoleti,
@@ -30,7 +31,8 @@ logging.basicConfig(
     ]
 )
 
-routines = [
+RoutineEntry: TypeAlias = tuple[str, Callable[[bool], None]]
+routines: Final[list[RoutineEntry]] = [
     ("pulizia_quotidiana_file_obsoleti", pulizia_quotidiana_file_obsoleti),
     ("estrai_utenze_attive", estrai_utenze_attive),
     ("main_dashboard_fetch", main_dashboard_fetch),

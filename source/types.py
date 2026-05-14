@@ -4,8 +4,34 @@ utilizzati per mappare le entità di Kiwi, come Agende, Utenti,
 Riassegnazioni e Retrocessioni.
 """
 
+from __future__ import annotations
 from dataclasses import asdict, dataclass
-from datetime import datetime
+from typing import TYPE_CHECKING, Final, TypeAlias, TypedDict
+
+if TYPE_CHECKING:
+    from datetime import datetime
+
+PayloadDict: TypeAlias = dict[str, str]
+
+class RetrocessionePayload(TypedDict):
+    """Definizione del payload per l'operazione di retrocessione."""
+    operation: str
+    idAnagrafica: str
+    idGigAgenda: str
+    idEsito: str
+    pulsStato: str
+
+class RiassegnazionePayload(TypedDict):
+    """Definizione del payload per l'operazione di riassegnazione."""
+    operation: str
+    tipo_pratica: str
+    stato_agenda: str
+    lavorata: str
+    quantita: str
+    consulente: str
+    assegnatario: str
+    pulsAssegna: str
+    anagrafica_list: str  # Questo rimane per stuttura generale, ma useremo un altro valore per la chiave sottostante
 
 @dataclass
 class Estrazione:
@@ -36,9 +62,9 @@ class SearchForm:
     ricerca_cognome: str = ''
     ricerca_email: str = ''
     ricerca_codice_fiscale: str = ''
-    ricerca_anagrafica: str = 'Ricerca'
+    ricerca_anagrafica: Final[str] = 'Ricerca'
 
-    def as_dict(self) -> dict[str, str]:
+    def as_dict(self) -> PayloadDict:
         return asdict(self)
 
 @dataclass
@@ -51,7 +77,7 @@ class Retrocessione:
     cellulare: str
     id_esito: str
 
-    def as_dict(self, agenda: Agenda) -> dict[str, str]:
+    def as_dict(self, agenda: Agenda) -> RetrocessionePayload:
         return {
             'operation':    'modifica_stato',
             'idAnagrafica': agenda.anagrafica,
@@ -67,7 +93,7 @@ class Riassegnazione:
     anagrafica: str
     agenda: str
 
-    def as_dict(self) -> dict[str, str]:
+    def as_dict(self) -> RiassegnazionePayload:
         return {
             'operation': 'assegna',
             'tipo_pratica': 'aperte',
@@ -77,8 +103,8 @@ class Riassegnazione:
             'consulente': self.consulente_id,
             'assegnatario': self.assegnatario_id,
             'pulsAssegna': 'Assegna',
-            'anagrafica[]': f'{self.anagrafica}_{self.agenda}'
-        }
+            'anagrafica_list': f'{self.anagrafica}_{self.agenda}'
+        }  # type: ignore
 
 @dataclass
 class User:
